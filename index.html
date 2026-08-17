@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SARL Transports Normands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- CONNEXION -->
+<div id="login-view">
+  <div class="login-layout">
+
+    <section class="card company-presentation">
+      <!-- Contenu affiché aux visiteurs. Le texte par défaut ci-dessous sert de
+           secours : s'il existe une version enregistrée dans Supabase (modifiée
+           par le patron depuis Bureau du patron > Page d'accueil), elle remplace
+           ce contenu au chargement. -->
+      <div id="pres-content">
+      <p class="eyebrow" style="margin-bottom:0.5rem;">Qui sommes-nous ?</p>
+      <p class="pres-tagline">Fondée en 2025, « SARL Transports Normands » est spécialisée dans le transport de marchandises et la logistique. Notre mission est d'assurer des livraisons rapides, fiables et sécurisées à travers le monde.</p>
+
+      <div class="pres-section">
+        <h3>Nos services</h3>
+        <ul class="pres-check-list">
+          <li><b>Transport routier</b> — livraison nationale et internationale</li>
+          <li><b>Fret aérien et maritime</b> — expéditions rapides et sécurisées</li>
+          <li><b>Transport express</b> — solutions adaptées aux livraisons urgentes</li>
+        </ul>
+      </div>
+
+      <div class="pres-section">
+        <h3>Nos atouts</h3>
+        <ul class="pres-check-list">
+          <li><b>Fiabilité</b> — flotte moderne et chauffeurs expérimentés</li>
+          <li><b>Flexibilité</b> — adaptation aux besoins spécifiques de chaque client</li>
+          <li><b>Technologie</b> — systèmes de suivi en temps réel</li>
+          <li><b>Écologie</b> — engagement pour un transport durable</li>
+        </ul>
+      </div>
+
+      <div class="pres-section">
+        <h3>Nos clients &amp; partenaires</h3>
+        <p style="font-size:0.85rem; color:var(--muted); line-height:1.6; margin:0;">Nous collaborons avec des entreprises de divers secteurs : industrie, commerce, e-commerce, et bien plus. Votre satisfaction est notre priorité !</p>
+      </div>
+
+      <div class="pres-divider"><span>Histoire de l'entreprise</span></div>
+
+      <div class="pres-section">
+        <h3>Une histoire de famille, une passion pour la route</h3>
+        <div class="pres-story">
+          <p>L'histoire de SARL Transports Normands est avant tout une affaire de famille. Fondée par deux frères, Charly et Ludo, l'entreprise est le fruit d'une passion transmise par leur père, un routier dévoué qui a consacré sa vie aux routes et au transport.</p>
+          <p>Depuis tout petits, nous avons grandi bercés par les récits de notre père, ses aventures sur les routes, ses défis et son amour du métier. Il nous a appris l'importance de la rigueur, du respect des engagements et de la solidarité dans ce secteur exigeant.</p>
+          <p>Lorsqu'il nous a quittés il y a quelques années, nous avons ressenti le besoin de prolonger son héritage et d'honorer son travail en bâtissant notre propre entreprise virtuelle de transport. SARL Transports Normands est ainsi née, non seulement comme un projet professionnel, mais aussi comme un hommage à un homme dont la route était bien plus qu'un métier : une vocation.</p>
+          <p>Aujourd'hui, chaque camion qui prend la route porte en lui cet héritage, cette passion transmise de génération en génération. Nous mettons un point d'honneur à perpétuer ces valeurs de respect, de fiabilité et d'engagement, pour que Gagar soit fier, où qu'il soit.</p>
+        </div>
+      </div>
+
+      <div class="pres-divider"><span>Conditions de recrutement</span></div>
+
+      <div class="pres-section">
+        <h3>Conditions de recrutement — « SARL Transports Normands »</h3>
+        <p style="font-size:0.85rem; color:var(--muted); line-height:1.6; margin-bottom:1.25rem;">Bienvenue sur le profil de notre entreprise ! Nous recherchons des chauffeurs passionnés et sérieux pour rejoindre notre flotte et contribuer à notre aventure sur les routes européennes.</p>
+
+        <p class="pres-subhead">Critères de base</p>
+        <ul class="pres-check-list">
+          <li><b>Âge minimum</b> : 18 ans (pour une approche réaliste)</li>
+          <li><b>Respect du Code de la route</b> — conduite propre et professionnelle exigée</li>
+          <li><b>Utilisation de la CB</b> — communication et entraide entre chauffeurs (micro obligatoire)</li>
+          <li>Possession de TruckersMP</li>
+          <li>Avoir Discord</li>
+        </ul>
+
+        <p class="pres-subhead">Compétences requises</p>
+        <ul class="pres-plain-list">
+          <li>Expérience dans le jeu : débutant accepté</li>
+          <li>Maîtrise de la gestion du carburant et des trajets longue distance</li>
+          <li>Capacité à respecter les délais de livraison sans infractions</li>
+          <li>Savoir gérer les imprévus sur la route (accidents, conditions météo, etc.)</li>
+        </ul>
+
+        <p class="pres-subhead">Règles et engagement</p>
+        <ul class="pres-plain-list">
+          <li>Port du tag de l'entreprise en jeu : chaque chauffeur doit porter « LFR » dans son pseudo</li>
+          <li>Participation aux événements et convois officiels : présence si possible lors des événements internes</li>
+          <li>Respect des collègues et des autres joueurs : zéro tolérance pour les comportements toxiques</li>
+        </ul>
+
+        <p class="pres-subhead">Processus de recrutement</p>
+        <ol class="pres-process">
+          <li>Entretien vocal : échange avec les dirigeants pour évaluer votre sérieux et votre compatibilité avec l'entreprise.</li>
+          <li>Période d'essai : test de conduite et intégration progressive dans l'entreprise.</li>
+          <li>Validation : confirmation de votre statut de chauffeur officiel après une période probatoire.</li>
+          <li>Signature du contrat de travail.</li>
+        </ol>
+      </div>
+
+      <div class="pres-divider"><span>Le mot du Président</span></div>
+
+      <div class="pres-section">
+        <h3>Mot du PDG — SARL Transports Normands</h3>
+        <div class="pres-quote">
+          <p>Chers chauffeurs, partenaires et passionnés de la route,</p>
+          <p>Lorsque nous avons fondé l'entreprise, mon frère et moi avions une ambition claire : perpétuer l'héritage de notre père et bâtir une entreprise où la passion du transport et le respect des valeurs étaient au cœur de chaque trajet.</p>
+          <p>Ce projet n'est pas seulement une aventure virtuelle, c'est une véritable immersion dans l'univers du transport routier, avec un engagement à jouer de la manière la plus réaliste et professionnelle possible. Chaque membre de notre équipe contribue à donner vie à cette expérience, et nous sommes fiers de voir notre communauté grandir avec des chauffeurs investis, sérieux et passionnés.</p>
+          <p>Chez SARL Transports Normands, nous privilégions la qualité de conduite, le respect des délais et l'entraide sur la route. Nous croyons fermement qu'un chauffeur n'est jamais seul et que chaque kilomètre parcouru est une nouvelle opportunité de renforcer notre équipe et d'honorer l'esprit du métier que notre père nous a transmis.</p>
+          <p>Merci à tous ceux qui nous rejoignent et contribuent à faire de SARL Transports Normands une entreprise où immersion rime avec plaisir du jeu.</p>
+          <p>« Prenez la route avec nous, et ensemble, allons plus loin ! »</p>
+        </div>
+        <p class="pres-signature">Charly<span>PDG de « SARL Transports Normands »</span></p>
+      </div>
+      </div><!-- /#pres-content -->
+    </section>
+
+    <div class="login-side">
+    <div class="card box">
+    <p class="eyebrow" style="margin-bottom:0.6rem;">Terminal de dispatch — accès personnel</p>
+    <h1 id="login-company-name" style="font-size:1.5rem; margin-bottom:1.5rem;">SARL Transports Normands</h1>
+
+    <div class="auth-tabs">
+      <button class="active" data-auth="signin">Se connecter</button>
+      <button data-auth="signup">Créer un compte</button>
+    </div>
+
+    <form id="auth-signin" class="auth-form active">
+      <div class="field"><label class="eyebrow" for="signin-email">Adresse mail</label><input type="email" id="signin-email" name="email" autocomplete="username" class="input-real" placeholder="toi@exemple.fr" /></div>
+      <div class="field"><label class="eyebrow" for="signin-password">Mot de passe</label><input type="password" id="signin-password" name="password" autocomplete="current-password" class="input-real" placeholder="••••••••" /></div>
+      <label class="remember-row" for="remember-me">
+        <input type="checkbox" id="remember-me" checked />
+        <span>Se souvenir de moi sur cet ordinateur</span>
+      </label>
+      <button type="submit" class="btn-primary-gold" id="enter-app">Se connecter</button>
+      <p class="auth-error" id="signin-status">Mot de passe oublié ?</p>
+    </form>
+
+    <form id="auth-signup" class="auth-form">
+      <div class="field"><label class="eyebrow" for="signup-pseudo">Pseudo</label><input type="text" id="signup-pseudo" name="pseudo" autocomplete="nickname" class="input-real" placeholder="Ex : Maxime_TR" /></div>
+      <div class="field"><label class="eyebrow" for="signup-email">Adresse mail</label><input type="email" id="signup-email" name="email" autocomplete="username" class="input-real" placeholder="toi@exemple.fr" /></div>
+      <div class="field"><label class="eyebrow" for="signup-password">Mot de passe</label><input type="password" id="signup-password" name="new-password" autocomplete="new-password" class="input-real" placeholder="8 caractères minimum" /></div>
+      <button type="submit" class="btn-primary-gold" id="create-app">Créer mon compte</button>
+      <p class="auth-error" id="signup-status"></p>
+    </form>
+
+    <p style="text-align:center; margin-top:1.5rem; padding-top:1.25rem; border-top:var(--sep-w) solid var(--sep);">
+      <a href="#" id="show-recruit-from-login" style="color:var(--gold); font-size:0.85rem; text-decoration:none;">Pas encore dans l'équipe ? Postuler →</a>
+    </p>
+    </div>
+
+    <!-- Logo de l'entreprise -->
+    <figure class="card truck-illustration" id="login-illustration">
+      <img id="login-logo" src="assets/images/login-logo.jpg" alt="Logo Transport Normand" />
+    </figure>
+
+    </div>
+
+  </div>
+</div>
+
+<div id="app-view" class="hidden" style="display:flex;">
+<div class="ambient-smoke"></div>
+<div class="msm-backdrop"></div>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark" id="sidebar-brand-mark">
+      <svg id="sidebar-brand-default" width="36" height="36" viewBox="0 0 24 24" fill="none">
+        <path d="M3 17L10 6L14 13L17 9L21 17" stroke="#0f1115" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <img id="sidebar-brand-icon" style="display:none;" alt="Icone de l'entreprise" />
+    </div>
+    <div class="brand-name" id="sidebar-company-name">SARL Transports Normands</div>
+  </div>
+
+  <nav class="sidenav">
+    <div class="nav-group">
+      <p class="nav-label">Personnel</p>
+      <button data-view="profile" class="active"><span class="dot"></span>Mon profil</button>
+      <button data-view="dashboard"><span class="dot"></span>Tableau de bord</button>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-label">Activité</p>
+      <button data-view="roadsheet"><span class="dot"></span>Feuille de route<span class="alert-count">0</span></button>
+      <button data-view="mission-detail"><span class="dot"></span>Historique feuilles de route</button>
+      <button data-view="calendar"><span class="dot"></span>Calendrier</button>
+      <button data-view="appointments"><span class="dot"></span>Rendez-vous</button>
+      <button data-view="map"><span class="dot"></span>Carte</button>
+      <button data-view="mail"><span class="dot"></span>Boîte mail<span class="alert-count" id="mail-alert-count">0</span></button>
+      <button data-view="documents"><span class="dot"></span>Mes documents</button>
+    </div>
+
+    <div class="nav-group direction">
+      <p class="nav-label">Direction</p>
+      <button data-view="office"><span class="dot" style="color:var(--gold);"></span>Bureau du patron<span class="alert-count" id="office-alert-count">0</span></button>
+      <button data-view="settings"><span class="dot" style="color:var(--gold);"></span>Réglages</button>
+    </div>
+
+    <div class="nav-group externe">
+      <p class="nav-label">Externe</p>
+      <button data-view="recruit"><span class="dot"></span>Page candidature ↗</button>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="avatar" id="sidebar-avatar"></div>
+    <div style="flex:1;">
+      <div id="sidebar-pseudo" style="font-size:0.85rem; font-weight:600;">…</div>
+      <span class="role-pill">Patron</span>
+    </div>
+    <button class="btn-mini" id="logout-btn" title="Se déconnecter" style="padding:0.4rem 0.6rem;">⏻</button>
+  </div>
+</aside>
+
+<main class="page">
+
+<div id="pending-banner" style="display:none; background:rgba(217,170,78,0.1); border:1px solid rgba(217,170,78,0.3); border-radius:10px; padding:0.9rem 1.25rem; margin-bottom:1.5rem; font-size:0.85rem; color:var(--text);">
+  🕐 Ton compte est en attente de validation par le patron. En attendant, tu as accès à ta Boîte mail, ton Calendrier et tes Rendez-vous.
+</div>
+
+  <!-- DASHBOARD -->
+  <section id="view-dashboard" class="view">
+    <div class="hero-row">
+      <h1 class="greeting" id="dashboard-greeting">Bonjour.</h1>
+    </div>
+
+    <section class="card balance-card">
+      <p class="eyebrow" style="margin-bottom:1rem;">Solde personnel</p>
+      <div style="display:flex; align-items:center; gap:0.7rem;">
+        <div class="odometer" id="dashboard-solde-odometer"><span>0</span></div>
+        <span style="font-size:1.7rem; font-weight:700; color:var(--gold); text-shadow:0 0 16px rgba(217,170,78,0.35);">€</span>
+      </div>
+      <p style="color: var(--muted); font-size: 0.76rem; margin-top: 1rem;">Ce solde est versé par le patron (paie, remboursements de frais) via des opérations enregistrées en Trésorerie — indépendant du chiffre d'affaires de l'entreprise.</p>
+    </section>
+
+    <section class="card" style="padding: 1.5rem 2rem; margin-bottom: 1.5rem;">
+      <div style="display:flex; align-items:center; margin-bottom: 1rem;">
+        <p class="eyebrow" style="margin:0;">Mes feuilles de route — aperçu</p>
+        <a href="#" class="jump-link" data-jump="roadsheet" style="margin-left:auto;">Tout voir →</a>
+      </div>
+      <div class="stat-row" style="margin-bottom:0;">
+        <a href="#" class="card stat-card jump-link" data-jump="roadsheet" style="text-decoration:none; color:inherit; display:block;">
+          <p class="eyebrow">À faire / en cours</p><div class="stat-value" id="dash-stat-progress">0</div>
+        </a>
+        <a href="#" class="card stat-card jump-link" data-jump="roadsheet" style="text-decoration:none; color:inherit; display:block;">
+          <p class="eyebrow" style="color:#7fb8e0;">À vérifier</p><div class="stat-value" style="color:#7fb8e0;" id="dash-stat-checking">0</div>
+        </a>
+        <a href="#" class="card stat-card jump-link" data-jump="roadsheet" style="text-decoration:none; color:inherit; display:block;">
+          <p class="eyebrow" style="color:var(--good);">Validées ce mois</p><div class="stat-value" style="color:var(--good);" id="dash-stat-done-month">0</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="card" style="padding: 1.5rem 2rem 0.5rem; margin-bottom: 1.5rem;" id="dashboard-mails-card">
+      <div style="display:flex; align-items:center; margin-bottom: 0.4rem;">
+        <p class="eyebrow" style="margin:0;">Mails reçus<span id="dash-mail-count-badge" style="display:none; margin-left:0.6rem; font-family:'JetBrains Mono'; font-size:0.68rem; color:var(--gold); background:rgba(217,170,78,0.12); border:1px solid rgba(217,170,78,0.3); border-radius:20px; padding:0.1rem 0.55rem;"></span></p>
+        <a href="#" class="jump-link" data-jump="mail" style="margin-left:auto;">Tout voir →</a>
+      </div>
+      <div id="dashboard-mails-list" style="margin: 0 -2rem;">
+        <p style="padding:1rem 2rem 1.5rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
+      </div>
+    </section>
+
+    <section class="card" style="padding: 1.75rem 2rem;" id="dashboard-movements-card">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Derniers mouvements</p>
+      <div id="dashboard-movements">
+        <p style="color:var(--muted); font-size:0.85rem;">Chargement…</p>
+      </div>
+    </section>
+  </section>
+
+  <!-- MON PROFIL -->
+  <section id="view-profile" class="view active">
+    <div class="hero-row">
+      <p class="eyebrow">Espace personnel</p>
+      <h1 class="greeting">Mon profil</h1>
+    </div>
+
+    <section class="card profile-hero">
+      <div class="profile-hero-glow"></div>
+      <div class="profile-hero-content">
+        <div class="avatar-big-wrap">
+          <div class="avatar-big" id="profile-avatar-big">—</div>
+          <label class="avatar-edit-btn" id="avatar-edit-btn" for="profile-avatar-input" title="Changer la photo de profil">📷</label>
+          <input type="file" id="profile-avatar-input" accept="image/png,image/jpeg,image/webp" style="display:none;">
+        </div>
+        <div style="flex:1; min-width:0;">
+          <div class="profile-name" id="profile-pseudo">—</div>
+          <div class="profile-since" id="profile-since">—</div>
+        </div>
+        <span class="role-pill" style="margin-top:0;" id="profile-role-pill">—</span>
+      </div>
+    </section>
+
+    <div class="stat-row cols-4">
+      <section class="card stat-card"><p class="eyebrow">Livraisons totales</p><div class="stat-value" id="profile-stat-livraisons">0</div></section>
+      <section class="card stat-card"><p class="eyebrow">Ce mois-ci</p><div class="stat-value" style="color:var(--good);" id="profile-stat-mois">0</div></section>
+      <section class="card stat-card"><p class="eyebrow">Ancienneté</p><div class="stat-value" id="profile-stat-anciennete">—</div></section>
+      <section class="card stat-card"><p class="eyebrow">Distance parcourue</p><div class="stat-value" id="profile-stat-distance">0 <span style="font-size:0.9rem; color:var(--muted);">km</span></div></section>
+    </div>
+
+    <div class="grid-2" style="align-items:start; margin-bottom: 1.5rem;">
+      <section class="card" style="padding: 1.75rem 2rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 1.1rem;">
+          <p class="eyebrow" style="margin-bottom:0;">Ma flotte</p>
+          <button class="driver-edit" id="my-fleet-edit-toggle">Modifier</button>
+        </div>
+        <div id="my-fleet-view">
+          <div class="driver-section">
+            <div class="driver-label">Camion actuel</div>
+            <div class="tag-set" id="my-fleet-camion"></div>
+          </div>
+          <div class="driver-section">
+            <div class="driver-label">Permis / licences</div>
+            <div class="tag-set" id="my-fleet-permis"></div>
+          </div>
+          <div class="driver-section">
+            <div class="driver-label">Pays débloqués (DLC)</div>
+            <div class="tag-set" id="my-fleet-dlc"></div>
+          </div>
+          <div class="driver-section">
+            <div class="driver-label">Remorques disponibles</div>
+            <div class="tag-set" id="my-fleet-remorques"></div>
+          </div>
+        </div>
+        <div id="my-fleet-edit-form" style="display:none;">
+          <div class="field"><label class="eyebrow">Camion actuel</label><input type="text" id="my-fleet-camion-input" class="input-real" placeholder="Ex : Scania S 730" /></div>
+          <div class="field"><label class="eyebrow">Permis / licences (séparés par des virgules)</label><input type="text" id="my-fleet-permis-input" class="input-real" placeholder="Permis C, ADR, Transport frigorifique" /></div>
+          <div class="field"><label class="eyebrow">Remorques disponibles (séparées par des virgules)</label><input type="text" id="my-fleet-remorques-input" class="input-real" placeholder="Bâchée standard, Frigorifique" /></div>
+          <div class="field">
+            <label class="eyebrow" style="display:block; margin-bottom:6px;">Pays débloqués (DLC)</label>
+            <div class="tag-set" id="my-fleet-dlc-input"></div>
+          </div>
+          <div style="display:flex; gap:0.6rem; margin-top:0.5rem;">
+            <button class="btn-gold" id="my-fleet-save-btn" style="flex:1;">Enregistrer</button>
+            <button class="btn-mini" id="my-fleet-cancel-btn">Annuler</button>
+          </div>
+          <p id="my-fleet-status" style="margin-top:0.6rem; font-size:0.8rem;"></p>
+        </div>
+      </section>
+
+      <section class="card" style="padding: 1.75rem 2rem;">
+        <p class="eyebrow" style="margin-bottom: 1.1rem;">Missions récentes</p>
+        <div id="profile-recent-missions">
+          <p style="color:var(--muted); font-size:0.85rem;">Aucune mission validée pour l'instant.</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="padding: 1.75rem 2rem;">
+      <p class="eyebrow" style="margin-bottom: 1.1rem;">Trophées</p>
+      <div id="profile-trophies"></div>
+    </section>
+  </section>
+
+  <!-- FEUILLE DE ROUTE -->
+  <section id="view-roadsheet" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Semaine du 4 au 10 août</p>
+      <h1 class="greeting">Mes feuilles de route</h1>
+    </div>
+
+    <div style="display:flex; gap:1.25rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+      <div style="display:flex; align-items:center; gap:0.4rem; font-size:0.76rem; color:var(--muted);"><span class="status-pill proposed" style="padding:0.1rem 0.5rem;">●</span>Proposée — à accepter ou refuser</div>
+      <div style="display:flex; align-items:center; gap:0.4rem; font-size:0.76rem; color:var(--muted);"><span class="status-pill progress" style="padding:0.1rem 0.5rem;">●</span>À faire / en cours</div>
+      <div style="display:flex; align-items:center; gap:0.4rem; font-size:0.76rem; color:var(--muted);"><span class="status-pill checking" style="padding:0.1rem 0.5rem;">●</span>Preuve envoyée — en attente de validation du patron</div>
+      <div style="display:flex; align-items:center; gap:0.4rem; font-size:0.76rem; color:var(--muted);"><span class="status-pill done" style="padding:0.1rem 0.5rem;">●</span>Validée par le patron</div>
+      <div style="display:flex; align-items:center; gap:0.4rem; font-size:0.76rem; color:var(--muted);"><span class="status-pill refused" style="padding:0.1rem 0.5rem;">●</span>Refusée — consultation du motif donné par le patron</div>
+    </div>
+
+    <div class="radio-pills" id="roadsheet-filters" style="margin-bottom: 1.5rem;">
+      <span class="radio-pill selected" data-filter="all">Toutes</span>
+      <span class="radio-pill" data-filter="progress">À faire / en cours</span>
+      <span class="radio-pill" data-filter="checking">À vérifier</span>
+      <span class="radio-pill" data-filter="done">Validées</span>
+      <span class="radio-pill" data-filter="refused">Refusées</span>
+    </div>
+
+    <section class="card" id="proof-submit-card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Soumettre une preuve de livraison</p>
+      <div class="field">
+        <label class="eyebrow">Tâche concernée</label>
+        <select class="select-mock" id="proof-mission-select">
+          <option value="">— Choisis une mission en cours —</option>
+        </select>
+      </div>
+      <div class="field"><label class="eyebrow">Lien TrucksBook de la mission</label><input type="text" id="proof-link" class="input-real" placeholder="https://trucksbook.eu/delivery/…" /></div>
+      <p class="proof-hint" style="margin-bottom:1rem;">Le lien TrucksBook fait foi — le patron pourra le consulter directement pour vérifier la livraison.</p>
+
+      <div class="field">
+        <label class="eyebrow">Revenu de la mission (€)</label>
+        <input type="number" id="proof-revenu" class="input-real" placeholder="Ex : 1250.00" min="0" step="0.01" />
+      </div>
+      <p class="proof-hint" style="margin-bottom:1rem;">Indique le revenu de la mission affiché sur TrucksBook — une fois la mission validée par le patron, ce montant est ajouté automatiquement au compte entreprise.</p>
+
+      <p class="eyebrow" style="margin-bottom:0.75rem;">Frais réels</p>
+      <div style="display:flex; gap:1rem; margin-bottom:1rem; flex-wrap:wrap;">
+        <div class="field" style="flex:1; min-width:160px;">
+          <label class="eyebrow">Carburant (€)</label>
+          <input type="number" id="proof-frais-carburant" class="input-real" placeholder="0.00" min="0" step="0.01" />
+        </div>
+        <div class="field" style="flex:1; min-width:160px;">
+          <label class="eyebrow">Péages (€)</label>
+          <input type="number" id="proof-frais-peages" class="input-real" placeholder="0.00" min="0" step="0.01" />
+        </div>
+      </div>
+      <p class="proof-hint" style="margin-bottom:1rem;">Déclare ici les frais réels engagés pour cette mission — le patron les verra au moment de la validation et pourra te rembourser en un clic depuis la Trésorerie.</p>
+
+      <button class="btn-gold" id="proof-submit-btn">Envoyer pour validation</button>
+      <p class="auth-error" id="proof-submit-status"></p>
+    </section>
+
+    <section class="card" style="padding: 0;" id="roadsheet-list">
+      <p style="padding:1.5rem 1.4rem; color:var(--muted); font-size:0.85rem;">Chargement de ta feuille de route…</p>
+    </section>
+  </section>
+
+  <!-- MISSIONS VALIDÉES -->
+  <section id="view-mission-detail" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Historique — 5 dernières feuilles validées ou refusées</p>
+      <h1 class="greeting">Historique feuilles de route</h1>
+    </div>
+
+    <section class="card" style="padding: 0;" id="missions-validees-list">
+      <p style="padding:1.5rem 1.4rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
+    </section>
+
+    <!-- Réinitialisation de l'historique — réservée au patron -->
+    <section class="card" id="historique-reset-card" style="padding: 1.5rem 1.75rem; margin-top: 1.5rem; display:none;">
+      <p class="eyebrow" style="margin-bottom: 0.7rem;">Réinitialiser l'historique</p>
+      <p style="color:var(--muted); font-size:0.82rem; line-height:1.55; margin-bottom:1rem;">
+        Efface définitivement les feuilles terminées (validées et refusées), leurs preuves de
+        livraison et les revenus de mission crédités au compte entreprise. Les feuilles
+        <strong style="color:var(--text);">en cours ne sont pas touchées</strong>.
+      </p>
+      <div class="ps-field-row">
+        <select id="historique-reset-scope" class="select-mock" style="max-width:260px;">
+          <option value="all">Toute l'équipe</option>
+        </select>
+        <button class="btn-danger" id="historique-reset-btn" type="button">Effacer l'historique</button>
+      </div>
+      <p id="historique-reset-status" style="margin-top:0.7rem; font-size:0.82rem; color:var(--muted);"></p>
+    </section>
+  </section>
+
+  <!-- CALENDRIER -->
+  <section id="view-calendar" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Événements partagés</p>
+      <h1 class="greeting" id="calendar-month-title">Calendrier</h1>
+    </div>
+
+    <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+      <div class="cal-grid" id="calendar-grid">
+        <div class="cal-dow">Lun</div><div class="cal-dow">Mar</div><div class="cal-dow">Mer</div><div class="cal-dow">Jeu</div><div class="cal-dow">Ven</div><div class="cal-dow">Sam</div><div class="cal-dow">Dim</div>
+      </div>
+    </section>
+
+    <section class="card" style="padding: 0; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">À venir</p>
+      <div id="calendar-upcoming-list">
+        <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Aucun événement pour l'instant.</p>
+      </div>
+    </section>
+
+    <section class="card" style="padding: 1.75rem 2rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Ajouter un événement</p>
+      <div class="field">
+        <label class="eyebrow" style="display:block; margin-bottom:6px;">Type</label>
+        <div class="radio-pills" id="calendar-type-pills">
+          <span class="radio-pill selected" data-type="conge">Congé</span>
+          <span class="radio-pill" data-type="reunion">Réunion</span>
+          <span class="radio-pill" data-type="rappel">Rappel</span>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+        <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Titre</label><input type="text" id="calendar-title" class="input-real" placeholder="Écrire ici..." /></div>
+        <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Du</label><input type="date" id="calendar-date-debut" class="input-real" /></div>
+        <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Au</label><input type="date" id="calendar-date-fin" class="input-real" /></div>
+      </div>
+      <button class="btn-gold" id="calendar-add-btn">Ajouter au calendrier</button>
+      <p id="calendar-add-status" style="margin-top:0.6rem; font-size:0.8rem;"></p>
+    </section>
+  </section>
+
+  <!-- RENDEZ-VOUS -->
+  <section id="view-appointments" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Avec le patron</p>
+      <h1 class="greeting">Rendez-vous</h1>
+    </div>
+
+    <section class="card" style="padding: 0; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Mes rendez-vous</p>
+      <div id="my-appointments-list">
+        <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Aucun rendez-vous pour l'instant.</p>
+      </div>
+    </section>
+
+    <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Prendre rendez-vous</p>
+      <div class="radio-pills" id="appointment-slot-pills" style="margin-bottom:1rem;">
+        <span class="radio-pill" style="color:var(--muted);">Aucun créneau proposé par le patron pour l'instant.</span>
+      </div>
+      <div class="field"><label class="eyebrow">Motif</label><input type="text" id="appointment-motif" class="input-real" placeholder="Écrire ici..." /></div>
+      <button class="btn-gold" id="appointment-book-btn">Réserver ce créneau</button>
+      <p id="appointment-book-status" style="margin-top:0.6rem; font-size:0.8rem;"></p>
+    </section>
+
+    <section class="card" style="padding: 0; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Mes créneaux proposés</p>
+      <div id="my-open-slots-list">
+        <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Aucun créneau proposé pour l'instant.</p>
+      </div>
+    </section>
+
+    <section class="card" style="padding: 1.75rem 2rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Proposer un créneau au patron</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+        <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Date</label><input type="date" id="my-slot-date" class="input-real" /></div>
+        <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Heure</label><input type="time" id="my-slot-time" class="input-real" /></div>
+      </div>
+      <div class="field"><label class="eyebrow">Motif (optionnel)</label><input type="text" id="my-slot-motif" class="input-real" placeholder="Écrire ici..." /></div>
+      <button class="btn-gold" id="my-slot-add-btn">Proposer ce créneau</button>
+      <p id="my-slot-add-status" style="margin-top:0.6rem; font-size:0.8rem;"></p>
+    </section>
+  </section>
+
+  <!-- CARTE -->
+  <section id="view-map" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Réseau de l'entreprise</p>
+      <h1 class="greeting">Carte des trajets</h1>
+    </div>
+
+    <section class="card" style="padding: 1.75rem 2rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Cartes externes</p>
+      <div class="external-links">
+        <a class="external-link" href="https://ets2map.krashnz.com/" target="_blank" rel="noopener">
+          <div>
+            <div class="title">Carte communautaire ETS2 (Krashnz)</div>
+            <div class="sub">Réseau routier complet du jeu, entretenu par la communauté — pas éditée par SCS Software.</div>
+          </div>
+          <span class="go">↗</span>
+        </a>
+        <a class="external-link" href="https://map.truckersmp.com/" target="_blank" rel="noopener">
+          <div>
+            <div class="title">Carte en direct TruckersMP</div>
+            <div class="sub">Position des joueurs en temps réel sur les serveurs multijoueur.</div>
+          </div>
+          <span class="go">↗</span>
+        </a>
+      </div>
+    </section>
+  </section>
+
+  <!-- RÉGLAGES -->
+  <section id="view-settings" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Accès restreint</p>
+      <h1 class="greeting">Réglages de l'entreprise</h1>
+    </div>
+    <div class="lock-note">🔒 Visible uniquement par le Patron. Ce qui est enregistré ici est visible par toute l'équipe et par les visiteurs de la page de connexion.</div>
+
+    <!-- IDENTITÉ : nom + logo, réellement enregistrés -->
+    <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Identité</p>
+      <div style="display:flex; gap:1.25rem; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap;">
+        <div class="logo-drop" id="logo-drop" title="Cliquer pour importer un logo">
+          <span id="logo-placeholder">📎</span>
+          <img id="logo-preview" style="display:none;" alt="Logo de l'entreprise" />
+        </div>
+        <input type="file" id="logo-input" accept="image/*" class="hidden" />
+        <div style="flex:1; min-width:240px;">
+          <div class="field" style="margin-bottom:0.35rem;"><label class="eyebrow">Nom de l'entreprise</label><input type="text" id="settings-company-name" class="input-real" value="SARL Transports Normands" /></div>
+          <p class="logo-hint">Clique sur le carré pour importer ton logo (PNG, JPG ou WEBP, 3 Mo maximum). Il remplace le logo affiché sur la page de connexion.</p>
+        </div>
+      </div>
+
+      <!-- Icone du menu lateral (petit carre dore a cote du nom) -->
+      <div style="display:flex; gap:1.25rem; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; padding-top:1.25rem; border-top: var(--sep-w) solid var(--sep);">
+        <div class="logo-drop" id="icone-drop" title="Cliquer pour importer une icône">
+          <span id="icone-placeholder">🔶</span>
+          <img id="icone-preview" style="display:none;" alt="Icône du menu latéral" />
+        </div>
+        <input type="file" id="icone-input" accept="image/*" class="hidden" />
+        <div style="flex:1; min-width:240px;">
+          <label class="eyebrow" style="display:block; margin-bottom:6px;">Icône du menu latéral</label>
+          <p class="logo-hint" style="margin-top:0;">C'est le petit carré affiché à gauche du nom de l'entreprise dans le menu. Une image carrée fonctionne le mieux (PNG, JPG ou WEBP, 3 Mo maximum). Laisse vide pour garder le losange doré d'origine.</p>
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center; margin-top:0.7rem;">
+            <button class="btn-mini" id="settings-icone-reuse">Utiliser le logo de l'entreprise</button>
+            <button class="btn-mini" id="settings-icone-remove">Rétablir l'icône d'origine</button>
+          </div>
+          <p id="settings-icone-status" style="margin-top:0.6rem; font-size:0.8rem; color:var(--muted);"></p>
+        </div>
+      </div>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;">
+        <button class="btn-gold" id="settings-identity-save" style="padding:0.6rem 1.1rem; font-size:0.82rem;">Enregistrer l'identité</button>
+        <button class="btn-mini" id="settings-logo-remove">Retirer le logo importé</button>
+      </div>
+      <p id="settings-identity-status" style="margin-top:0.8rem; font-size:0.8rem; color:var(--muted);"></p>
+      <div class="field" style="margin-top:1.5rem;">
+        <label class="eyebrow" style="display:block; margin-bottom:6px;">Couleur d'accent</label>
+        <div class="swatch-row">
+          <div class="color-swatch selected" style="background:#d9aa4e;"></div>
+          <div class="color-swatch" style="background:#7fb8e0;"></div>
+          <div class="color-swatch" style="background:#4caf7d;"></div>
+          <div class="color-swatch" style="background:#b4483f;"></div>
+          <div class="color-swatch" style="background:#a684e8;"></div>
+        </div>
+        <p class="logo-hint" style="margin-top:0.5rem;">Aperçu seulement pour l'instant — le thème sombre &amp; doré reste appliqué au site.</p>
+      </div>
+    </section>
+
+    <!-- TEXTE DE LA PAGE DE CONNEXION (déplacé ici depuis le Bureau du patron) -->
+    <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="margin-bottom: 0.6rem;">Texte de la page de connexion</p>
+      <p style="color:var(--muted); font-size:0.85rem; line-height:1.65; margin-bottom:1.2rem;">
+        C'est le texte que voient les visiteurs à gauche de l'écran de connexion (Qui sommes-nous, histoire de l'entreprise, conditions de recrutement, mot du Président). Clique sur <b style="color:var(--gold);">Modifier le texte</b>, corrige ce que tu veux directement dans le cadre ci-dessous, puis <b style="color:var(--gold);">Enregistrer</b> : la nouvelle version est stockée dans la base et reste en place après rechargement, pour tout le monde.
+      </p>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;">
+        <button class="btn-mini" id="pres-admin-edit">✏️ Modifier le texte</button>
+        <button class="btn-gold" id="pres-admin-save" style="display:none; padding:0.6rem 1.1rem; font-size:0.82rem;">Enregistrer</button>
+        <button class="btn-mini" id="pres-admin-cancel" style="display:none;">Annuler</button>
+        <button class="btn-mini" id="pres-admin-reset" style="display:none;">Restaurer le texte d'origine</button>
+      </div>
+      <p id="pres-admin-status" style="margin-top:0.8rem; font-size:0.8rem; color:var(--muted);"></p>
+    </section>
+
+    <section class="card" style="padding: 2rem 2.25rem; margin-bottom: 1.5rem;">
+      <div class="pres-admin-zone" id="pres-admin-zone">
+        <div id="pres-admin-content"></div>
+      </div>
+    </section>
+
+    <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Monnaie virtuelle</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+        <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Nom</label><input type="text" class="input-real" value="€-ETS2" /></div>
+        <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Dépôt principal</label><input type="text" class="input-real" value="Rouen" /></div>
+      </div>
+      <p class="logo-hint" style="margin-top:0.6rem;">Aperçu seulement — ces deux champs ne sont pas encore branchés.</p>
+    </section>
+
+    <section class="card" style="padding: 1.75rem 2rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Accès</p>
+      <div class="field"><label class="eyebrow">Lien de candidature public</label><div class="input-mock" style="color:var(--muted);">sarl-transport-normand.fr/rejoindre</div></div>
+    </section>
+  </section>
+
+  <!-- PAGE DE CANDIDATURE (démo — sera une page publique avant connexion) -->
+  <section id="view-recruit" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">⚠️ Aperçu — cette page sera publique, hors appli, avant connexion</p>
+      <h1 class="greeting" id="recruit-company-title">Candidature — SARL Transports Normands</h1>
+    </div>
+    <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1.5rem; max-width:520px;">
+      Accessible à sarl-transport-normand.fr/rejoindre, sans connexion Discord requise. Le patron examine chaque candidature manuellement depuis le Bureau du patron.
+    </p>
+    <section class="card" style="padding:2rem; max-width:520px;">
+      <div class="field"><label class="eyebrow">Pseudo Discord</label><input type="text" id="recruit-pseudo" class="input-real" placeholder="Ex : RouteNoire_44" /></div>
+      <div class="field">
+        <label class="eyebrow" style="display:block; margin-bottom:6px;">DLC possédés</label>
+        <div class="tag-set" id="recruit-dlc-options"></div>
+      </div>
+      <div class="field"><label class="eyebrow">Disponibilités</label><input type="text" id="recruit-dispo" class="input-real" placeholder="Soirs et week-ends" /></div>
+      <div class="field"><label class="eyebrow">Pourquoi rejoindre l'entreprise ?</label><textarea id="recruit-motivation" class="input-real" style="min-height:70px; width:100%; font-family:inherit; resize:vertical;" placeholder="Écrire ici..."></textarea></div>
+      <button class="btn-gold" id="recruit-submit-btn">Envoyer ma candidature</button>
+      <p class="auth-error" id="recruit-status"></p>
+    </section>
+  </section>
+
+  <!-- BOÎTE MAIL -->
+  <section id="view-mail" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Messagerie interne</p>
+      <h1 class="greeting">Boîte mail</h1>
+    </div>
+
+    <div class="mail-layout">
+      <section class="card mail-list" style="padding: 0;">
+        <div style="padding: 1.1rem 1.1rem 0.7rem;">
+          <input type="text" id="mail-search-input" class="input-real" placeholder="Rechercher dans la Boîte mail" style="width:100%;" />
+        </div>
+        <div class="radio-pills" id="mail-inbox-tabs" style="padding: 0 1.1rem 0.6rem;">
+          <span class="radio-pill selected" data-mailtab="inbox">Reçus</span>
+          <span class="radio-pill" data-mailtab="sent">Envoyés</span>
+        </div>
+        <div class="radio-pills" id="mail-unread-toggle" style="padding: 0 1.1rem 0.9rem;">
+          <span class="radio-pill selected" data-unreadfilter="all">Tous</span>
+          <span class="radio-pill" data-unreadfilter="unread">Non lus</span>
+        </div>
+        <div id="mail-list-content">
+          <p style="padding:1.5rem 1.4rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+
+      <section class="card mail-reading" id="mail-reading-panel">
+        <p style="padding:1.5rem 1.4rem; color:var(--muted); font-size:0.85rem;">Sélectionne un mail pour le lire.</p>
+      </section>
+    </div>
+
+    <section class="card" style="padding: 1.75rem 2rem; margin-top: 1.5rem;">
+      <p class="eyebrow" style="margin-bottom: 1rem;">Écrire un mail</p>
+      <div class="field">
+        <label class="eyebrow" style="display:block; margin-bottom:6px;">Destinataire</label>
+        <div class="radio-pills" id="mail-recipient-pills">
+          <span class="radio-pill" style="color:var(--muted);">Chargement…</span>
+        </div>
+      </div>
+      <div class="field"><label class="eyebrow">Objet</label><input type="text" id="mail-compose-subject" class="input-real" placeholder="Écrire ici..." /></div>
+      <div class="field"><label class="eyebrow">Message</label><textarea id="mail-compose-body" class="input-real" style="min-height:100px; resize:vertical;" placeholder="Écrire le message ici..."></textarea></div>
+      <button class="btn-gold" id="mail-send-btn">Envoyer</button>
+      <p class="auth-error" id="mail-send-status"></p>
+    </section>
+  </section>
+
+  <!-- MES DOCUMENTS -->
+  <section id="view-documents" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Espace personnel</p>
+      <h1 class="greeting">Mes documents</h1>
+    </div>
+
+    <section class="card" style="padding: 0;">
+      <div class="doc-row">
+        <div class="doc-icon">📄</div>
+        <div style="flex:1;">
+          <div class="doc-title">Contrat de chauffeur routier</div>
+          <div class="doc-meta"><span class="doc-badge contrat">Contrat</span> · publié par Lychar · 03/08/2026</div>
+          <div class="doc-excerpt">Fichier PDF — conditions d'engagement au sein de SARL Transports Normands.</div>
+        </div>
+        <a class="doc-action" href="#">Télécharger ↓</a>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-icon">🎖️</div>
+        <div style="flex:1;">
+          <div class="doc-title">Certification transport frigorifique</div>
+          <div class="doc-meta"><span class="doc-badge certif">Certification</span> · publié par Lychar · 28/07/2026</div>
+          <div class="doc-excerpt">Badge interne débloqué après 20 livraisons de marchandises réfrigérées réussies.</div>
+        </div>
+        <a class="doc-action" href="#">Voir ↓</a>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-icon">⚠️</div>
+        <div style="flex:1;">
+          <div class="doc-title">Rappel — respect des limitations de vitesse</div>
+          <div class="doc-meta"><span class="doc-badge note">Note</span> · publié par Lychar · 15/07/2026</div>
+          <div class="doc-excerpt">Texte : "Plusieurs excès relevés sur l'A7. Merci de lever le pied, ça joue sur l'image de l'entreprise."</div>
+        </div>
+      </div>
+
+      <div class="doc-row">
+        <div class="doc-icon">📘</div>
+        <div style="flex:1;">
+          <div class="doc-title">Règlement intérieur de l'entreprise</div>
+          <div class="doc-meta"><span class="doc-badge guide">Guide</span> · publié par Lychar · pour toute l'équipe</div>
+          <div class="doc-excerpt">Fichier PDF — visible par tous les membres, pas seulement toi.</div>
+        </div>
+        <a class="doc-action" href="#">Télécharger ↓</a>
+      </div>
+    </section>
+  </section>
+
+  <!-- BUREAU DU PATRON -->
+  <section id="view-office" class="view">
+    <div class="hero-row">
+      <p class="eyebrow">Accès restreint</p>
+      <h1 class="greeting">Bureau du patron</h1>
+    </div>
+
+    <div class="lock-note">🔒 Cette rubrique n'apparaît que pour le rôle Patron — invisible pour le reste de l'équipe.</div>
+
+    <div class="office-tabs" id="office-tabs">
+      <button class="active" data-office="overview">Vue d'ensemble</button>
+      <button data-office="validation">Validations <span class="badge-count">0</span></button>
+      <button data-office="team">Équipe</button>
+      <button data-office="missions">Missions</button>
+      <button data-office="transactions">Trésorerie</button>
+      <button data-office="comms">Communication</button>
+    </div>
+
+    <!-- VUE D'ENSEMBLE -->
+    <div id="office-overview" class="office-view active">
+      <div class="stat-row">
+        <section class="card stat-card">
+          <p class="eyebrow">Compte entreprise</p>
+          <div class="stat-value" style="color: var(--gold);" id="office-stat-caisse">0</div>
+        </section>
+        <section class="card stat-card">
+          <p class="eyebrow">Membres actifs</p>
+          <div class="stat-value" id="office-stat-membres">0</div>
+        </section>
+        <section class="card stat-card">
+          <p class="eyebrow">Livraisons cette semaine</p>
+          <div class="stat-value" id="office-stat-livraisons-semaine">0</div>
+        </section>
+      </div>
+
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 0.4rem;">Chiffre d'affaires — 7 derniers jours</p>
+        <div class="bar-chart" id="office-revenue-chart">
+          <p style="color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.7rem;">
+          <p class="eyebrow" style="margin:0;">Objectif mensuel</p>
+          <span class="mono" style="font-size:0.85rem;" id="office-goal-text"><span style="color:var(--gold); font-weight:700;">0</span> <span style="color:var(--muted);">/ 180 000 €-ETS2</span></span>
+        </div>
+        <div class="stat-mini-bar-bg" style="height:10px;"><div class="stat-mini-bar-fill" id="office-goal-bar" style="width:0%; background:var(--gold);"></div></div>
+        <p style="color: var(--muted); font-size: 0.76rem; margin-top: 0.6rem;">Progression vers l'objectif fixé (caisse commune cumulée / objectif). Objectif modifiable plus tard dans Réglages.</p>
+      </section>
+
+      <section class="card" style="padding: 0;">
+        <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Livraisons par chauffeur — ce mois-ci</p>
+        <div id="office-driver-stats">
+          <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- VALIDATIONS -->
+    <div id="office-validation" class="office-view">
+      <section class="card" style="padding: 0;">
+        <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">File d'attente de validation<span class="alert-count" id="validation-count">0</span></p>
+        <div id="validation-list">
+          <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ÉQUIPE -->
+    <div id="office-team" class="office-view">
+      <section class="card" style="padding: 0; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Candidatures reçues<span class="alert-count" id="candidatures-count">0</span></p>
+        <div id="candidatures-list">
+          <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+
+      <section class="card" style="padding: 1.5rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 0.5rem;">Paie & remboursements</p>
+        <p style="color:var(--muted); font-size:0.85rem;">La création d'opérations sur le compte d'un joueur (paie, remboursement de frais, prime) se fait désormais depuis l'onglet <strong style="color:var(--text);">Trésorerie</strong> du Bureau du patron.</p>
+      </section>
+
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 1.25rem;">Suivi des chauffeurs</p>
+        <div class="driver-grid" id="driver-grid">
+          <p style="color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+
+      <section class="card" style="padding: 0;">
+        <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Membres de l'entreprise</p>
+        <div id="office-members-list">
+          <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- MISSIONS -->
+    <div id="office-missions" class="office-view">
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 1rem;">Assigner une feuille de route</p>
+        <div class="field">
+          <label class="eyebrow" style="display:block; margin-bottom:6px;">Membre</label>
+          <div class="radio-pills" id="mission-member-pills">
+            <span class="radio-pill" style="color:var(--muted);">Chargement des chauffeurs…</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="eyebrow" style="display:block; margin-bottom:6px;">1. Cargaison</label>
+          <select class="select-mock" id="mission-cargaison">
+            <optgroup label="Agricole">
+              <option>Machines agricoles</option>
+              <option>Tracteurs</option>
+              <option>Bétail</option>
+              <option>Céréales en vrac</option>
+            </optgroup>
+            <optgroup label="Construction / industrie">
+              <option>Bois de construction</option>
+              <option>Acier en bobines</option>
+              <option>Tuyaux industriels</option>
+              <option>Engins de chantier (JCB)</option>
+              <option>Sable / gravier (benne)</option>
+            </optgroup>
+            <optgroup label="Alimentaire">
+              <option>Denrées périssables</option>
+              <option>Produits laitiers (frigo)</option>
+              <option>Boissons en palettes</option>
+              <option>Fruits et légumes</option>
+            </optgroup>
+            <optgroup label="Véhicules">
+              <option>Voitures (porte-voitures)</option>
+              <option>Pièces automobiles</option>
+            </optgroup>
+            <optgroup label="Général / conteneurs">
+              <option>Meubles</option>
+              <option>Électroménager</option>
+              <option>Conteneurs maritimes</option>
+              <option>Produits chimiques</option>
+              <option>Matériel médical</option>
+            </optgroup>
+            <optgroup label="Hors gabarit">
+              <option>Convoi exceptionnel — pales d'éoliennes</option>
+              <option>Convoi exceptionnel — transformateur</option>
+            </optgroup>
+          </select>
+          <input type="text" class="input-real" id="mission-cargaison-manuel" style="display:none; width:100%;" placeholder="Ex : Turbine de centrale — 42 t" />
+          <p class="field-note">Liste non exhaustive — s'enrichira avec les DLC cargaison (Heavy Cargo Pack, Special Transport...). <button class="btn-mini" type="button" data-manual-toggle="cargaison" style="margin-left:0.4rem;">✎ Saisie manuelle</button></p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+          <div>
+            <label class="eyebrow" style="display:block; margin-bottom:6px;">2. Départ</label>
+            <select class="select-mock" id="mission-depart">
+              <optgroup label="Choisis d'abord un membre"><option>—</option></optgroup>
+            </select>
+            <input type="text" class="input-real" id="mission-depart-manuel" style="display:none; width:100%;" placeholder="Ex : Cherbourg" />
+            <p class="field-note">Uniquement les villes des DLC débloqués par le chauffeur sélectionné ci-dessus. <button class="btn-mini" type="button" data-manual-toggle="depart" style="margin-left:0.4rem;">✎ Saisie manuelle</button></p>
+          </div>
+          <div>
+            <label class="eyebrow" style="display:block; margin-bottom:6px;">3. Arrivée</label>
+            <select class="select-mock" id="mission-arrivee">
+              <optgroup label="Choisis d'abord un membre"><option>—</option></optgroup>
+            </select>
+            <input type="text" class="input-real" id="mission-arrivee-manuel" style="display:none; width:100%;" placeholder="Ex : Aberdeen" />
+            <p class="field-note"><button class="btn-mini" type="button" data-manual-toggle="arrivee">✎ Saisie manuelle</button></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="eyebrow" style="display:block; margin-bottom:6px;">4. Exigence du client</label>
+          <select class="select-mock">
+            <option>Standard</option>
+            <option>Urgent — délai serré, prime à la clé</option>
+            <option>Fragile — conduite prudente exigée</option>
+            <option>Convoi exceptionnel — encombrant</option>
+          </select>
+        </div>
+
+        <div class="field"><label class="eyebrow">Échéance</label><input type="date" id="mission-echeance" class="input-real" style="max-width:180px;" /></div>
+
+        <div class="field">
+          <label class="eyebrow" style="display:block; margin-bottom:6px;">5. Commentaire (informations diverses)</label>
+          <textarea id="mission-commentaire" class="input-real" style="width:100%; min-height:80px; resize:vertical; font-family:inherit;" placeholder="Consignes, contact sur place, restrictions de circulation, remarques…"></textarea>
+          <p class="field-note">Facultatif — visible par le chauffeur sur sa feuille de route et dans l'historique.</p>
+        </div>
+
+        <button class="btn-gold" id="mission-create-btn">Ajouter à sa feuille de route</button>
+        <p class="auth-error" id="mission-create-status"></p>
+      </section>
+    </div>
+
+    <!-- TRÉSORERIE -->
+    <div id="office-transactions" class="office-view">
+      <div class="stat-row" style="margin-bottom:1.5rem;">
+        <section class="card stat-card">
+          <p class="eyebrow">Compte entreprise</p>
+          <div class="stat-value" style="color: var(--gold);" id="tresorerie-solde-entreprise">0</div>
+        </section>
+      </div>
+
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 1rem;">Compte entreprise — enregistrer un mouvement</p>
+        <div style="display:grid; grid-template-columns:2fr 1fr; gap:0.75rem;">
+          <div class="field"><label class="eyebrow">Libellé</label><input type="text" id="tx-libelle" class="input-real" placeholder="Ex : Achat carburant flotte" /></div>
+          <div class="field"><label class="eyebrow">Montant (+ crédit / − débit)</label><input type="number" id="tx-montant" class="input-real" placeholder="Ex : -350 ou 800" /></div>
+        </div>
+        <div class="field"><label class="eyebrow">Détail (optionnel)</label><input type="text" id="tx-sous-libelle" class="input-real" placeholder="Ex : Débit patron / Achat matériel" /></div>
+        <button class="btn-gold" id="tx-submit-btn">Enregistrer</button>
+        <p class="auth-error" id="tx-submit-status"></p>
+        <p class="proof-hint" style="margin-top:0.75rem;">Ces mouvements concernent uniquement le compte entreprise (revenus, achats, charges) — pas les comptes des joueurs.</p>
+      </section>
+
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 1rem;">Créer une opération joueur</p>
+        <div class="field">
+          <label class="eyebrow">Joueur</label>
+          <select class="select-mock" id="op-member-select"></select>
+        </div>
+        <div class="field">
+          <label class="eyebrow">Type d'opération</label>
+          <select class="select-mock" id="op-type-select">
+            <option value="Paie">Paie</option>
+            <option value="Remboursement de frais réels">Remboursement de frais réels</option>
+            <option value="Prime">Prime</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 2fr; gap:0.75rem; margin-bottom:1rem;">
+          <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Montant (€)</label><input type="number" id="op-montant" class="input-real" placeholder="Ex : 1500" min="0.01" step="0.01" /></div>
+          <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Motif / détail</label><input type="text" id="op-motif" class="input-real" placeholder="Ex : Prime livraison Berlin → Lyon" /></div>
+        </div>
+        <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem; font-size:0.85rem; color:var(--muted);">
+          <input type="checkbox" id="op-debit-joueur" style="width:auto;" /> Débiter le joueur au lieu de le créditer (ex : amende, avance à rembourser)
+        </label>
+        <button class="btn-gold" id="op-submit-btn">Valider l'opération</button>
+        <p class="auth-error" id="op-submit-status"></p>
+        <p class="proof-hint" style="margin-top:0.75rem;">Une opération crédite (ou débite) le solde personnel du joueur et débite (ou crédite) le compte entreprise du même montant, automatiquement.</p>
+      </section>
+
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 1rem;">Compte entreprise — mouvements</p>
+        <div id="transactions-list">
+          <p style="color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+
+      <!-- Export comptable mensuel -->
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 0.7rem;">Export comptable</p>
+        <p style="color:var(--muted); font-size:0.82rem; line-height:1.55; margin-bottom:1rem;">
+          Télécharge les mouvements du compte entreprise au format CSV (ouvrable dans Excel,
+          LibreOffice ou Google Sheets), avec le solde à l'ouverture, le détail de chaque
+          écriture en débit/crédit et le solde cumulé.
+        </p>
+        <div class="ps-field-row" style="margin-bottom:0.9rem;">
+          <select id="compta-mois-select" class="select-mock" style="max-width:260px;">
+            <option value="">Aucun mouvement</option>
+          </select>
+          <button class="btn-gold" id="compta-export-mois-btn" type="button">Exporter ce mois (CSV)</button>
+          <button class="btn-mini" id="compta-export-tout-btn" type="button" style="padding:0.6rem 1rem; font-size:0.82rem;">Exporter tout l'historique</button>
+        </div>
+        <p id="compta-mois-resume" style="font-size:0.82rem; color:var(--muted);"></p>
+      </section>
+
+      <!-- Clôture mensuelle du compte entreprise -->
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 0.7rem;">Clôture mensuelle</p>
+        <p style="color:var(--muted); font-size:0.82rem; line-height:1.55; margin-bottom:1rem;">
+          Efface définitivement les mouvements du compte entreprise
+          <strong style="color:var(--text);">jusqu'à la fin du mois choisi</strong> pour repartir sur
+          une liste propre. Les soldes personnels des joueurs, les feuilles de route et l'historique
+          des opérations joueurs ne sont pas touchés.
+        </p>
+        <div class="ps-field-row" style="margin-bottom:0.9rem;">
+          <select id="cloture-mois-select" class="select-mock" style="max-width:260px;">
+            <option value="">Aucun mouvement</option>
+          </select>
+          <button class="btn-danger" id="cloture-btn" type="button">Clôturer le mois</button>
+        </div>
+        <label style="display:flex; align-items:flex-start; gap:0.5rem; font-size:0.82rem; color:var(--muted); line-height:1.5;">
+          <input type="checkbox" id="cloture-report" checked style="width:auto; margin-top:3px;" />
+          <span>Conserver l'argent en caisse : une seule ligne <strong style="color:var(--text);">« Report à nouveau »</strong>
+          est recréée avec le solde de clôture, pour que le compte ne retombe pas à zéro.</span>
+        </label>
+        <p id="cloture-status" style="margin-top:0.8rem; font-size:0.82rem; color:var(--muted);"></p>
+      </section>
+
+      <section class="card" style="padding: 1.75rem 2rem;">
+        <p class="eyebrow" style="margin-bottom: 1rem;">Opérations joueurs — historique</p>
+        <div id="operations-list">
+          <p style="color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- COMMUNICATION -->
+    <div id="office-comms" class="office-view">
+      <section class="card" style="padding: 0; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Alertes — événements ajoutés par l'équipe</p>
+        <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Aucune alerte pour l'instant.</p>
+      </section>
+
+      <section class="card" style="padding: 0; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Demandes de rendez-vous</p>
+        <div id="office-appointment-requests-list">
+          <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Aucune demande pour l'instant.</p>
+        </div>
+      </section>
+
+      <section class="card" style="padding: 0; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Créneaux proposés par l'équipe</p>
+        <div id="office-employee-slots-list">
+          <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Aucun créneau proposé par l'équipe pour l'instant.</p>
+        </div>
+      </section>
+
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 1rem;">Proposer des créneaux</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+          <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Date</label><input type="date" id="slot-date" class="input-real" /></div>
+          <div><label class="eyebrow" style="display:block; margin-bottom:4px;">Heure</label><input type="time" id="slot-time" class="input-real" /></div>
+        </div>
+        <button class="btn-gold" style="margin-bottom:0.6rem;" id="slot-add-btn">Ajouter le créneau</button>
+        <p id="slot-add-status" style="margin-bottom:0.7rem; font-size:0.8rem;"></p>
+        <p class="eyebrow" style="margin-bottom:0.6rem;">Créneaux ouverts cette semaine</p>
+        <div id="office-open-slots-list">
+          <p style="color:var(--muted); font-size:0.85rem;">Aucun créneau pour l'instant.</p>
+        </div>
+      </section>
+
+      <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+        <p class="eyebrow" style="margin-bottom: 1rem;">Publier un document</p>
+        <div class="field">
+          <label class="eyebrow" style="display:block; margin-bottom:6px;">Destinataire</label>
+          <div class="radio-pills">
+            <span class="radio-pill selected">Toute l'équipe</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="eyebrow" style="display:block; margin-bottom:6px;">Catégorie</label>
+          <div class="radio-pills">
+            <span class="radio-pill selected">Contrat</span>
+            <span class="radio-pill">Certification</span>
+            <span class="radio-pill">Note</span>
+            <span class="radio-pill">Guide</span>
+          </div>
+        </div>
+        <div class="field"><label class="eyebrow">Titre</label><div class="input-mock" style="color:var(--muted);">Écrire ici...</div></div>
+        <div class="field">
+          <label class="eyebrow">Contenu</label>
+          <div class="input-mock" style="min-height:60px;">Texte libre écrit directement ici...</div>
+        </div>
+        <div class="field">
+          <label class="eyebrow">Ou fichier joint</label>
+          <div class="input-mock" style="color:var(--muted); border-style:dashed;">📎 Glisser un PDF ou une image ici</div>
+        </div>
+        <button class="btn-gold">Publier le document</button>
+      </section>
+
+      <div class="lock-note">✉️ La messagerie s'est déplacée dans <b>Boîte mail</b> : chaque membre (patron ou employé) peut y écrire à n'importe qui, ou à toute l'équipe en un clic.</div>
+    </div>
+
+  </section>
+
+</main>
+</div>
+
+<!-- FICHE JOUEUR (modal Bureau du patron > Équipe) -->
+<div id="player-sheet-overlay" class="ps-overlay hidden">
+  <div class="ps-modal card">
+    <div class="ps-header">
+      <div style="display:flex; align-items:center; gap:0.8rem; min-width:0;">
+        <div class="member-avatar" id="ps-avatar" style="width:40px; height:40px;"></div>
+        <div style="min-width:0;">
+          <div style="font-family:'Manrope'; font-weight:700; font-size:1.05rem;" id="ps-pseudo">—</div>
+          <span class="role-pill" id="ps-role">—</span>
+        </div>
+      </div>
+      <button class="btn-mini" id="ps-close-btn" title="Fermer">✕</button>
+    </div>
+
+    <div class="ps-tabs" id="ps-tabs">
+      <button class="active" data-ps-tab="distance">Distance</button>
+      <button data-ps-tab="notes">Notes & blâmes</button>
+      <button data-ps-tab="transactions">Transactions</button>
+      <button data-ps-tab="appointments">Rendez-vous</button>
+      <button data-ps-tab="reset" style="color:var(--burgundy);">Réinitialiser</button>
+    </div>
+
+    <div class="ps-body">
+      <!-- DISTANCE -->
+      <div id="ps-view-distance" class="ps-view active">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1.1rem;">
+          <p class="eyebrow" style="margin:0;">Distance totale</p>
+          <span class="mono" style="font-size:1.25rem; font-weight:700; color:var(--gold);" id="ps-distance-total">0 km</span>
+        </div>
+        <div class="ps-field-row">
+          <input type="number" id="ps-distance-km" placeholder="Km" class="input-real" style="max-width:110px;">
+          <input type="text" id="ps-distance-note" placeholder="Note (optionnel — ex: trajet Brest → Rouen)" class="input-real" style="flex:1; min-width:180px;">
+          <button class="btn-gold" id="ps-distance-add-btn" style="padding:0.6rem 1rem; font-size:0.82rem;">Ajouter</button>
+        </div>
+        <p id="ps-distance-status" style="margin-top:0.5rem; font-size:0.8rem; color:var(--muted);"></p>
+        <div id="ps-distance-list" style="margin-top:1.1rem;"></div>
+      </div>
+
+      <!-- NOTES & BLÂMES -->
+      <div id="ps-view-notes" class="ps-view">
+        <div class="ps-field-row">
+          <select id="ps-note-type" class="select-mock" style="max-width:130px;">
+            <option value="note">Note</option>
+            <option value="blame">Blâme</option>
+          </select>
+          <input type="text" id="ps-note-content" placeholder="Écrire une note ou un blâme..." class="input-real" style="flex:1; min-width:180px;">
+          <button class="btn-gold" id="ps-note-add-btn" style="padding:0.6rem 1rem; font-size:0.82rem;">Ajouter</button>
+        </div>
+        <p id="ps-note-status" style="margin-top:0.5rem; font-size:0.8rem; color:var(--muted);"></p>
+        <div id="ps-notes-list" style="margin-top:1.1rem;"></div>
+      </div>
+
+      <!-- TRANSACTIONS -->
+      <div id="ps-view-transactions" class="ps-view">
+        <p class="eyebrow" style="margin-bottom:0.8rem;">Historique des opérations (paie, remboursements, primes)</p>
+        <div id="ps-transactions-list"></div>
+      </div>
+
+      <!-- RENDEZ-VOUS -->
+      <div id="ps-view-appointments" class="ps-view">
+        <p class="eyebrow" style="margin-bottom:0.8rem;">Rendez-vous confirmés</p>
+        <div id="ps-appointments-list"></div>
+      </div>
+
+      <!-- RÉINITIALISER -->
+      <div id="ps-view-reset" class="ps-view">
+        <div class="ps-reset-warning">
+          ⚠️ <strong>Suppression définitive.</strong> Les données cochées ci-dessous sont
+          effacées de la base et <strong>ne peuvent pas être récupérées</strong>.
+          Le compte du joueur, son pseudo et son rôle ne sont jamais touchés.
+        </div>
+
+        <p class="eyebrow" style="margin:1.2rem 0 0.7rem;">Que veux-tu remettre à zéro ?</p>
+        <div id="ps-reset-options"></div>
+
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:1rem;">
+          <button class="btn-mini" id="ps-reset-all-btn" type="button">Tout cocher</button>
+          <button class="btn-mini" id="ps-reset-none-btn" type="button">Tout décocher</button>
+        </div>
+
+        <div class="ps-reset-confirm">
+          <p style="font-size:0.82rem; color:var(--muted); margin-bottom:0.6rem;">
+            Pour confirmer, tape <strong style="color:var(--text);">REINITIALISER</strong> ci-dessous.
+          </p>
+          <div class="ps-field-row">
+            <input type="text" id="ps-reset-confirm-input" class="input-real" placeholder="REINITIALISER" style="flex:1; min-width:180px; text-transform:uppercase;">
+            <button class="btn-danger" id="ps-reset-run-btn" type="button">Réinitialiser la sélection</button>
+          </div>
+          <p id="ps-reset-status" style="margin-top:0.7rem; font-size:0.82rem; color:var(--muted);"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/mail.js"></script>
+<script src="js/roadsheet.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/office.js"></script>
+<script src="js/tresorerie.js"></script>
+<script src="js/calendrier.js"></script>
+<script src="js/rendezvous.js"></script>
+<script src="js/app.js"></script>
+
+
+</body>
+</html>
