@@ -93,13 +93,12 @@
     });
   }
 
-  // ---------- Bureau du patron : pastille globale (validations + candidatures) ----------
+  // ---------- Bureau du patron : pastille globale (validations) ----------
   function updateOfficeAlertCount() {
     const badge = document.getElementById('office-alert-count');
     if (!badge) return;
     const nbValidations = parseInt(document.getElementById('validation-count')?.textContent || '0', 10) || 0;
-    const nbCandidatures = parseInt(document.getElementById('candidatures-count')?.textContent || '0', 10) || 0;
-    badge.textContent = String(nbValidations + nbCandidatures);
+    badge.textContent = String(nbValidations);
   }
 
   // ---------- Bureau du patron : validations ----------
@@ -372,39 +371,19 @@
     if (!list) return;
     const counts = groupCount(allValidatedProofs, p => p.chauffeur_id);
     list.innerHTML = allProfiles.map(p => {
-      const isPending = p.role !== 'patron' && !p.valide;
-      const roleLabel = p.role === 'patron' ? 'Patron' : (isPending ? 'En attente' : 'Employé');
-      const roleClass = p.role === 'patron' ? 'role-pill' : (isPending ? 'role-pill' : 'eyebrow');
-      const roleStyle = isPending ? 'style="background:rgba(180,72,63,0.15); color:var(--burgundy); border-color:rgba(180,72,63,0.3);"' : '';
-      const validateBtn = isPending
-        ? `<button class="btn-mini accept" data-validate-id="${p.id}" style="margin-left:0.6rem;">Valider</button>`
-        : '';
+      const roleLabel = p.role === 'patron' ? 'Patron' : 'Employé';
       return `
         <div class="member-row">
           <div class="member-avatar"></div>
           <span style="flex:1; font-size:0.88rem;">${p.pseudo}</span>
-          <span class="${roleClass}" ${roleStyle}>${roleLabel}</span>
+          <span class="role-pill">${roleLabel}</span>
           <span class="mono" style="font-weight:600; width:90px; text-align:right;" title="Livraisons validées">${counts.get(p.id) || 0} livr.</span>
           <button class="btn-mini" data-manage-id="${p.id}" style="margin-left:0.6rem;">Gérer</button>
-          ${validateBtn}
         </div>`;
     }).join('');
 
     list.querySelectorAll('[data-manage-id]').forEach(btn => {
       btn.addEventListener('click', () => openPlayerSheet(btn.dataset.manageId));
-    });
-
-    list.querySelectorAll('[data-validate-id]').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const id = btn.dataset.validateId;
-        btn.disabled = true; btn.textContent = '...';
-        const { error } = await supabaseClient.from('profiles').update({ valide: true }).eq('id', id);
-        if (error) { alert('Erreur : ' + error.message); btn.disabled = false; btn.textContent = 'Valider'; return; }
-        const { data: profiles } = await supabaseClient.from('profiles').select('*').order('pseudo');
-        allProfiles = profiles || [];
-        renderOfficeTeam();
-        renderMemberPills();
-      });
     });
   }
 
@@ -833,98 +812,6 @@
       document.getElementById('ps-note-content').value = '';
       await loadPlayerNotes();
       renderPlayerSheet();
-    });
-  }
-
-  // ==========================================================
-  // CANDIDATURES — page publique + traitement patron
-  // ==========================================================
-
-  // Formulaire public (fonctionne même sans être connecté)
-  const recruitBtn = document.getElementById('recruit-submit-btn');
-  if (recruitBtn) {
-    recruitBtn.addEventListener('click', async () => {
-      const pseudo = document.getElementById('recruit-pseudo').value.trim();
-      const dlc = [...document.querySelectorAll('.recruit-dlc-cb:checked')].map(cb => cb.value).join(', ');
-      const dispo = document.getElementById('recruit-dispo').value.trim();
-      const motivation = document.getElementById('recruit-motivation').value.trim();
-
-      if (!pseudo) { setStatus('recruit-status', 'Le pseudo Discord est obligatoire.', true); return; }
-
-      recruitBtn.disabled = true; recruitBtn.textContent = 'Envoi...';
-      const { error } = await supabaseClient.from('candidatures').insert({
-        pseudo_discord: pseudo,
-        dlc_possedes: dlc || null,
-        disponibilites: dispo || null,
-        motivation: motivation || null
-      });
-      recruitBtn.disabled = false; recruitBtn.textContent = 'Envoyer ma candidature';
-
-      if (error) {
-        setStatus('recruit-status', 'Erreur : ' + error.message, true);
-        return;
-      }
-      setStatus('recruit-status', 'Candidature envoyée ! Le patron va l\'examiner.', false);
-      document.getElementById('recruit-pseudo').value = '';
-      document.querySelectorAll('.recruit-dlc-cb').forEach(cb => cb.checked = false);
-      document.getElementById('recruit-dispo').value = '';
-      document.getElementById('recruit-motivation').value = '';
-    });
-  }
-
-  // Traitement côté Bureau du patron
-  let allCandidatures = [];
-
-  async function loadCandidatures() {
-    const { data } = await supabaseClient
-      .from('candidatures')
-      .select('*')
-      .eq('statut', 'en_attente')
-      .order('created_at', { ascending: false });
-    allCandidatures = data || [];
-  }
-
-  function renderCandidatures() {
-    const list = document.getElementById('candidatures-list');
-    const countEl = document.getElementById('candidatures-count');
-    if (!list) return;
-    if (countEl) countEl.textContent = String(allCandidatures.length);
-    updateOfficeAlertCount();
-
-    if (allCandidatures.length === 0) {
-      list.innerHTML = '<p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Aucune candidature en attente.</p>';
-      return;
-    }
-
-    list.innerHTML = allCandidatures.map(c => {
-      const details = [c.dlc_possedes, c.disponibilites].filter(Boolean).join(' · ');
-      const motiv = c.motivation ? `"${c.motivation}"` : '';
-      return `
-        <div class="app-row">
-          <div class="member-avatar"></div>
-          <div style="flex:1;">
-            <div style="font-size:0.88rem; font-weight:600;">${c.pseudo_discord}</div>
-            <div style="font-size:0.78rem; color:var(--muted);">${[details, motiv].filter(Boolean).join(' — ')}</div>
-          </div>
-          <div class="alert-actions">
-            <button class="btn-mini accept" data-cand-action="acceptee" data-cand-id="${c.id}">Accepter</button>
-            <button class="btn-mini decline" data-cand-action="refusee" data-cand-id="${c.id}">Refuser</button>
-          </div>
-        </div>`;
-    }).join('');
-
-    list.querySelectorAll('[data-cand-action]').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const id = btn.dataset.candId;
-        const statut = btn.dataset.candAction;
-        btn.closest('.app-row').style.opacity = '0.5';
-        await supabaseClient.from('candidatures').update({ statut }).eq('id', id);
-        if (statut === 'acceptee') {
-          alert('Candidature acceptée ! Il ne reste plus qu\'à inviter cette personne à créer son compte via "Créer un compte" sur l\'écran de connexion.');
-        }
-        await loadCandidatures();
-        renderCandidatures();
-      });
     });
   }
 

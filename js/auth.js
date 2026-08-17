@@ -109,13 +109,6 @@
     document.getElementById('app-view').classList.add('hidden');
     document.getElementById('login-view').classList.remove('hidden');
   });
-  document.getElementById('show-recruit-from-login').addEventListener('click', (e) => {
-    e.preventDefault();
-    enterApp();
-    document.querySelectorAll('.sidenav button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById('view-recruit').classList.add('active');
-  });
 
   document.querySelectorAll('.sidenav button').forEach(btn => {
     btn.addEventListener('click', () => {

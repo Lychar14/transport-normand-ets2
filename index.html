@@ -143,10 +143,6 @@
       <button type="submit" class="btn-primary-gold" id="create-app">Créer mon compte</button>
       <p class="auth-error" id="signup-status"></p>
     </form>
-
-    <p style="text-align:center; margin-top:1.5rem; padding-top:1.25rem; border-top:var(--sep-w) solid var(--sep);">
-      <a href="#" id="show-recruit-from-login" style="color:var(--gold); font-size:0.85rem; text-decoration:none;">Pas encore dans l'équipe ? Postuler →</a>
-    </p>
     </div>
 
     <!-- Logo de l'entreprise -->
@@ -196,11 +192,6 @@
       <button data-view="office"><span class="dot" style="color:var(--gold);"></span>Bureau du patron<span class="alert-count" id="office-alert-count">0</span></button>
       <button data-view="settings"><span class="dot" style="color:var(--gold);"></span>Réglages</button>
     </div>
-
-    <div class="nav-group externe">
-      <p class="nav-label">Externe</p>
-      <button data-view="recruit"><span class="dot"></span>Page candidature ↗</button>
-    </div>
   </nav>
 
   <div class="sidebar-footer">
@@ -214,10 +205,6 @@
 </aside>
 
 <main class="page">
-
-<div id="pending-banner" style="display:none; background:rgba(217,170,78,0.1); border:1px solid rgba(217,170,78,0.3); border-radius:10px; padding:0.9rem 1.25rem; margin-bottom:1.5rem; font-size:0.85rem; color:var(--text);">
-  🕐 Ton compte est en attente de validation par le patron. En attendant, tu as accès à ta Boîte mail, ton Calendrier et tes Rendez-vous.
-</div>
 
   <!-- DASHBOARD -->
   <section id="view-dashboard" class="view">
@@ -644,32 +631,6 @@
       <p class="logo-hint" style="margin-top:0.6rem;">Aperçu seulement — ces deux champs ne sont pas encore branchés.</p>
     </section>
 
-    <section class="card" style="padding: 1.75rem 2rem;">
-      <p class="eyebrow" style="margin-bottom: 1rem;">Accès</p>
-      <div class="field"><label class="eyebrow">Lien de candidature public</label><div class="input-mock" style="color:var(--muted);">sarl-transport-normand.fr/rejoindre</div></div>
-    </section>
-  </section>
-
-  <!-- PAGE DE CANDIDATURE (démo — sera une page publique avant connexion) -->
-  <section id="view-recruit" class="view">
-    <div class="hero-row">
-      <p class="eyebrow">⚠️ Aperçu — cette page sera publique, hors appli, avant connexion</p>
-      <h1 class="greeting" id="recruit-company-title">Candidature — SARL Transports Normands</h1>
-    </div>
-    <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1.5rem; max-width:520px;">
-      Accessible à sarl-transport-normand.fr/rejoindre, sans connexion Discord requise. Le patron examine chaque candidature manuellement depuis le Bureau du patron.
-    </p>
-    <section class="card" style="padding:2rem; max-width:520px;">
-      <div class="field"><label class="eyebrow">Pseudo Discord</label><input type="text" id="recruit-pseudo" class="input-real" placeholder="Ex : RouteNoire_44" /></div>
-      <div class="field">
-        <label class="eyebrow" style="display:block; margin-bottom:6px;">DLC possédés</label>
-        <div class="tag-set" id="recruit-dlc-options"></div>
-      </div>
-      <div class="field"><label class="eyebrow">Disponibilités</label><input type="text" id="recruit-dispo" class="input-real" placeholder="Soirs et week-ends" /></div>
-      <div class="field"><label class="eyebrow">Pourquoi rejoindre l'entreprise ?</label><textarea id="recruit-motivation" class="input-real" style="min-height:70px; width:100%; font-family:inherit; resize:vertical;" placeholder="Écrire ici..."></textarea></div>
-      <button class="btn-gold" id="recruit-submit-btn">Envoyer ma candidature</button>
-      <p class="auth-error" id="recruit-status"></p>
-    </section>
   </section>
 
   <!-- BOÎTE MAIL -->
@@ -837,13 +798,6 @@
 
     <!-- ÉQUIPE -->
     <div id="office-team" class="office-view">
-      <section class="card" style="padding: 0; margin-bottom: 1.5rem;">
-        <p class="eyebrow" style="padding: 1.5rem 1.4rem 0.7rem;">Candidatures reçues<span class="alert-count" id="candidatures-count">0</span></p>
-        <div id="candidatures-list">
-          <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
-        </div>
-      </section>
-
       <section class="card" style="padding: 1.5rem 2rem; margin-bottom: 1.5rem;">
         <p class="eyebrow" style="margin-bottom: 0.5rem;">Paie & remboursements</p>
         <p style="color:var(--muted); font-size:0.85rem;">La création d'opérations sur le compte d'un joueur (paie, remboursement de frais, prime) se fait désormais depuis l'onglet <strong style="color:var(--text);">Trésorerie</strong> du Bureau du patron.</p>

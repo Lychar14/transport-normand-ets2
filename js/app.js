@@ -9,7 +9,7 @@
     const footer = document.querySelector('.sidebar-footer');
     if (footer && currentProfile) {
       document.getElementById('sidebar-pseudo').textContent = currentProfile.pseudo || 'Membre';
-      const roleLabel = currentProfile.role === 'patron' ? 'Patron' : (currentProfile.valide ? 'Employé' : 'En attente');
+      const roleLabel = currentProfile.role === 'patron' ? 'Patron' : 'Employé';
       footer.querySelector('.role-pill').textContent = roleLabel;
       const sidebarAvatar = document.getElementById('sidebar-avatar');
       if (sidebarAvatar) sidebarAvatar.style.backgroundImage = currentProfile.avatar_url ? `url('${currentProfile.avatar_url}')` : '';
@@ -40,34 +40,7 @@
     // opérations du compte perso du joueur connecté (voir renderTransactions) —
     // le compte entreprise reste réservé au Bureau du patron > Trésorerie
 
-    // 3bis) Compte non encore validé par le patron → accès restreint
-    //       (uniquement Boîte mail, Calendrier, Rendez-vous)
-    const isValidated = isPatron || (currentProfile && currentProfile.valide === true);
-    const banner = document.getElementById('pending-banner');
-    const ALWAYS_ALLOWED_VIEWS = ['mail', 'calendar', 'appointments'];
-    if (!isValidated) {
-      if (banner) banner.style.display = 'block';
-      document.querySelectorAll('.sidenav button[data-view]').forEach(btn => {
-        const view = btn.dataset.view;
-        if (!ALWAYS_ALLOWED_VIEWS.includes(view) && view !== 'recruit') {
-          btn.style.display = 'none';
-        }
-      });
-      // On bascule directement sur la Boîte mail au lieu du Tableau de bord (masqué)
-      document.querySelectorAll('.sidenav button').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.querySelector('.sidenav [data-view="mail"]').classList.add('active');
-      document.getElementById('view-mail').classList.add('active');
-    } else if (banner) {
-      banner.style.display = 'none';
-    }
-
-    // Le lien "Page candidature" ne sert qu'aux comptes pas encore validés
-    // (candidats en attente) — une fois membre officiel, plus besoin de le voir.
-    const recruitNavBtn = document.querySelector('.sidenav [data-view="recruit"]');
-    if (recruitNavBtn) recruitNavBtn.style.display = isValidated ? 'none' : '';
-
-    // 3ter) Nettoyage des traits de separation du menu lateral.
+    // 3bis) Nettoyage des traits de separation du menu lateral.
     // Chez l'employe, les groupes "Direction" et "Externe" n'ont ni bouton ni
     // titre visible : leurs traits restaient affiches (deux liserés dores dans
     // le vide sous "Mes documents"). On masque ces groupes vides et on ajoute un
@@ -81,7 +54,7 @@
     const membresBadge = document.getElementById('office-stat-membres');
     if (membresBadge) membresBadge.textContent = String(allProfiles.length);
 
-    // 4bis) Boîte mail — accessible à tout le monde, y compris les comptes en attente de validation
+    // 4bis) Boîte mail
     await loadMails();
     renderMailRecipientPills();
     renderMailList();
@@ -107,8 +80,6 @@
       renderOfficeOverview();
       renderOfficeTeam();
       populateOperationMemberSelect();
-      await loadCandidatures();
-      renderCandidatures();
     }
 
     // 6) Transactions / carnet de bord

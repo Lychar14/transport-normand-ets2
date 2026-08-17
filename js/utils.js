@@ -42,8 +42,7 @@
     }
   });
 
-  // Liste des DLC officiels ETS2 — définie tôt car utilisée dès le chargement
-  // de la page (page de candidature publique, avant toute connexion).
+  // Liste des DLC officiels ETS2
   const DLC_LIST = [
     'France (jeu de base)', 'Going East!', 'Scandinavia', 'Vive la France !',
     'Italia', 'Iberia', 'Beyond the Baltic Sea', 'Road to the Black Sea',
@@ -152,14 +151,6 @@
     const html = buildCityOptionsHtml(dp?.dlc_debloquees);
     departSelect.innerHTML = html;
     arriveeSelect.innerHTML = html;
-  }
-
-  // Génère les cases à cocher DLC sur la page de candidature publique
-  const recruitDlcOptions = document.getElementById('recruit-dlc-options');
-  if (recruitDlcOptions) {
-    recruitDlcOptions.innerHTML = DLC_LIST.map(d =>
-      `<label class="tag" style="cursor:pointer;"><input type="checkbox" class="recruit-dlc-cb" value="${d}" style="margin-right:5px;" />${d}</label>`
-    ).join('');
   }
 
   // ==========================================================

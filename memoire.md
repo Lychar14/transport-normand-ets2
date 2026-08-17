@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 17 août 2026 — version courante du site : **v45**
+> Dernière mise à jour : 17 août 2026 — version courante du site : **v46**
 
 ---
 
@@ -150,8 +150,8 @@ laissait son propre liseré, ce qui donnait deux traits dans le vide sous
 au moins un titre visible).
 
 **Pastilles de notification** : Boîte mail (mails non lus, réels), Bureau du patron
-(validations en attente + candidatures reçues), Feuille de route (initialisée à 0
-pour éviter un flash avant calcul).
+(validations en attente), Feuille de route (initialisée à 0 pour éviter un flash
+avant calcul).
 
 ---
 
@@ -160,6 +160,10 @@ pour éviter un flash avant calcul).
 ### Comptes & rôles
 - Connexion / inscription / déconnexion réelles via Supabase.
 - Deux rôles : **patron** et **employé**, avec des vues et des droits distincts.
+- **Depuis la v46** : la création de compte (« Créer un compte ») donne un accès
+  immédiat et complet à toutes les fonctionnalités chauffeur/employé — plus de
+  formulaire de candidature préalable, plus de statut « en attente » ni de
+  validation manuelle du patron avant de débloquer l'application.
 
 ### Page de connexion — mémorisation des identifiants (v31)
 - Les blocs « Se connecter » et « Créer un compte » sont désormais de **vrais
@@ -395,8 +399,8 @@ stocké dans la table Supabase `site_contenu` (une ligne par clé, colonne
 
 - **Identité** (v30) :
   - *Nom de l'entreprise* (clé `nom_entreprise`) — appliqué au vol à la sidebar,
-    au titre de la page de connexion, au titre de la page candidature, à l'onglet
-    du navigateur et aux mentions « chez … depuis … » des fiches joueur
+    au titre de la page de connexion, à l'onglet du navigateur et aux mentions
+    « chez … depuis … » des fiches joueur
   - *Logo* (clé `logo_url`) — importé dans le bucket Storage **`logos`**
     (script `20-logo-entreprise.sql`), remplace le logo de la page de connexion ;
     bouton « Retirer le logo importé » pour revenir au logo embarqué dans le fichier
@@ -406,8 +410,8 @@ stocké dans la table Supabase `site_contenu` (une ligne par clé, colonne
     l'entreprise » et « Rétablir l'icône d'origine ». Quand une image est en place,
     le dégradé doré du carré disparaît au profit d'un fin liseré, et le pictogramme
     SVG d'origine est masqué. Une image carrée rend le mieux.
-  - Couleur d'accent, monnaie virtuelle, dépôt principal, lien de candidature :
-    toujours de simples aperçus non branchés (mention explicite dans l'interface)
+  - Couleur d'accent, monnaie virtuelle, dépôt principal : toujours de simples
+    aperçus non branchés (mention explicite dans l'interface)
 - **Texte de la page de connexion** (clé `presentation`, script
   `19-presentation-page.sql`) — d'abord placé dans le Bureau du patron en v29,
   **déplacé dans Réglages en v30** :
@@ -427,8 +431,7 @@ règles `.view { display:none } / .view.active { display:block }` ne s'appliquai
 pas à elle, cette carte vide s'affichait **en bas de chaque rubrique du site**, et
 les IDs se retrouvaient en double. Le bloc et les deux balises orphelines ont été
 retirés en v39 : le HTML est désormais entièrement équilibré, tous les enfants
-directs de `<main>` sont des `.view` (plus la bannière `#pending-banner`), et il
-n'y a plus aucun ID dupliqué.
+directs de `<main>` sont des `.view`, et il n'y a plus aucun ID dupliqué.
 
 ---
 
@@ -442,6 +445,13 @@ n'y a plus aucun ID dupliqué.
 - Carte « Écrire un mail » patron-only du Bureau du patron : retirée (redondante avec
   la messagerie).
 - Bandeau « TrucksBook n'a pas d'API publique » : retiré.
+- **Formulaire de candidature et validation manuelle du patron : supprimés (v46)**
+  (page « Page candidature », lien depuis l'écran de connexion, carte « Candidatures
+  reçues » et bouton « Valider » d'un compte en attente dans le Bureau du patron,
+  bannière « compte en attente »). Un compte créé via « Créer un compte » a
+  désormais accès immédiatement à toutes les fonctionnalités chauffeur/employé.
+  La table Supabase `candidatures` et la colonne `profiles.valide` restent en base
+  mais ne sont plus utilisées par le site.
 
 ---
 
@@ -520,6 +530,7 @@ mais les policies d'écriture restent à passer par le script.
 | v43 | Trésorerie : export comptable CSV mensuel + clôture mensuelle du compte entreprise (report à nouveau) |
 | v44 | Salutation du tableau de bord branchée sur le pseudo du joueur connecté + nettoyage des traits de séparation du menu latéral |
 | v45 | Restructuration technique (aucun changement visible pour les joueurs) : fichier unique découpé en `index.html` + `css/styles.css` + 11 fichiers `js/*.js` par domaine, 3 images extraites du base64 en fichiers réels dans `assets/images/` (poids de `index.html` : 670 Ko → 72 Ko). Site désormais versionné avec **Git**, poussé sur un dépôt **GitHub** privé (`Lychar14/transport-normand-ets2`), et déployé automatiquement par **Cloudflare Pages** relié en Git integration — fin du zip glissé-déposé sur Netlify |
+| v46 | Formulaire de candidature et validation manuelle du patron supprimés : la création de compte donne un accès immédiat et complet aux fonctionnalités chauffeur/employé |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 
@@ -547,5 +558,5 @@ mais les policies d'écriture restent à passer par le script.
       d'exemple codés en dur, publiés par « Lychar » avec des dates fictives) :
       à brancher sur une vraie table Supabase + un bucket Storage.
 - [ ] **Autres textes du site** — la table `site_contenu` peut accueillir d'autres
-      clés (page candidature, réglages…) si besoin d'autres textes modifiables
-      sans repasser par une nouvelle version du zip.
+      clés (réglages…) si besoin d'autres textes modifiables sans repasser par une
+      nouvelle version du zip.

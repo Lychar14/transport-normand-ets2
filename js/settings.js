@@ -145,8 +145,6 @@
     if (h1) h1.textContent = siteNom;
     const brand = document.getElementById('sidebar-company-name');
     if (brand) brand.textContent = siteNom;
-    const recruitTitle = document.getElementById('recruit-company-title');
-    if (recruitTitle) recruitTitle.textContent = 'Candidature — ' + siteNom;
 
     const src = siteLogoUrl || LOGO_ORIGINE_SRC;
     const loginLogo = document.getElementById('login-logo');
@@ -223,7 +221,7 @@
     }
     siteNom = nouveau;
     applyIdentity();
-    identityStatus('✓ Nom enregistré — appliqué à la sidebar, à la page de connexion et à la page de candidature.', 'var(--good)');
+    identityStatus('✓ Nom enregistré — appliqué à la sidebar et à la page de connexion.', 'var(--good)');
   });
 
   // Import du logo : envoi dans le bucket Storage `logos`, puis mémorisation de l'URL

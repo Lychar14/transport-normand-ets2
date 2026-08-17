@@ -573,12 +573,6 @@
   .compare-value.match { color: var(--good); }
   .proof-link { color: var(--gold); font-size: 0.78rem; text-decoration: none; margin-top: 0.5rem; display: inline-block; }
 
-  /* ---------- Recrutement (page publique) ---------- */
-  #recruit-view { min-height: 100vh; padding: 3rem 1.5rem; }
-  .recruit-wrap { max-width: 640px; margin: 0 auto; }
-  .app-row { display: flex; align-items: center; gap: 0.9rem; padding: 1rem 1.4rem; border-bottom: var(--sep-w) solid var(--sep); }
-  .app-row:last-child { border-bottom: none; }
-
   /* ---------- Connexion email / mot de passe ---------- */
   #login-view { min-height: 100vh; padding: 2.5rem 1.5rem; position: relative; isolation: isolate; }
 
