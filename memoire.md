@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 15 août 2026 — version courante du site : **v34**
+> Dernière mise à jour : 17 août 2026 — version courante du site : **v45**
 
 ---
 
@@ -12,9 +12,12 @@ Application web de gestion d'une entreprise de transport virtuelle pour les jeux
 **SARL Transports Normands** (avec un S à chaque mot depuis la v23). Pseudo du
 joueur/patron : **Lychar**. Entreprise TrucksBook associée : *Les frères de la route*.
 
-Profil du développeur : débutant complet en code (pas de JS ni de backend) — les
-livraisons se font sous forme d'archive `site-a-deployer-vXX.zip` prête à
-glisser-déposer, accompagnée le cas échéant d'un script SQL à exécuter dans Supabase.
+Profil du développeur : débutant complet en code (pas de JS ni de backend), utilise
+VS Code au quotidien. **Depuis la v45**, le workflow de livraison a changé : le site
+est versionné avec Git et poussé sur GitHub (dépôt privé), Cloudflare Pages
+redéploie automatiquement à chaque `git push` — l'ancien zip `site-a-deployer-vXX.zip`
+glissé-déposé sur Netlify n'est plus utilisé. Les scripts SQL restent à exécuter
+manuellement dans Supabase (aucun lien avec le déploiement du site).
 
 ---
 
@@ -22,25 +25,38 @@ glisser-déposer, accompagnée le cas échéant d'un script SQL à exécuter dan
 
 | Élément | Choix |
 |---|---|
-| Front | Un seul fichier `index.html` (HTML + CSS + JS, pas de framework) |
+| Front | **Depuis la v45** : `index.html` (structure) + `css/styles.css` + `js/*.js` (11 fichiers par domaine : utils, auth, settings, mail, roadsheet, profile, office, tresorerie, calendrier, rendezvous, app) + `assets/images/*.jpg`. Plus un fichier unique — HTML/CSS/JS séparés, pas de framework ni de bundler (balises `<script src>` classiques) |
 | Backend / base | **Supabase** (authentification + base PostgreSQL + Storage) |
-| Hébergement | **Netlify** — `cute-raindrop-6ab319.netlify.app` |
-| Déploiement | Glisser-déposer manuel du zip sur Netlify |
+| Versionning | **Git + GitHub** (dépôt privé `Lychar14/transport-normand-ets2`, branche `main`) — mis en place en v45 |
+| Hébergement | **Cloudflare Pages**, projet relié au dépôt GitHub (Git integration, pas de dépôt direct) |
+| Déploiement | `git push` sur `main` (depuis le panneau Contrôle de code source de VS Code) → build & déploiement **automatiques** par Cloudflare Pages en ~1 min. Aucune commande de build (site 100 % statique), dossier de sortie `/` |
 
 **Points d'attention connus :**
-- Le connecteur Netlify branché sur Claude ne permet pas le déploiement automatique
-  dans cet environnement (pas d'accès réseau) → redéploiement manuel.
-- Bug Netlify (août 2026) : message *« Account credit usage exceeded »* alors que
-  des crédits sont disponibles. Bug largement signalé sur le forum Netlify pour les
-  comptes gratuits, sans réponse officielle du support. Le site déjà en ligne reste
-  fonctionnel entre-temps.
+- **Réglage Cloudflare Pages piégeux** : le champ *Branch control* doit pointer sur
+  `main` (branche par défaut du dépôt) — un projet Pages nouvellement créé peut
+  afficher *« No URLs enabled »* si ce champ ne correspond à aucune branche existante.
+- Erreur GitHub *« No server is currently available to service your request »*
+  pendant l'autorisation de l'app GitHub pour Cloudflare : erreur transitoire côté
+  GitHub, sans rapport avec Cloudflare — se résout en général en réessayant
+  (éventuellement en navigation privée).
 - Erreur *« NetworkError »* à la connexion : cause identifiée comme un blocage local
   du navigateur (extension / bloqueur de pub / antivirus), **pas** un problème
   Supabase. Contournement : tester en navigation privée.
+- *(Historique, résolu par l'abandon de Netlify en v45)* Netlify avait un bug de
+  compte gratuit *« Account credit usage exceeded »* et son connecteur Claude ne
+  permettait pas le déploiement automatique dans cet environnement.
 
 ---
 
 ## 3. Identité visuelle
+
+⚠️ **Depuis la v45**, les trois photos décrites ci-dessous (logo de connexion, fond
+route/forêt, filigrane Mont-Saint-Michel) ne sont plus embarquées en base64 dans
+`index.html` : elles ont été extraites en fichiers réels dans `assets/images/`
+(`login-logo.jpg`, `login-bg.jpg`, `msm-bg.jpg`), référencés depuis `css/styles.css`
+et `index.html` par de simples chemins relatifs. Les explications qui suivent
+décrivent la mise en page telle que pensée au moment de leur création (v27/v28/v33)
+et restent valables ; seul l'emplacement technique du fichier a changé.
 
 Thème **sombre & doré**, appliqué globalement via des tokens CSS (`.card`,
 `.sidebar`, `.sidenav`) pour se propager automatiquement à toutes les rubriques.
@@ -503,6 +519,7 @@ mais les policies d'écriture restent à passer par le script.
 | v42 | Bouton « Réinitialiser l'historique » directement sur la rubrique Historique feuilles de route (patron) |
 | v43 | Trésorerie : export comptable CSV mensuel + clôture mensuelle du compte entreprise (report à nouveau) |
 | v44 | Salutation du tableau de bord branchée sur le pseudo du joueur connecté + nettoyage des traits de séparation du menu latéral |
+| v45 | Restructuration technique (aucun changement visible pour les joueurs) : fichier unique découpé en `index.html` + `css/styles.css` + 11 fichiers `js/*.js` par domaine, 3 images extraites du base64 en fichiers réels dans `assets/images/` (poids de `index.html` : 670 Ko → 72 Ko). Site désormais versionné avec **Git**, poussé sur un dépôt **GitHub** privé (`Lychar14/transport-normand-ets2`), et déployé automatiquement par **Cloudflare Pages** relié en Git integration — fin du zip glissé-déposé sur Netlify |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 
@@ -510,6 +527,11 @@ mais les policies d'écriture restent à passer par le script.
 
 ## 9. En cours / à faire
 
+- [ ] **Ancien projet Cloudflare (dépôt direct)** — le nouveau projet Cloudflare
+      Pages (relié à GitHub, v45) tourne en parallèle de l'ancien projet à dépôt
+      manuel. Si un nom de domaine personnalisé pointait sur l'ancien projet, le
+      migrer vers le nouveau une fois celui-ci confirmé stable, puis archiver ou
+      supprimer l'ancien projet pour éviter la confusion entre les deux URLs.
 - [ ] **Nom du logo** — décider s'il faut refaire le logo au pluriel
       (« Transports Normands ») pour coller au renommage de la v23.
 - [ ] **Import automatique des missions TrucksBook** — pas d'API de lecture publique
