@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 17 août 2026 — version courante du site : **v46**
+> Dernière mise à jour : 18 août 2026 — version courante du site : **v47**
 
 ---
 
@@ -14,10 +14,11 @@ joueur/patron : **Lychar**. Entreprise TrucksBook associée : *Les frères de la
 
 Profil du développeur : débutant complet en code (pas de JS ni de backend), utilise
 VS Code au quotidien. **Depuis la v45**, le workflow de livraison a changé : le site
-est versionné avec Git et poussé sur GitHub (dépôt privé), Cloudflare Pages
-redéploie automatiquement à chaque `git push` — l'ancien zip `site-a-deployer-vXX.zip`
-glissé-déposé sur Netlify n'est plus utilisé. Les scripts SQL restent à exécuter
-manuellement dans Supabase (aucun lien avec le déploiement du site).
+est versionné avec Git et poussé sur GitHub (dépôt privé) — l'ancien zip
+`site-a-deployer-vXX.zip` glissé-déposé sur Netlify n'est plus utilisé. **Depuis la
+v47**, l'hébergement est **Vercel** (abandon de Cloudflare Pages, voir section 2) :
+chaque `git push` sur `main` redéploie automatiquement. Les scripts SQL restent à
+exécuter manuellement dans Supabase (aucun lien avec le déploiement du site).
 
 ---
 
@@ -28,23 +29,34 @@ manuellement dans Supabase (aucun lien avec le déploiement du site).
 | Front | **Depuis la v45** : `index.html` (structure) + `css/styles.css` + `js/*.js` (11 fichiers par domaine : utils, auth, settings, mail, roadsheet, profile, office, tresorerie, calendrier, rendezvous, app) + `assets/images/*.jpg`. Plus un fichier unique — HTML/CSS/JS séparés, pas de framework ni de bundler (balises `<script src>` classiques) |
 | Backend / base | **Supabase** (authentification + base PostgreSQL + Storage) |
 | Versionning | **Git + GitHub** (dépôt privé `Lychar14/transport-normand-ets2`, branche `main`) — mis en place en v45 |
-| Hébergement | **Cloudflare Pages**, projet relié au dépôt GitHub (Git integration, pas de dépôt direct) |
-| Déploiement | `git push` sur `main` (depuis le panneau Contrôle de code source de VS Code) → build & déploiement **automatiques** par Cloudflare Pages en ~1 min. Aucune commande de build (site 100 % statique), dossier de sortie `/` |
+| Hébergement | **Vercel** (depuis la v47), projet relié au dépôt GitHub (Git integration) |
+| Déploiement | `git push` sur `main` (depuis le panneau Contrôle de code source de VS Code) → build & déploiement **automatiques** par Vercel en quelques secondes. Aucune commande de build (site 100 % statique, aucun `package.json`), dossier de sortie = racine du dépôt |
 
 **Points d'attention connus :**
-- **Réglage Cloudflare Pages piégeux** : le champ *Branch control* doit pointer sur
-  `main` (branche par défaut du dépôt) — un projet Pages nouvellement créé peut
-  afficher *« No URLs enabled »* si ce champ ne correspond à aucune branche existante.
-- Erreur GitHub *« No server is currently available to service your request »*
-  pendant l'autorisation de l'app GitHub pour Cloudflare : erreur transitoire côté
-  GitHub, sans rapport avec Cloudflare — se résout en général en réessayant
-  (éventuellement en navigation privée).
 - Erreur *« NetworkError »* à la connexion : cause identifiée comme un blocage local
   du navigateur (extension / bloqueur de pub / antivirus), **pas** un problème
   Supabase. Contournement : tester en navigation privée.
 - *(Historique, résolu par l'abandon de Netlify en v45)* Netlify avait un bug de
   compte gratuit *« Account credit usage exceeded »* et son connecteur Claude ne
   permettait pas le déploiement automatique dans cet environnement.
+- **(Historique, résolu par l'abandon de Cloudflare Pages en v47)** Après la v45,
+  Cloudflare Pages a cessé de redéployer automatiquement à chaque `git push` : le
+  bouton *Retry* d'un ancien build renvoyait *« Cannot retry a build that was
+  created with a seed_repo override »* (normal, ne concerne que le tout premier
+  build d'import, sans rapport avec le blocage), puis le dashboard affichait
+  *« Cannot retrieve latest commit at this time »* alors que les permissions de
+  l'app GitHub « Cloudflare Workers and Pages » étaient pourtant correctes (accès
+  « Tous les dépôts »). Cause non résolue côté Cloudflare — décision : migrer
+  l'hébergement vers **Vercel**.
+- **Attention à l'import du bon dépôt GitHub** : au moment de migrer vers Vercel,
+  deux dépôts existaient côté GitHub, `transport-normand-ets2` (le bon, celui suivi
+  par `git remote -v` en local) et `transport-normand-ets2-par-git` (un doublon
+  obsolète contenant une ancienne version du code, avec encore le formulaire de
+  candidature — origine du doublon non identifiée avec certitude, probablement un
+  reliquat d'un essai lors de la mise en place de Git en v45). Le premier import
+  Vercel avait pris le mauvais dépôt (`-par-git`), d'où un site en ligne qui ne
+  reflétait pas les derniers commits ; le doublon a été supprimé sur GitHub et le
+  projet Vercel réimporté sur le bon dépôt.
 
 ---
 
@@ -531,6 +543,7 @@ mais les policies d'écriture restent à passer par le script.
 | v44 | Salutation du tableau de bord branchée sur le pseudo du joueur connecté + nettoyage des traits de séparation du menu latéral |
 | v45 | Restructuration technique (aucun changement visible pour les joueurs) : fichier unique découpé en `index.html` + `css/styles.css` + 11 fichiers `js/*.js` par domaine, 3 images extraites du base64 en fichiers réels dans `assets/images/` (poids de `index.html` : 670 Ko → 72 Ko). Site désormais versionné avec **Git**, poussé sur un dépôt **GitHub** privé (`Lychar14/transport-normand-ets2`), et déployé automatiquement par **Cloudflare Pages** relié en Git integration — fin du zip glissé-déposé sur Netlify |
 | v46 | Formulaire de candidature et validation manuelle du patron supprimés : la création de compte donne un accès immédiat et complet aux fonctionnalités chauffeur/employé |
+| v47 | Migration de l'hébergement Cloudflare Pages → **Vercel** (Cloudflare ne redéployait plus automatiquement, cause non résolue) ; suppression du dépôt GitHub doublon `transport-normand-ets2-par-git` |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 
@@ -538,11 +551,10 @@ mais les policies d'écriture restent à passer par le script.
 
 ## 9. En cours / à faire
 
-- [ ] **Ancien projet Cloudflare (dépôt direct)** — le nouveau projet Cloudflare
-      Pages (relié à GitHub, v45) tourne en parallèle de l'ancien projet à dépôt
-      manuel. Si un nom de domaine personnalisé pointait sur l'ancien projet, le
-      migrer vers le nouveau une fois celui-ci confirmé stable, puis archiver ou
-      supprimer l'ancien projet pour éviter la confusion entre les deux URLs.
+- [ ] **Projet Cloudflare Pages abandonné (v47)** — à supprimer sur Cloudflare pour
+      éviter toute confusion future, une fois le site confirmé stable sur Vercel. Si
+      un nom de domaine personnalisé pointait sur Cloudflare, le rebrancher sur
+      Vercel (Project Settings → Domains).
 - [ ] **Nom du logo** — décider s'il faut refaire le logo au pluriel
       (« Transports Normands ») pour coller au renommage de la v23.
 - [ ] **Import automatique des missions TrucksBook** — pas d'API de lecture publique
