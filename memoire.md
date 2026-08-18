@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 18 août 2026 — version courante du site : **v47**
+> Dernière mise à jour : 18 août 2026 — version courante du site : **v49**
 
 ---
 
@@ -148,7 +148,8 @@ version du site.
 Trois sections avec libellés discrets :
 
 - **Personnel** — Mon profil *(page par défaut au chargement)*, Tableau de bord,
-  Feuille de route, Boîte mail, Calendrier, Rendez-vous, Historique feuilles de route
+  **Classement**, Feuille de route, Boîte mail, Calendrier, Rendez-vous, Historique
+  feuilles de route
 - **Direction** — Bureau du patron, Réglages *(titre de section masqué côté employé)*
 - **Externe** — *(titre de section masqué côté employé)*
 
@@ -202,6 +203,28 @@ avant calcul).
 - Carte **Solde personnel** (opérations personnelles uniquement), aperçu des feuilles
   de route, carte **Mails reçus**, **Derniers mouvements** du compte perso.
 
+### Classement des chauffeurs (v48)
+- Nouvel onglet **Classement**, section Personnel du menu latéral, visible par
+  **tous** les membres (pas réservé au patron) — les données sous-jacentes
+  (`preuves_livraison`, `distance_entries`) étaient déjà chargées côté client pour
+  tout le monde, aucune nouvelle policy RLS n'a donc été nécessaire.
+- **Mensuel uniquement** (pas de vue all-time) : repart à zéro chaque mois,
+  recalculé à partir de `validated_at` (livraisons/revenus) et `created_at`
+  (kilomètres).
+- Trié par **km parcourus** ce mois-ci (source : `distance_entries`, saisis
+  manuellement par le patron depuis la fiche joueur — voir plus bas, pas de calcul
+  automatique par mission).
+- Colonnes par chauffeur : rang (médaille 🥇🥈🥉 pour le top 3), avatar + pseudo,
+  nombre de livraisons validées, km parcourus, revenus déclarés cumulés.
+- Ligne du joueur connecté mise en évidence (fond doré léger, mention « (toi) »).
+- Fichier dédié `js/classement.js` (fonction `renderClassement()`), appelée depuis
+  `initAppData()` dans `app.js` pour tous les rôles.
+- ⚠️ *Pour l'historique* : un premier classement (« Convoi — meilleurs soldes »,
+  basé sur l'argent) avait été **retiré volontairement en amont de la v45** plutôt
+  que branché (voir section 6). Celui-ci est une implémentation distincte, sur un
+  critère différent (km, pas soldes) — décision reprise à la demande du joueur en
+  août 2026, pas une résurrection de l'ancien.
+
 ### Mon profil (vue employé)
 - En-tête avec avatar (initiales ou photo importée), 4 statistiques dont les
   livraisons du mois.
@@ -220,6 +243,15 @@ avant calcul).
   réellement cochés** sur la fiche du chauffeur sélectionné (Going East!, Scandinavia,
   Vive la France !, Italia, Iberia, Beyond the Baltic Sea, Road to the Black Sea,
   West Balkans, Greece).
+- **Liste des cargaisons (v49)** — le menu déroulant « 1. Cargaison » (Bureau du
+  patron > Missions) contient désormais la **liste complète et réelle des
+  cargaisons du jeu** (309 entrées uniques, ordre alphabétique tel qu'exporté du
+  jeu), reconstituée à partir de captures d'écran fournies par le joueur
+  (`Screen/Cargaisons/`, 12 captures) et dédupliquée à la main (les captures
+  contenaient des doublons). Remplace l'ancienne liste d'exemple par catégories
+  (Agricole / Construction / Alimentaire / Véhicules / Général / Hors gabarit).
+  La bascule « Saisie manuelle » reste disponible pour toute cargaison absente
+  de la liste.
 - **Saisie manuelle (v38)** — chacun des trois champs *Cargaison*, *Départ* et
   *Arrivée* possède un petit bouton **« ✎ Saisie manuelle »** qui remplace la liste
   déroulante par un champ de texte libre (et **« ☰ Revenir à la liste »** pour faire
@@ -544,6 +576,8 @@ mais les policies d'écriture restent à passer par le script.
 | v45 | Restructuration technique (aucun changement visible pour les joueurs) : fichier unique découpé en `index.html` + `css/styles.css` + 11 fichiers `js/*.js` par domaine, 3 images extraites du base64 en fichiers réels dans `assets/images/` (poids de `index.html` : 670 Ko → 72 Ko). Site désormais versionné avec **Git**, poussé sur un dépôt **GitHub** privé (`Lychar14/transport-normand-ets2`), et déployé automatiquement par **Cloudflare Pages** relié en Git integration — fin du zip glissé-déposé sur Netlify |
 | v46 | Formulaire de candidature et validation manuelle du patron supprimés : la création de compte donne un accès immédiat et complet aux fonctionnalités chauffeur/employé |
 | v47 | Migration de l'hébergement Cloudflare Pages → **Vercel** (Cloudflare ne redéployait plus automatiquement, cause non résolue) ; suppression du dépôt GitHub doublon `transport-normand-ets2-par-git` |
+| v48 | Nouvel onglet **Classement des chauffeurs** (menu Personnel) : tri par km parcourus ce mois-ci, colonnes livraisons validées / km / revenus déclarés, médailles top 3, visible par toute l'équipe |
+| v49 | Liste déroulante « 1. Cargaison » (Bureau du patron > Missions) remplacée par la liste complète et réelle du jeu (309 cargaisons uniques, dédupliquées à partir de captures d'écran) au lieu de l'ancienne liste d'exemple par catégories |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 
