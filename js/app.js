@@ -66,10 +66,12 @@
     await loadMissions();
     renderRoadsheet();
     await loadValidatedProofs();
+    await loadGrades();
     renderDashboardStats();
     await loadMyFleet();
     await loadDistanceEntries();
     renderProfile();
+    renderProfileGrade();
     renderMyFleet();
     renderMissionsValidees();
     renderClassement();
@@ -80,6 +82,7 @@
       await renderValidations();
       renderOfficeOverview();
       renderOfficeTeam();
+      renderGradesSettings();
       populateOperationMemberSelect();
     }
 

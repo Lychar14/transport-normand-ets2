@@ -35,7 +35,10 @@
           <div class="classement-rank ${rank <= 3 ? 'top-' + rank : ''}">${MEDALS[rank] || rank}</div>
           <div class="classement-who">
             <div class="avatar member-avatar"${avatarStyle}>${r.profile.avatar_url ? '' : initialsOf(r.profile.pseudo)}</div>
-            <span class="classement-pseudo">${escapeHtml(r.profile.pseudo)}${isMe ? ' (toi)' : ''}</span>
+            <div style="min-width:0;">
+              <div class="classement-pseudo">${escapeHtml(r.profile.pseudo)}${isMe ? ' (toi)' : ''}</div>
+              ${typeof gradePillHtml === 'function' && gradePillHtml(r.profile.id) ? `<div style="margin-top:2px;">${gradePillHtml(r.profile.id)}</div>` : ''}
+            </div>
           </div>
           <div class="classement-col">${r.livraisons}</div>
           <div class="classement-col km">${r.km.toLocaleString('fr-FR')} km</div>

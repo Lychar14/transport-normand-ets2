@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 18 août 2026 — version courante du site : **v50**
+> Dernière mise à jour : 18 août 2026 — version courante du site : **v51**
 
 ---
 
@@ -224,6 +224,31 @@ avant calcul).
   que branché (voir section 6). Celui-ci est une implémentation distincte, sur un
   critère différent (km, pas soldes) — décision reprise à la demande du joueur en
   août 2026, pas une résurrection de l'ancien.
+
+### Grades (v51)
+- Chaque membre porte automatiquement un **titre** (« grade ») calculé à partir
+  de son nombre de **livraisons validées cumulées, toutes périodes confondues**
+  (indépendant du classement, qui repart à zéro chaque mois) : c'est le grade
+  le plus élevé dont le seuil est atteint.
+- **Échelle 100 % éditable depuis Réglages > Grades** (patron uniquement,
+  section Direction) : liste triée par seuil croissant, boutons *Modifier* /
+  *Supprimer* sur chaque ligne, formulaire *Nom du grade* + *À partir de
+  (livraisons validées)* + *Ajouter* en bas de carte. Aucune valeur n'est codée
+  en dur côté site — tout vient de la table Supabase `grades`.
+- **Seuils de départ insérés par le script SQL** (modifiables à volonté
+  ensuite) : *Période d'essai* (0), *Intérimaire* (3), *Apprenti routier* (8),
+  *Routier confirmé* (20), *Vétéran de la route* (40), *Légende du convoi* (80).
+- Affiché à 4 endroits : en-tête de **Mon profil** (pastille sous le rôle),
+  **Classement** (sous le pseudo de chaque ligne), **Bureau du patron > Équipe**
+  (liste des membres) et en-tête de la **fiche joueur**. Volontairement absent
+  du pied de la sidebar pour ne pas surcharger cet espace étroit (272 px).
+- Fichier dédié `js/grades.js` (`loadGrades()`, `gradeOf()`, `gradePillHtml()`,
+  `renderGradesSettings()`, `refreshGrades()`), appelé depuis `initAppData()`
+  et depuis les écrans où un grade est affiché.
+- Script SQL `25-grades.sql` — table `grades` (`nom`, `seuil`, `created_by`,
+  horodatages), RLS lecture publique / écriture (insert, update, delete)
+  réservée au patron via `public.est_patron()` (fonction créée par le script
+  `23-policies-suppression.sql`, v41).
 
 ### Mon profil (vue employé)
 - En-tête avec avatar (initiales ou photo importée), 4 statistiques dont les
@@ -566,6 +591,7 @@ directs de `<main>` sont des `.view`, et il n'y a plus aucun ID dupliqué.
 | `22-commentaire-mission.sql` | Colonne `commentaire` sur `missions` (informations diverses, v38) |
 | `23-policies-suppression.sql` | Droits de suppression du patron — **obligatoire** pour que l'onglet Réinitialiser fonctionne (v41) |
 | `24-exclusion-membre.sql` | Droits de suppression du patron sur `profiles` et `driver_profiles` — **obligatoire** pour que l'onglet Exclure fonctionne (v50) |
+| `25-grades.sql` | Table `grades` (échelle de titres) + RLS écriture réservée au patron — **obligatoire** pour que Réglages > Grades fonctionne (v51) |
 
 Les versions v21 à v28 n'ont nécessité **aucun** script SQL ; la v29 nécessite
 `19-presentation-page.sql`, la v30 y ajoute `20-logo-entreprise.sql`. Les versions
@@ -574,7 +600,8 @@ v31 à v37 ne nécessitent **aucun** script SQL côté site ; la v38 nécessite
 v41 nécessite **`23-policies-suppression.sql`** ; la v42 ne nécessite aucun script
 SQL supplémentaire (mais dépend de celui de la v41) ; la v50 nécessite
 **`24-exclusion-membre.sql`** (dépend aussi de la fonction `est_patron()` créée
-par le script de la v41).
+par le script de la v41) ; la v51 nécessite **`25-grades.sql`** (dépend aussi de
+`est_patron()`).
 
 ⚠️ **Bucket `logos` manquant.** À l'import d'un logo ou d'une icône, l'erreur
 « Bucket not found » signifie que le bucket Storage `logos` n'existe pas dans le
@@ -633,6 +660,7 @@ mais les policies d'écriture restent à passer par le script.
 | v48 | Nouvel onglet **Classement des chauffeurs** (menu Personnel) : tri par km parcourus ce mois-ci, colonnes livraisons validées / km / revenus déclarés, médailles top 3, visible par toute l'équipe |
 | v49 | Liste déroulante « 1. Cargaison » (Bureau du patron > Missions) remplacée par la liste complète et réelle du jeu (309 cargaisons uniques, dédupliquées à partir de captures d'écran) au lieu de l'ancienne liste d'exemple par catégories |
 | v50 | Fiche joueur : pseudo modifiable (bouton ✎ dans l'en-tête) + nouvel onglet **Exclure** (suppression complète et définitive d'un membre — toutes ses données et son compte, sauf son identifiant Supabase Authentication, non supprimable côté client) |
+| v51 | Système de **grades** : titre attribué automatiquement selon les livraisons validées cumulées, échelle 100 % éditable depuis **Réglages > Grades** (patron), seuils de départ *Période d'essai*, *Intérimaire*, *Apprenti routier*, *Routier confirmé*, *Vétéran de la route*, *Légende du convoi* — affiché sur le profil, le classement, l'équipe et la fiche joueur |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 

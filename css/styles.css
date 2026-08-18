@@ -121,6 +121,11 @@
     color: var(--gold); background: rgba(217,170,78,0.12); border: 1px solid rgba(217,170,78,0.3);
     padding: 0.15rem 0.5rem; border-radius: 99px; margin-top: 2px;
   }
+  .grade-pill {
+    display: inline-flex; align-items: center; gap: 0.3em; font-family: 'JetBrains Mono'; font-size: 0.62rem; letter-spacing: 0.03em;
+    color: var(--text); background: var(--surface-2); border: 1px solid var(--border);
+    padding: 0.15rem 0.5rem; border-radius: 99px; margin-top: 2px;
+  }
 
   /* ---------- Mon profil ---------- */
   .profile-hero { padding: 2rem 2.2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; }

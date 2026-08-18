@@ -277,7 +277,10 @@
           <div class="profile-name" id="profile-pseudo">—</div>
           <div class="profile-since" id="profile-since">—</div>
         </div>
-        <span class="role-pill" style="margin-top:0;" id="profile-role-pill">—</span>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem;">
+          <span class="role-pill" style="margin-top:0;" id="profile-role-pill">—</span>
+          <span class="grade-pill" id="profile-grade-pill" style="display:none; margin-top:0;">—</span>
+        </div>
       </div>
     </section>
 
@@ -619,6 +622,23 @@
         </div>
         <p class="logo-hint" style="margin-top:0.5rem;">Aperçu seulement pour l'instant — le thème sombre &amp; doré reste appliqué au site.</p>
       </div>
+    </section>
+
+    <!-- GRADES : titres attribués automatiquement selon les livraisons validées, 100% éditable -->
+    <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="margin-bottom: 0.4rem;">Grades</p>
+      <p style="color:var(--muted); font-size:0.85rem; line-height:1.65; margin-bottom:1.2rem;">
+        Chaque membre porte automatiquement le grade le plus élevé qu'il a atteint, selon son nombre de livraisons validées (toutes périodes confondues). Visible sur son profil, sa fiche joueur, l'équipe et le classement. Ajoute, renomme ou supprime des grades librement — tout se recalcule tout seul.
+      </p>
+      <div id="grades-list" style="margin-bottom:1.25rem;">
+        <p style="color:var(--muted); font-size:0.85rem;">Chargement…</p>
+      </div>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:flex-end; padding-top:1.1rem; border-top: var(--sep-w) solid var(--sep);">
+        <div class="field" style="margin-bottom:0;"><label class="eyebrow">Nom du grade</label><input type="text" id="grade-new-nom" class="input-real" placeholder="Ex : Routier confirmé" style="width:220px;" /></div>
+        <div class="field" style="margin-bottom:0;"><label class="eyebrow">À partir de (livraisons validées)</label><input type="number" id="grade-new-seuil" class="input-real" min="0" placeholder="0" style="width:170px;" /></div>
+        <button class="btn-gold" id="grade-add-btn" style="padding:0.6rem 1.1rem; font-size:0.82rem;">+ Ajouter</button>
+      </div>
+      <p id="grades-status" style="margin-top:0.8rem; font-size:0.8rem; color:var(--muted);"></p>
     </section>
 
     <!-- TEXTE DE LA PAGE DE CONNEXION (déplacé ici depuis le Bureau du patron) -->
@@ -1401,6 +1421,7 @@
           </div>
           <p id="ps-pseudo-status" style="margin:0.3rem 0 0; font-size:0.76rem; color:var(--muted);"></p>
           <span class="role-pill" id="ps-role">—</span>
+          <span class="grade-pill" id="ps-grade" style="display:none; margin-left:0.4rem;">—</span>
         </div>
       </div>
       <button class="btn-mini" id="ps-close-btn" title="Fermer">✕</button>
@@ -1528,6 +1549,7 @@
 <script src="js/roadsheet.js"></script>
 <script src="js/profile.js"></script>
 <script src="js/office.js"></script>
+<script src="js/grades.js"></script>
 <script src="js/classement.js"></script>
 <script src="js/tresorerie.js"></script>
 <script src="js/calendrier.js"></script>

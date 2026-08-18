@@ -376,6 +376,7 @@
         <div class="member-row">
           <div class="member-avatar"></div>
           <span style="flex:1; font-size:0.88rem;">${p.pseudo}</span>
+          ${typeof gradePillHtml === 'function' ? gradePillHtml(p.id) : ''}
           <span class="role-pill">${roleLabel}</span>
           <span class="mono" style="font-weight:600; width:90px; text-align:right;" title="Livraisons validées">${counts.get(p.id) || 0} livr.</span>
           <button class="btn-mini" data-manage-id="${p.id}" style="margin-left:0.6rem;">Gérer</button>
@@ -458,6 +459,14 @@
 
   function renderPlayerSheet() {
     if (!psCurrentPlayerId) return;
+
+    // Grade (titre attribué automatiquement selon les livraisons validées)
+    const gradeEl = document.getElementById('ps-grade');
+    if (gradeEl && typeof gradeOf === 'function') {
+      const g = gradeOf(psCurrentPlayerId);
+      if (g) { gradeEl.textContent = '🎖️ ' + g.nom; gradeEl.style.display = ''; }
+      else { gradeEl.style.display = 'none'; }
+    }
 
     // Distance
     const total = totalDistanceOf(psCurrentPlayerId);
