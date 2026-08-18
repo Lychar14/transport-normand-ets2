@@ -700,6 +700,27 @@
   .dashboard-quote span { color: var(--gold); font-style: normal; font-size: 0.76rem; }
 
   /* ---------- Vie de l'entreprise (annonces du patron) ---------- */
+  .annonce-ticker {
+    overflow: hidden; white-space: nowrap; margin-bottom: 1.1rem; padding-bottom: 1rem;
+    border-bottom: var(--sep-w) solid var(--sep);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
+  }
+  .annonce-ticker-track {
+    display: inline-flex; align-items: center; gap: 2.5rem; width: max-content;
+    animation: annonce-ticker-scroll 28s linear infinite;
+  }
+  .annonce-ticker:hover .annonce-ticker-track { animation-play-state: paused; }
+  .annonce-ticker-item { font-size: 0.82rem; color: var(--text); white-space: nowrap; }
+  .annonce-ticker-item b { color: var(--gold); font-weight: 700; }
+  .annonce-ticker-sep { color: var(--gold-dim); margin: 0 0.2rem; }
+  @keyframes annonce-ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .annonce-ticker-track { animation: none; }
+  }
   .annonce-item { padding: 0.9rem 0; border-bottom: var(--sep-w) solid var(--sep); }
   .annonce-item:last-child { border-bottom: none; }
   .annonce-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.35rem; }

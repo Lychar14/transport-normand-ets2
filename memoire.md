@@ -284,6 +284,12 @@ avant calcul).
 - Chaque entrée affiche titre, auteur (`pseudoOf`), délai relatif (`timeAgo`)
   et le message. Limité aux **8 plus récentes** (constante `ANNONCES_MAX` dans
   `js/annonces.js`), les plus récentes en premier.
+- **Bandeau défilant** (façon fil d'info) en tête de carte, au-dessus du fil
+  détaillé : les titres des annonces défilent en continu de droite à gauche
+  (animation CSS `translateX` en boucle, contenu dupliqué une fois pour un
+  bouclage sans à-coup). En pause au survol, désactivé automatiquement si la
+  préférence système « réduire les animations » est active (même logique que
+  la fumée dorée ambiante). Masqué s'il n'y a aucune annonce.
 - Table volontairement **non pré-remplie** par le script SQL (contrairement
   aux grades et citations, qui sont des échelles génériques) : c'est un fil de
   communication que le patron alimente lui-même.

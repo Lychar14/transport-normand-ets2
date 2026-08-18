@@ -19,6 +19,26 @@
     allAnnonces = error ? [] : (data || []);
   }
 
+  // Bandeau défilant : les titres des annonces, dupliqués une fois pour que
+  // la boucle CSS (translateX -50%) reparte pile où le premier passage finit.
+  function renderAnnonceTicker() {
+    const wrap = document.getElementById('annonce-ticker');
+    const track = document.getElementById('annonce-ticker-track');
+    if (!wrap || !track) return;
+
+    if (!allAnnonces.length) {
+      wrap.style.display = 'none';
+      track.innerHTML = '';
+      return;
+    }
+
+    const items = allAnnonces.map(a => `<span class="annonce-ticker-item">📢 <b>${escapeHtml(a.titre)}</b></span>`);
+    const sep = '<span class="annonce-ticker-sep">•</span>';
+    const passage = items.join(sep);
+    track.innerHTML = passage + sep + passage + sep;
+    wrap.style.display = '';
+  }
+
   function renderAnnonces() {
     const list = document.getElementById('annonces-list');
     const toggleBtn = document.getElementById('annonce-new-toggle');
@@ -26,6 +46,8 @@
 
     const isPatron = currentProfile && currentProfile.role === 'patron';
     if (toggleBtn) toggleBtn.style.display = isPatron ? '' : 'none';
+
+    renderAnnonceTicker();
 
     if (!allAnnonces.length) {
       list.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Aucune annonce pour l\'instant.</p>';
