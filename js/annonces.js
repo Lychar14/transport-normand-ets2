@@ -50,6 +50,9 @@
     track.style.animationDuration = duree + 's';
   }
 
+  // La liste détaillée ne sert plus qu'à la gestion (créer/modifier/supprimer) :
+  // le bandeau défilant affiche déjà l'annonce complète pour tout le monde.
+  // Elle n'est donc rendue que côté patron ; les employés ne voient que le bandeau.
   function renderAnnonces() {
     const list = document.getElementById('annonces-list');
     const toggleBtn = document.getElementById('annonce-new-toggle');
@@ -60,8 +63,15 @@
 
     renderAnnonceTicker();
 
+    if (!isPatron) {
+      list.style.display = 'none';
+      list.innerHTML = '';
+      return;
+    }
+    list.style.display = '';
+
     if (!allAnnonces.length) {
-      list.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Aucune annonce pour l\'instant.</p>';
+      list.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Aucune annonce pour l\'instant — publie la première ci-dessus.</p>';
       return;
     }
 
@@ -73,24 +83,20 @@
             <span class="annonce-meta">${pseudoOf(a.auteur_id)} · ${timeAgo(a.created_at)}</span>
           </div>
           <p class="annonce-contenu">${escapeHtml(a.contenu)}</p>
-          ${isPatron ? `
-            <div style="display:flex; gap:0.4rem; margin-top:0.6rem;">
-              <button class="btn-mini" data-annonce-edit="${a.id}">Modifier</button>
-              <button class="btn-mini" data-annonce-delete="${a.id}" style="color:var(--burgundy);">Supprimer</button>
-            </div>` : ''}
+          <div style="display:flex; gap:0.4rem; margin-top:0.6rem;">
+            <button class="btn-mini" data-annonce-edit="${a.id}">Modifier</button>
+            <button class="btn-mini" data-annonce-delete="${a.id}" style="color:var(--burgundy);">Supprimer</button>
+          </div>
         </div>
-        ${isPatron ? `
-          <div class="annonce-edit-form" style="display:none; margin-top:0.6rem;">
-            <div class="field" style="margin-bottom:0.5rem;"><input type="text" class="input-real annonce-edit-titre" value="${escapeHtml(a.titre)}" maxlength="80" /></div>
-            <div class="field" style="margin-bottom:0.5rem;"><textarea class="input-real annonce-edit-contenu" style="min-height:70px; resize:vertical; width:100%;">${escapeHtml(a.contenu)}</textarea></div>
-            <div style="display:flex; gap:0.5rem;">
-              <button class="btn-gold annonce-edit-save" style="padding:0.5rem 0.9rem; font-size:0.78rem;">Enregistrer</button>
-              <button class="btn-mini annonce-edit-cancel">Annuler</button>
-            </div>
-          </div>` : ''}
+        <div class="annonce-edit-form" style="display:none; margin-top:0.6rem;">
+          <div class="field" style="margin-bottom:0.5rem;"><input type="text" class="input-real annonce-edit-titre" value="${escapeHtml(a.titre)}" maxlength="80" /></div>
+          <div class="field" style="margin-bottom:0.5rem;"><textarea class="input-real annonce-edit-contenu" style="min-height:70px; resize:vertical; width:100%;">${escapeHtml(a.contenu)}</textarea></div>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn-gold annonce-edit-save" style="padding:0.5rem 0.9rem; font-size:0.78rem;">Enregistrer</button>
+            <button class="btn-mini annonce-edit-cancel">Annuler</button>
+          </div>
+        </div>
       </div>`).join('');
-
-    if (!isPatron) return;
 
     list.querySelectorAll('[data-annonce-edit]').forEach(btn => {
       btn.addEventListener('click', () => {

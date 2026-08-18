@@ -279,10 +279,12 @@ avant calcul).
 - **Seul le patron peut publier, modifier et supprimer** une annonce (bouton
   « + Publier une annonce », formulaire *Titre* + *Message* ; boutons
   *Modifier* / *Supprimer* sur chaque entrée, formulaire d'édition en ligne).
-  Les employés n'ont accès à aucun de ces contrôles, en lecture seule sur le fil.
-- Chaque entrée affiche titre, auteur (`pseudoOf`), délai relatif (`timeAgo`)
-  et le message. Limité aux **8 plus récentes** (constante `ANNONCES_MAX` dans
-  `js/annonces.js`), les plus récentes en premier.
+- **La liste détaillée sous le bandeau n'est visible que par le patron**
+  (`annonces-list` masquée côté employé) : c'est désormais uniquement son
+  panneau de gestion (créer/modifier/supprimer), le bandeau défilant affichant
+  déjà l'annonce complète pour tout le monde — la garder en double pour les
+  employés était redondant. Limité aux **8 plus récentes** (constante
+  `ANNONCES_MAX` dans `js/annonces.js`), les plus récentes en premier.
 - **Bandeau défilant** (façon fil d'info) en tête de carte, au-dessus du fil
   détaillé : **l'annonce complète** (titre + message, sauts de ligne aplatis)
   défile en continu de droite à gauche pour chaque entrée (animation CSS
