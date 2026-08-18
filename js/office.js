@@ -435,6 +435,19 @@
     document.querySelectorAll('#ps-reset-options input[type="checkbox"]').forEach(cb => cb.checked = false);
     setStatus('ps-reset-status', '', false);
 
+    // Pseudo : édition toujours refermée à l'ouverture
+    document.getElementById('ps-pseudo-edit-row').style.display = 'none';
+    document.getElementById('ps-pseudo-input').value = player.pseudo;
+    setStatus('ps-pseudo-status', '', false);
+
+    // Exclure : champ de confirmation vidé, hint mis à jour, garde-fou auto-exclusion
+    document.getElementById('ps-exclude-confirm-input').value = '';
+    document.getElementById('ps-exclude-pseudo-hint').textContent = player.pseudo;
+    setStatus('ps-exclude-status', '', false);
+    const estMoi = currentProfile && currentProfile.id === playerId;
+    document.getElementById('ps-exclude-self-warning').style.display = estMoi ? 'block' : 'none';
+    document.getElementById('ps-exclude-form').style.display = estMoi ? 'none' : 'block';
+
     renderPlayerSheet();
   }
 
@@ -499,6 +512,60 @@
 
   const psCloseBtn = document.getElementById('ps-close-btn');
   if (psCloseBtn) psCloseBtn.addEventListener('click', closePlayerSheet);
+
+  // ---------- Fiche joueur : modification du pseudo ----------
+  const psPseudoEditBtn = document.getElementById('ps-pseudo-edit-btn');
+  const psPseudoCancelBtn = document.getElementById('ps-pseudo-cancel-btn');
+  const psPseudoSaveBtn = document.getElementById('ps-pseudo-save-btn');
+  if (psPseudoEditBtn) {
+    psPseudoEditBtn.addEventListener('click', () => {
+      document.getElementById('ps-pseudo-edit-row').style.display = 'flex';
+      const input = document.getElementById('ps-pseudo-input');
+      input.value = pseudoOf(psCurrentPlayerId);
+      input.focus();
+    });
+  }
+  if (psPseudoCancelBtn) {
+    psPseudoCancelBtn.addEventListener('click', () => {
+      document.getElementById('ps-pseudo-edit-row').style.display = 'none';
+      setStatus('ps-pseudo-status', '', false);
+    });
+  }
+  if (psPseudoSaveBtn) {
+    psPseudoSaveBtn.addEventListener('click', async () => {
+      if (!psCurrentPlayerId) return;
+      const nouveauPseudo = (document.getElementById('ps-pseudo-input').value || '').trim();
+      if (!nouveauPseudo) { setStatus('ps-pseudo-status', 'Le pseudo ne peut pas être vide.', true); return; }
+
+      psPseudoSaveBtn.disabled = true; psPseudoSaveBtn.textContent = '...';
+      const { error } = await supabaseClient.from('profiles')
+        .update({ pseudo: nouveauPseudo }).eq('id', psCurrentPlayerId);
+      psPseudoSaveBtn.disabled = false; psPseudoSaveBtn.textContent = 'Enregistrer';
+
+      if (error) { setStatus('ps-pseudo-status', 'Erreur : ' + error.message, true); return; }
+
+      const { data: profilsFrais } = await supabaseClient.from('profiles').select('*').order('pseudo');
+      allProfiles = profilsFrais || allProfiles;
+      if (currentProfile && currentProfile.id === psCurrentPlayerId) {
+        currentProfile = allProfiles.find(p => p.id === currentProfile.id) || currentProfile;
+        const sidebarPseudo = document.getElementById('sidebar-pseudo');
+        if (sidebarPseudo) sidebarPseudo.textContent = currentProfile.pseudo || 'Membre';
+        const greetEl = document.getElementById('dashboard-greeting');
+        if (greetEl) greetEl.textContent = `Bonjour, ${currentProfile.pseudo}.`;
+      }
+
+      document.getElementById('ps-pseudo').textContent = nouveauPseudo;
+      document.getElementById('ps-exclude-pseudo-hint').textContent = nouveauPseudo;
+      document.getElementById('ps-pseudo-edit-row').style.display = 'none';
+      setStatus('ps-pseudo-status', 'Pseudo mis à jour.', false);
+
+      renderOfficeTeam();
+      renderMemberPills();
+      renderDriverProfiles();
+      if (typeof populateOperationMemberSelect === 'function') populateOperationMemberSelect();
+      renderTransactions();
+    });
+  }
 
   const psOverlay = document.getElementById('player-sheet-overlay');
   if (psOverlay) {
@@ -763,6 +830,103 @@
       } else {
         setStatus('ps-reset-status', `Réinitialisation effectuée pour ${pseudo} (${choisies.length} catégorie${choisies.length > 1 ? 's' : ''}).`, false);
       }
+    });
+  }
+
+  // ==========================================================
+  // FICHE JOUEUR — onglet "Exclure"
+  // ==========================================================
+  // Contrairement à "Réinitialiser", ici on efface TOUT, y compris le compte
+  // lui-même (profil, pseudo, rôle). Réutilise les mêmes executer() que les
+  // catégories de réinitialisation, plus la fiche flotte (supprimée pour de
+  // bon, pas juste vidée) et la ligne "profiles". Ne supprime pas le compte
+  // de connexion Supabase Authentication : ça demande la clé service_role,
+  // jamais exposée côté client — voir l'avertissement affiché dans l'onglet.
+  const EXCLUDE_CATEGORY_KEYS = [
+    'distance', 'missions-cours', 'missions-historique', 'argent',
+    'notes', 'rendezvous', 'calendrier', 'mails'
+  ];
+
+  const psExcludeRunBtn = document.getElementById('ps-exclude-run-btn');
+  if (psExcludeRunBtn) {
+    psExcludeRunBtn.addEventListener('click', async () => {
+      if (!psCurrentPlayerId) return;
+      if (currentProfile && currentProfile.id === psCurrentPlayerId) return;
+
+      const pseudo = pseudoOf(psCurrentPlayerId);
+      const saisie = (document.getElementById('ps-exclude-confirm-input').value || '').trim();
+      if (saisie.toLowerCase() !== pseudo.toLowerCase()) {
+        setStatus('ps-exclude-status', `Tape exactement le pseudo affiché : ${pseudo}`, true);
+        return;
+      }
+      if (!confirm(`Exclure définitivement ${pseudo} ?\n\nToutes ses données seront effacées, y compris son compte (pseudo, rôle). Cette suppression est irréversible. Continuer ?`)) return;
+
+      psExcludeRunBtn.disabled = true; psExcludeRunBtn.textContent = 'Exclusion...';
+      const id = psCurrentPlayerId;
+      const echecs = [];
+      const bloquees = [];
+
+      for (const cle of EXCLUDE_CATEGORY_KEYS) {
+        const cat = PS_RESET_CATEGORIES.find(c => c.cle === cle);
+        const attendu = cat.compte(id);
+        const res = await cat.executer(id);
+        if (res && res.error) {
+          echecs.push(`${cat.label} : ${res.error.message}`);
+        } else if (attendu > 0 && res && res.n === 0) {
+          bloquees.push(cat.label);
+        }
+      }
+
+      // Fiche flotte : supprimée pour de bon (pas juste vidée)
+      const aUneFicheFlotte = (allDriverProfiles || []).some(d => d.id === id);
+      const rFlotte = await psSupprimer(supabaseClient.from('driver_profiles').delete().eq('id', id));
+      if (rFlotte.error) echecs.push('Fiche flotte : ' + rFlotte.error.message);
+      else if (aUneFicheFlotte && rFlotte.n === 0) bloquees.push('Fiche flotte');
+
+      // Le compte lui-même, en dernier (les autres tables y font référence)
+      if (!echecs.length && !bloquees.length) {
+        const rProfil = await psSupprimer(supabaseClient.from('profiles').delete().eq('id', id));
+        if (rProfil.error) echecs.push('Compte (profil) : ' + rProfil.error.message);
+        else if (rProfil.n === 0) bloquees.push('Compte (profil)');
+      }
+
+      psExcludeRunBtn.disabled = false; psExcludeRunBtn.textContent = 'Exclure définitivement ce membre';
+
+      if (echecs.length) {
+        setStatus('ps-exclude-status', 'Exclusion incomplète — ' + echecs.join(' | '), true);
+        return;
+      }
+      if (bloquees.length) {
+        setStatus('ps-exclude-status',
+          'Rien n\'a été supprimé pour : ' + bloquees.join(', ') +
+          '. La base a refusé la suppression sans message d\'erreur — il manque les droits de suppression. ' +
+          'Exécute le script 24-exclusion-membre.sql dans Supabase, puis réessaie.', true);
+        return;
+      }
+
+      // Succès : le membre n'existe plus, on ferme la fiche et on recharge tout
+      closePlayerSheet();
+      const { data: profilsFrais } = await supabaseClient.from('profiles').select('*').order('pseudo');
+      allProfiles = profilsFrais || allProfiles.filter(p => p.id !== id);
+      await Promise.all([
+        loadDistanceEntries(), loadPlayerNotes(), loadMissions(),
+        loadTransactions(), loadDriverProfiles(), loadMails(),
+        loadCalendarEvents(), loadAppointmentSlots()
+      ]);
+      await loadValidatedProofs();
+      renderOfficeTeam();
+      renderMemberPills();
+      renderDriverProfiles();
+      renderTransactions();
+      renderOfficeOverview();
+      renderRoadsheet();
+      renderMissionsValidees();
+      renderDashboardStats();
+      renderDashboardMails();
+      if (typeof populateOperationMemberSelect === 'function') populateOperationMemberSelect();
+      if (typeof renderClassement === 'function') renderClassement();
+
+      alert(`${pseudo} a été exclu. Toutes ses données ont été supprimées.\n\nSon compte de connexion existe encore côté Supabase Authentication — supprime-le aussi depuis Authentication → Users si tu veux qu'il ne puisse plus du tout se reconnecter.`);
     });
   }
 

@@ -1390,7 +1390,16 @@
       <div style="display:flex; align-items:center; gap:0.8rem; min-width:0;">
         <div class="member-avatar" id="ps-avatar" style="width:40px; height:40px;"></div>
         <div style="min-width:0;">
-          <div style="font-family:'Manrope'; font-weight:700; font-size:1.05rem;" id="ps-pseudo">—</div>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <div style="font-family:'Manrope'; font-weight:700; font-size:1.05rem;" id="ps-pseudo">—</div>
+            <button class="btn-mini" id="ps-pseudo-edit-btn" title="Modifier le pseudo" style="padding:0.1rem 0.45rem; font-size:0.75rem;">✎</button>
+          </div>
+          <div id="ps-pseudo-edit-row" class="ps-field-row" style="display:none; margin-top:0.5rem;">
+            <input type="text" id="ps-pseudo-input" class="input-real" style="max-width:170px;" maxlength="40">
+            <button class="btn-gold" id="ps-pseudo-save-btn" style="padding:0.4rem 0.8rem; font-size:0.78rem;">Enregistrer</button>
+            <button class="btn-mini" id="ps-pseudo-cancel-btn" style="padding:0.4rem 0.8rem; font-size:0.78rem;">Annuler</button>
+          </div>
+          <p id="ps-pseudo-status" style="margin:0.3rem 0 0; font-size:0.76rem; color:var(--muted);"></p>
           <span class="role-pill" id="ps-role">—</span>
         </div>
       </div>
@@ -1403,6 +1412,7 @@
       <button data-ps-tab="transactions">Transactions</button>
       <button data-ps-tab="appointments">Rendez-vous</button>
       <button data-ps-tab="reset" style="color:var(--burgundy);">Réinitialiser</button>
+      <button data-ps-tab="exclude" style="color:var(--burgundy); font-weight:700;">Exclure</button>
     </div>
 
     <div class="ps-body">
@@ -1472,6 +1482,38 @@
             <button class="btn-danger" id="ps-reset-run-btn" type="button">Réinitialiser la sélection</button>
           </div>
           <p id="ps-reset-status" style="margin-top:0.7rem; font-size:0.82rem; color:var(--muted);"></p>
+        </div>
+      </div>
+
+      <!-- EXCLURE -->
+      <div id="ps-view-exclude" class="ps-view">
+        <div class="ps-reset-warning">
+          ⚠️ <strong>Exclusion définitive.</strong> Toutes les données de ce membre sont
+          effacées de la base — kilomètres, feuilles de route (en cours et historique),
+          argent, notes & blâmes, rendez-vous, calendrier, messagerie, fiche flotte, photo
+          — <strong>ainsi que son compte (profil, pseudo, rôle)</strong>. Cette action est
+          <strong>irréversible</strong>.
+          <br><br>
+          Remarque technique : son identifiant de connexion (email / mot de passe) reste
+          enregistré côté Supabase Authentication — le site ne peut pas le supprimer
+          lui-même. Pour l'empêcher de se reconnecter complètement, supprime aussi son
+          compte depuis le tableau de bord Supabase (Authentication → Users) après
+          l'exclusion.
+        </div>
+
+        <p id="ps-exclude-self-warning" style="display:none; margin:1rem 0 0; font-size:0.85rem; color:var(--burgundy);">
+          Tu ne peux pas t'exclure toi-même.
+        </p>
+
+        <div id="ps-exclude-form" class="ps-reset-confirm" style="margin-top:1.2rem; padding-top:0;">
+          <p style="font-size:0.82rem; color:var(--muted); margin-bottom:0.6rem;">
+            Pour confirmer, tape le pseudo exact du membre (<strong style="color:var(--text);" id="ps-exclude-pseudo-hint">—</strong>) ci-dessous.
+          </p>
+          <div class="ps-field-row">
+            <input type="text" id="ps-exclude-confirm-input" class="input-real" placeholder="Pseudo du membre" style="flex:1; min-width:180px;">
+            <button class="btn-danger" id="ps-exclude-run-btn" type="button">Exclure définitivement ce membre</button>
+          </div>
+          <p id="ps-exclude-status" style="margin-top:0.7rem; font-size:0.82rem; color:var(--muted);"></p>
         </div>
       </div>
     </div>

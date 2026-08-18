@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 18 août 2026 — version courante du site : **v49**
+> Dernière mise à jour : 18 août 2026 — version courante du site : **v50**
 
 ---
 
@@ -346,13 +346,21 @@ et affiche donc la même alerte si les policies `DELETE` manquent (script
 Onglets : **Vue d'ensemble**, **Validations**, **Équipe**, **Missions**, **Trésorerie**,
 **Communication**.
 
-- **Équipe → fiche joueur** (bouton « Gérer » sur chaque membre), 5 onglets
+- **Équipe → fiche joueur** (bouton « Gérer » sur chaque membre), 6 onglets
   (script `18-fiche-joueur.sql`, tables `distance_entries` et `player_notes`) :
   - *Distance* — saisie manuelle de la distance cumulée par le patron
   - *Notes & blâmes* — **strictement réservé au patron**
   - *Transactions*
   - *Rendez-vous*
   - *Réinitialiser* (v40) — voir ci-dessous
+  - *Exclure* (v50) — voir ci-dessous
+
+**Pseudo modifiable (v50)** : petit bouton ✎ à côté du pseudo dans l'en-tête de la
+fiche joueur (n'importe quel onglet). Ouvre un champ + « Enregistrer » qui met à
+jour `profiles.pseudo`. Si le patron modifie son propre pseudo, la sidebar et la
+salutation du tableau de bord sont mises à jour immédiatement ; toutes les listes
+affichant des pseudos sont redessinées (équipe, sélecteur de mission, fiches
+chauffeurs, sélecteur d'opération trésorerie).
 
 #### Réinitialisation par joueur (v40)
 
@@ -387,6 +395,49 @@ Garde-fous :
 ⚠️ Attention sur *Fiche flotte* : tant que le joueur n'a pas recoché ses DLC, les
 menus Départ / Arrivée de ses futures missions n'afficheront plus aucune ville
 (sauf à passer par la saisie manuelle ajoutée en v38).
+
+#### Exclusion d'un membre (v50)
+
+Onglet **Exclure** de la fiche joueur, à côté de Réinitialiser, en rouge. Contrairement
+à la réinitialisation (à la carte), l'exclusion efface **tout d'un coup**, y compris le
+compte lui-même :
+
+- Toutes les catégories de la réinitialisation (kilomètres, feuilles de route en
+  cours et historique, argent, notes & blâmes, rendez-vous, calendrier, messagerie) ;
+- la **fiche flotte**, supprimée pour de bon (pas juste vidée comme en réinitialisation) ;
+- la ligne `profiles` elle-même — pseudo et rôle disparaissent, en dernier après
+  toutes les autres tables (qui y font référence).
+
+Garde-fous :
+- **Impossible de s'exclure soi-même** — le formulaire est masqué et remplacé par un
+  message si la fiche ouverte est celle du patron connecté.
+- Il faut **taper le pseudo exact** du membre (pas un mot magique générique, pour
+  éviter une confusion avec Réinitialiser), puis confirmer une fenêtre récapitulative.
+- Même garde-fou RLS que Réinitialiser : si une suppression touche 0 ligne sans
+  erreur, l'interface le signale et renvoie vers le script SQL requis au lieu de
+  laisser croire que tout a été effacé.
+- À la fin, la fiche se ferme (le membre n'existe plus) et tout l'écran est rechargé.
+
+⚠️ **Limite connue, volontaire** : le site n'a accès qu'à la clé publique **anon**
+de Supabase (jamais la `service_role`, qui permettrait de supprimer un compte
+Supabase Authentication — l'exposer côté client serait une faille de sécurité
+majeure). L'exclusion supprime donc **toutes les données de l'application**, mais
+**pas le compte de connexion** (email + mot de passe) côté Supabase Auth : le
+membre exclu ne peut plus rien voir/faire dans le site (son profil n'existe plus),
+mais reste techniquement listé dans *Authentication → Users*. Un message le
+rappelle au patron après l'exclusion ; pour une suppression complète, il doit
+retirer le compte manuellement depuis le tableau de bord Supabase.
+
+##### ⚠️ Droits de suppression obligatoires — profils & fiche flotte (script `24-exclusion-membre.sql`)
+
+Comme pour la réinitialisation (v41), les tables `profiles` et `driver_profiles`
+n'avaient encore **aucune policy `DELETE`** avant la v50 (seules deux policies
+`UPDATE` existaient, posées en v41 pour vider la fiche flotte/photo d'un autre
+joueur). Le script `24-exclusion-membre.sql` ajoute les deux policies `DELETE`
+manquantes, réservées au patron, et interdit explicitement à un compte de
+supprimer sa propre ligne `profiles` (`id <> auth.uid()`) — sécurité en plus du
+garde-fou déjà posé côté interface. Réutilise la fonction `public.est_patron()`
+créée par le script `23-policies-suppression.sql`.
 
 ##### ⚠️ Droits de suppression obligatoires (script `23-policies-suppression.sql`)
 
@@ -514,13 +565,16 @@ directs de `<main>` sont des `.view`, et il n'y a plus aucun ID dupliqué.
 | `21-bucket-logos.sql` | Création du bucket `logos` (public) + policies — corrige « Bucket not found » |
 | `22-commentaire-mission.sql` | Colonne `commentaire` sur `missions` (informations diverses, v38) |
 | `23-policies-suppression.sql` | Droits de suppression du patron — **obligatoire** pour que l'onglet Réinitialiser fonctionne (v41) |
+| `24-exclusion-membre.sql` | Droits de suppression du patron sur `profiles` et `driver_profiles` — **obligatoire** pour que l'onglet Exclure fonctionne (v50) |
 
 Les versions v21 à v28 n'ont nécessité **aucun** script SQL ; la v29 nécessite
 `19-presentation-page.sql`, la v30 y ajoute `20-logo-entreprise.sql`. Les versions
 v31 à v37 ne nécessitent **aucun** script SQL côté site ; la v38 nécessite
 `22-commentaire-mission.sql` ; les v39 et v40 ne nécessitent aucun script SQL ; la
 v41 nécessite **`23-policies-suppression.sql`** ; la v42 ne nécessite aucun script
-SQL supplémentaire (mais dépend de celui de la v41).
+SQL supplémentaire (mais dépend de celui de la v41) ; la v50 nécessite
+**`24-exclusion-membre.sql`** (dépend aussi de la fonction `est_patron()` créée
+par le script de la v41).
 
 ⚠️ **Bucket `logos` manquant.** À l'import d'un logo ou d'une icône, l'erreur
 « Bucket not found » signifie que le bucket Storage `logos` n'existe pas dans le
@@ -578,6 +632,7 @@ mais les policies d'écriture restent à passer par le script.
 | v47 | Migration de l'hébergement Cloudflare Pages → **Vercel** (Cloudflare ne redéployait plus automatiquement, cause non résolue) ; suppression du dépôt GitHub doublon `transport-normand-ets2-par-git` |
 | v48 | Nouvel onglet **Classement des chauffeurs** (menu Personnel) : tri par km parcourus ce mois-ci, colonnes livraisons validées / km / revenus déclarés, médailles top 3, visible par toute l'équipe |
 | v49 | Liste déroulante « 1. Cargaison » (Bureau du patron > Missions) remplacée par la liste complète et réelle du jeu (309 cargaisons uniques, dédupliquées à partir de captures d'écran) au lieu de l'ancienne liste d'exemple par catégories |
+| v50 | Fiche joueur : pseudo modifiable (bouton ✎ dans l'en-tête) + nouvel onglet **Exclure** (suppression complète et définitive d'un membre — toutes ses données et son compte, sauf son identifiant Supabase Authentication, non supprimable côté client) |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 
