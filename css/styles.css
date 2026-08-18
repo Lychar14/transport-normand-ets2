@@ -236,6 +236,31 @@
   .member-row { display: flex; align-items: center; gap: 0.9rem; padding: 0.8rem 1.4rem; border-bottom: var(--sep-w) solid var(--sep); }
   .member-row:last-child { border-bottom: none; }
   .member-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); }
+
+  /* ---------- Classement des chauffeurs ---------- */
+  .classement-header, .classement-row {
+    display: grid; grid-template-columns: 44px 1fr 110px 130px 130px; align-items: center; gap: 0.9rem;
+  }
+  .classement-header {
+    padding: 0.7rem 1.4rem; font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border);
+  }
+  .classement-header span:not(:first-child), .classement-row .classement-col { text-align: right; }
+  .classement-row { padding: 0.8rem 1.4rem; border-bottom: var(--sep-w) solid var(--sep); }
+  .classement-row:last-child { border-bottom: none; }
+  .classement-row.is-me { background: rgba(217,170,78,0.06); }
+  .classement-rank { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--muted); text-align: center; }
+  .classement-rank.top-1 { color: var(--gold); font-size: 1.1rem; }
+  .classement-rank.top-2 { color: #c7cbd4; font-size: 1.02rem; }
+  .classement-rank.top-3 { color: #c98a4e; font-size: 1.02rem; }
+  .classement-who { display: flex; align-items: center; gap: 0.7rem; min-width: 0; }
+  .classement-who .avatar {
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 700; color: var(--muted);
+  }
+  .classement-pseudo { font-weight: 600; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .classement-col { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+  .classement-col.km { color: var(--gold); font-weight: 700; }
   .lock-note {
     display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--gold);
     background: rgba(217,170,78,0.08); border: 1px solid rgba(217,170,78,0.25); border-radius: 10px;

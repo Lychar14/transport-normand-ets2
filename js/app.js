@@ -72,6 +72,7 @@
     renderProfile();
     renderMyFleet();
     renderMissionsValidees();
+    renderClassement();
     if (isPatron) {
       await loadDriverProfiles();
       renderDriverProfiles();

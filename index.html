@@ -178,6 +178,7 @@
 
     <div class="nav-group">
       <p class="nav-label">Activité</p>
+      <button data-view="classement"><span class="dot"></span>Classement</button>
       <button data-view="roadsheet"><span class="dot"></span>Feuille de route<span class="alert-count">0</span></button>
       <button data-view="mission-detail"><span class="dot"></span>Historique feuilles de route</button>
       <button data-view="calendar"><span class="dot"></span>Calendrier</button>
@@ -338,6 +339,25 @@
     <section class="card" style="padding: 1.75rem 2rem;">
       <p class="eyebrow" style="margin-bottom: 1.1rem;">Trophées</p>
       <div id="profile-trophies"></div>
+    </section>
+  </section>
+
+  <!-- CLASSEMENT -->
+  <section id="view-classement" class="view">
+    <div class="hero-row">
+      <p class="eyebrow" id="classement-periode">Classement du mois</p>
+      <h1 class="greeting">Classement des chauffeurs</h1>
+    </div>
+
+    <section class="card" style="padding: 0;">
+      <div class="classement-header">
+        <span></span>
+        <span style="text-align:left;">Chauffeur</span>
+        <span>Livraisons</span>
+        <span>Km parcourus</span>
+        <span>Revenus déclarés</span>
+      </div>
+      <div id="classement-list"></div>
     </section>
   </section>
 
@@ -1191,6 +1211,7 @@
 <script src="js/roadsheet.js"></script>
 <script src="js/profile.js"></script>
 <script src="js/office.js"></script>
+<script src="js/classement.js"></script>
 <script src="js/tresorerie.js"></script>
 <script src="js/calendrier.js"></script>
 <script src="js/rendezvous.js"></script>
