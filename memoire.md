@@ -276,28 +276,35 @@ avant calcul).
 - Fil d'annonces façon panneau d'affichage, affiché en **premier sur le
   tableau de bord** (au-dessus de « Solde personnel »), visible par toute
   l'équipe.
-- **Seul le patron peut publier** (bouton « + Publier une annonce », formulaire
-  *Titre* + *Message*) et **supprimer** une annonce — pas d'édition après coup,
-  volontairement : on supprime et on republie, comme un vrai panneau
-  d'affichage. Les employés n'ont accès à aucun de ces contrôles, en lecture
-  seule sur le fil.
+- **Seul le patron peut publier, modifier et supprimer** une annonce (bouton
+  « + Publier une annonce », formulaire *Titre* + *Message* ; boutons
+  *Modifier* / *Supprimer* sur chaque entrée, formulaire d'édition en ligne).
+  Les employés n'ont accès à aucun de ces contrôles, en lecture seule sur le fil.
 - Chaque entrée affiche titre, auteur (`pseudoOf`), délai relatif (`timeAgo`)
   et le message. Limité aux **8 plus récentes** (constante `ANNONCES_MAX` dans
   `js/annonces.js`), les plus récentes en premier.
 - **Bandeau défilant** (façon fil d'info) en tête de carte, au-dessus du fil
-  détaillé : les titres des annonces défilent en continu de droite à gauche
-  (animation CSS `translateX` en boucle, contenu dupliqué une fois pour un
-  bouclage sans à-coup). En pause au survol, désactivé automatiquement si la
-  préférence système « réduire les animations » est active (même logique que
-  la fumée dorée ambiante). Masqué s'il n'y a aucune annonce.
+  détaillé : **l'annonce complète** (titre + message, sauts de ligne aplatis)
+  défile en continu de droite à gauche pour chaque entrée (animation CSS
+  `translateX` en boucle, contenu dupliqué une fois pour un bouclage sans
+  à-coup). Vitesse de défilement **constante** quel que soit le volume de
+  texte : la durée de l'animation est recalculée en JS à partir de la largeur
+  réelle du texte (`track.scrollWidth`), appliquée uniquement sur
+  `animation-duration` (jamais sur le raccourci `animation`, pour ne pas
+  écraser la pause au survol posée en CSS). En pause au survol, désactivé
+  automatiquement si la préférence système « réduire les animations » est
+  active (même logique que la fumée dorée ambiante). Masqué s'il n'y a aucune
+  annonce.
 - Table volontairement **non pré-remplie** par le script SQL (contrairement
   aux grades et citations, qui sont des échelles génériques) : c'est un fil de
   communication que le patron alimente lui-même.
 - Fichier dédié `js/annonces.js` (`loadAnnonces()`, `renderAnnonces()`,
-  `setAnnonceFormOpen()`), appelé depuis `initAppData()` pour tous les rôles.
-- Script SQL `27-annonces.sql` — table `annonces` (`titre`, `contenu`,
-  `auteur_id`, `created_at`), RLS lecture par toute l'équipe / écriture
-  (insert, delete) réservée au patron via `public.est_patron()`.
+  `renderAnnonceTicker()`, `setAnnonceFormOpen()`), appelé depuis
+  `initAppData()` pour tous les rôles.
+- Scripts SQL `27-annonces.sql` (table `annonces` : `titre`, `contenu`,
+  `auteur_id`, `created_at` ; RLS lecture par toute l'équipe / insert+delete
+  réservés au patron) puis `28-annonces-edition.sql` (colonne `updated_at` +
+  policy `UPDATE` manquante, ajoutée après coup pour permettre la modification).
 
 ### Mon profil (vue employé)
 - En-tête avec avatar (initiales ou photo importée), 4 statistiques dont les
@@ -643,6 +650,7 @@ directs de `<main>` sont des `.view`, et il n'y a plus aucun ID dupliqué.
 | `25-grades.sql` | Table `grades` (échelle de titres) + RLS écriture réservée au patron — **obligatoire** pour que Réglages > Grades fonctionne (v51) |
 | `26-citations.sql` | Table `citations` (citation du jour) + RLS écriture réservée au patron — **obligatoire** pour que Réglages > Citations de la route fonctionne (v52) |
 | `27-annonces.sql` | Table `annonces` (fil « Vie de l'entreprise ») + RLS écriture réservée au patron — **obligatoire** pour que le tableau de bord affiche/publie des annonces (v53) |
+| `28-annonces-edition.sql` | Colonne `updated_at` + policy `UPDATE` sur `annonces` — **obligatoire** pour que le bouton Modifier d'une annonce fonctionne (v53) |
 
 Les versions v21 à v28 n'ont nécessité **aucun** script SQL ; la v29 nécessite
 `19-presentation-page.sql`, la v30 y ajoute `20-logo-entreprise.sql`. Les versions

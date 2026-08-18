@@ -2,10 +2,10 @@
   // VIE DE L'ENTREPRISE — fil d'annonces du patron, affiché sur le
   // tableau de bord de toute l'équipe
   // ----------------------------------------------------------
-  // Table Supabase `annonces` (script 27-annonces.sql) : lecture par toute
-  // l'équipe, écriture (publier, supprimer) réservée au patron via
-  // public.est_patron(). Pas d'édition après publication — on supprime et on
-  // republie, comme un vrai panneau d'affichage.
+  // Table Supabase `annonces` (scripts 27-annonces.sql puis
+  // 28-annonces-edition.sql pour l'update) : lecture par toute l'équipe,
+  // écriture (publier, modifier, supprimer) réservée au patron via
+  // public.est_patron().
   // ==========================================================
   const ANNONCES_MAX = 8;   // les plus récentes affichées en premier
   let allAnnonces = [];
@@ -19,8 +19,10 @@
     allAnnonces = error ? [] : (data || []);
   }
 
-  // Bandeau défilant : les titres des annonces, dupliqués une fois pour que
-  // la boucle CSS (translateX -50%) reparte pile où le premier passage finit.
+  // Bandeau défilant : l'annonce complète (titre + message), dupliquée une
+  // fois pour que la boucle CSS (translateX -50%) reparte pile où le premier
+  // passage finit. La durée est recalculée selon la largeur réelle du texte
+  // pour garder une vitesse de défilement constante, peu importe le volume.
   function renderAnnonceTicker() {
     const wrap = document.getElementById('annonce-ticker');
     const track = document.getElementById('annonce-ticker-track');
@@ -32,11 +34,20 @@
       return;
     }
 
-    const items = allAnnonces.map(a => `<span class="annonce-ticker-item">📢 <b>${escapeHtml(a.titre)}</b></span>`);
+    const items = allAnnonces.map(a => {
+      const contenuFlat = (a.contenu || '').replace(/\s+/g, ' ').trim();
+      return `<span class="annonce-ticker-item">📢 <b>${escapeHtml(a.titre)}</b>${contenuFlat ? ' — ' + escapeHtml(contenuFlat) : ''}</span>`;
+    });
     const sep = '<span class="annonce-ticker-sep">•</span>';
     const passage = items.join(sep);
-    track.innerHTML = passage + sep + passage + sep;
+
     wrap.style.display = '';
+    track.innerHTML = passage + sep + passage + sep;
+
+    // Vitesse constante (~55px/s) quel que soit le volume de texte affiché
+    const largeurPassage = track.scrollWidth / 2;
+    const duree = Math.max(18, Math.round(largeurPassage / 55));
+    track.style.animationDuration = duree + 's';
   }
 
   function renderAnnonces() {
@@ -56,28 +67,78 @@
 
     list.innerHTML = allAnnonces.map(a => `
       <div class="annonce-item" data-annonce-id="${a.id}">
-        <div class="annonce-head">
-          <span class="annonce-titre">${escapeHtml(a.titre)}</span>
-          <span class="annonce-meta">${pseudoOf(a.auteur_id)} · ${timeAgo(a.created_at)}</span>
+        <div class="annonce-view">
+          <div class="annonce-head">
+            <span class="annonce-titre">${escapeHtml(a.titre)}</span>
+            <span class="annonce-meta">${pseudoOf(a.auteur_id)} · ${timeAgo(a.created_at)}</span>
+          </div>
+          <p class="annonce-contenu">${escapeHtml(a.contenu)}</p>
+          ${isPatron ? `
+            <div style="display:flex; gap:0.4rem; margin-top:0.6rem;">
+              <button class="btn-mini" data-annonce-edit="${a.id}">Modifier</button>
+              <button class="btn-mini" data-annonce-delete="${a.id}" style="color:var(--burgundy);">Supprimer</button>
+            </div>` : ''}
         </div>
-        <p class="annonce-contenu">${escapeHtml(a.contenu)}</p>
-        ${isPatron ? `<button class="btn-mini annonce-delete-btn" data-annonce-delete="${a.id}" style="margin-top:0.6rem; color:var(--burgundy);">Supprimer</button>` : ''}
+        ${isPatron ? `
+          <div class="annonce-edit-form" style="display:none; margin-top:0.6rem;">
+            <div class="field" style="margin-bottom:0.5rem;"><input type="text" class="input-real annonce-edit-titre" value="${escapeHtml(a.titre)}" maxlength="80" /></div>
+            <div class="field" style="margin-bottom:0.5rem;"><textarea class="input-real annonce-edit-contenu" style="min-height:70px; resize:vertical; width:100%;">${escapeHtml(a.contenu)}</textarea></div>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn-gold annonce-edit-save" style="padding:0.5rem 0.9rem; font-size:0.78rem;">Enregistrer</button>
+              <button class="btn-mini annonce-edit-cancel">Annuler</button>
+            </div>
+          </div>` : ''}
       </div>`).join('');
 
-    if (isPatron) {
-      list.querySelectorAll('[data-annonce-delete]').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const id = btn.dataset.annonceDelete;
-          if (!confirm('Supprimer cette annonce ?')) return;
-          btn.disabled = true;
-          const { error } = await supabaseClient.from('annonces').delete().eq('id', id);
-          btn.disabled = false;
-          if (error) { alert('Erreur : ' + error.message); return; }
-          await loadAnnonces();
-          renderAnnonces();
-        });
+    if (!isPatron) return;
+
+    list.querySelectorAll('[data-annonce-edit]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('[data-annonce-id]');
+        row.querySelector('.annonce-view').style.display = 'none';
+        row.querySelector('.annonce-edit-form').style.display = 'block';
       });
-    }
+    });
+    list.querySelectorAll('.annonce-edit-cancel').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('[data-annonce-id]');
+        row.querySelector('.annonce-edit-form').style.display = 'none';
+        row.querySelector('.annonce-view').style.display = 'block';
+      });
+    });
+    list.querySelectorAll('.annonce-edit-save').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const row = btn.closest('[data-annonce-id]');
+        const id = row.dataset.annonceId;
+        const titre = row.querySelector('.annonce-edit-titre').value.trim();
+        const contenu = row.querySelector('.annonce-edit-contenu').value.trim();
+        if (!titre || !contenu) { alert('Le titre et le message ne peuvent pas être vides.'); return; }
+
+        btn.disabled = true; btn.textContent = '...';
+        const { error } = await supabaseClient.from('annonces')
+          .update({ titre, contenu, updated_at: new Date().toISOString() }).eq('id', id);
+        btn.disabled = false; btn.textContent = 'Enregistrer';
+
+        if (error) {
+          alert("Échec de l'enregistrement : " + error.message + " — le script SQL 28-annonces-edition.sql a-t-il bien été exécuté dans Supabase ?");
+          return;
+        }
+        await loadAnnonces();
+        renderAnnonces();
+      });
+    });
+    list.querySelectorAll('[data-annonce-delete]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.annonceDelete;
+        if (!confirm('Supprimer cette annonce ?')) return;
+        btn.disabled = true;
+        const { error } = await supabaseClient.from('annonces').delete().eq('id', id);
+        btn.disabled = false;
+        if (error) { alert('Erreur : ' + error.message); return; }
+        await loadAnnonces();
+        renderAnnonces();
+      });
+    });
   }
 
   function setAnnonceFormOpen(open) {
