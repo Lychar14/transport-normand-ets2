@@ -272,19 +272,20 @@ avant calcul).
   nullable, `created_by`, horodatages), RLS lecture publique / écriture
   (insert, update, delete) réservée au patron via `public.est_patron()`.
 
-### Vie de l'entreprise (v53)
-- Fil d'annonces façon panneau d'affichage, affiché en **premier sur le
-  tableau de bord** (au-dessus de « Solde personnel »), visible par toute
+### Vie de l'entreprise (v53, gestion déplacée v55)
+- Fil d'annonces façon panneau d'affichage : le **bandeau défilant** est
+  affiché en **premier sur le tableau de bord** (au-dessus de « Solde
+  personnel »), visible par toute l'équipe.
+- **Seul le patron peut publier, modifier et supprimer** une annonce. Depuis
+  la v55, ce panneau de gestion (bouton « + Publier une annonce », formulaire
+  *Titre* + *Message*, boutons *Modifier* / *Supprimer* par entrée avec
+  édition en ligne) a été **déplacé du tableau de bord vers Bureau du
+  patron > Fil d'actualités** (nouvel onglet `office-actualites`) — le
+  tableau de bord ne conserve que le bandeau défilant en lecture seule, la
+  gestion complète n'a plus sa place dans une carte visible de toute
   l'équipe.
-- **Seul le patron peut publier, modifier et supprimer** une annonce (bouton
-  « + Publier une annonce », formulaire *Titre* + *Message* ; boutons
-  *Modifier* / *Supprimer* sur chaque entrée, formulaire d'édition en ligne).
-- **La liste détaillée sous le bandeau n'est visible que par le patron**
-  (`annonces-list` masquée côté employé) : c'est désormais uniquement son
-  panneau de gestion (créer/modifier/supprimer), le bandeau défilant affichant
-  déjà l'annonce complète pour tout le monde — la garder en double pour les
-  employés était redondant. Limité aux **8 plus récentes** (constante
-  `ANNONCES_MAX` dans `js/annonces.js`), les plus récentes en premier.
+- Limité aux **8 plus récentes** (constante `ANNONCES_MAX` dans
+  `js/annonces.js`), les plus récentes en premier.
 - **Bandeau défilant** (façon fil d'info) en tête de carte, au-dessus du fil
   détaillé : **l'annonce complète** (titre + message, sauts de ligne aplatis)
   défile en continu de droite à gauche pour chaque entrée (animation CSS

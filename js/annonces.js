@@ -1,6 +1,7 @@
   // ==========================================================
-  // VIE DE L'ENTREPRISE — fil d'annonces du patron, affiché sur le
-  // tableau de bord de toute l'équipe
+  // VIE DE L'ENTREPRISE — fil d'annonces du patron : bandeau défilant en
+  // lecture seule sur le tableau de bord de toute l'équipe, gestion
+  // (publier/modifier/supprimer) dans Bureau du patron > Fil d'actualités
   // ----------------------------------------------------------
   // Table Supabase `annonces` (scripts 27-annonces.sql puis
   // 28-annonces-edition.sql pour l'update) : lecture par toute l'équipe,
