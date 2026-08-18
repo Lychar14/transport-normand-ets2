@@ -68,12 +68,14 @@
     await loadValidatedProofs();
     await loadGrades();
     await loadCitations();
+    await loadAnnonces();
     renderDashboardStats();
     await loadMyFleet();
     await loadDistanceEntries();
     renderProfile();
     renderProfileGrade();
     renderDashboardQuote();
+    renderAnnonces();
     renderMyFleet();
     renderMissionsValidees();
     renderClassement();

@@ -698,6 +698,14 @@
     color: var(--muted); font-style: italic; font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.5;
   }
   .dashboard-quote span { color: var(--gold); font-style: normal; font-size: 0.76rem; }
+
+  /* ---------- Vie de l'entreprise (annonces du patron) ---------- */
+  .annonce-item { padding: 0.9rem 0; border-bottom: var(--sep-w) solid var(--sep); }
+  .annonce-item:last-child { border-bottom: none; }
+  .annonce-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.35rem; }
+  .annonce-titre { font-weight: 700; color: var(--gold); font-size: 0.92rem; }
+  .annonce-meta { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+  .annonce-contenu { font-size: 0.85rem; line-height: 1.6; color: var(--text); margin: 0; white-space: pre-wrap; }
   .company-presentation {
     padding: 2.25rem 2.5rem; max-height: calc(100vh - 5rem); overflow-y: auto;
   }

@@ -215,6 +215,25 @@
       <p class="dashboard-quote" id="dashboard-quote" style="display:none;">—</p>
     </div>
 
+    <section class="card" style="padding: 1.5rem 2rem; margin-bottom: 1.5rem;" id="annonces-card">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; gap:0.75rem; flex-wrap:wrap;">
+        <p class="eyebrow" style="margin:0;">Vie de l'entreprise</p>
+        <button class="btn-mini" id="annonce-new-toggle" style="display:none;">+ Publier une annonce</button>
+      </div>
+      <div id="annonce-form" style="display:none; margin-bottom:1.25rem; padding-bottom:1.1rem; border-bottom: var(--sep-w) solid var(--sep);">
+        <div class="field"><label class="eyebrow">Titre</label><input type="text" id="annonce-titre" class="input-real" placeholder="Ex : Nouveau contrat signé !" maxlength="80" /></div>
+        <div class="field"><label class="eyebrow">Message</label><textarea id="annonce-contenu" class="input-real" style="min-height:80px; resize:vertical; width:100%;" placeholder="Détaille l'annonce…"></textarea></div>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn-gold" id="annonce-publish-btn" style="padding:0.55rem 1rem; font-size:0.8rem;">Publier</button>
+          <button class="btn-mini" id="annonce-cancel-btn">Annuler</button>
+        </div>
+        <p id="annonce-status" style="margin-top:0.6rem; font-size:0.78rem; color:var(--muted);"></p>
+      </div>
+      <div id="annonces-list">
+        <p style="color:var(--muted); font-size:0.85rem;">Chargement…</p>
+      </div>
+    </section>
+
     <section class="card balance-card">
       <p class="eyebrow" style="margin-bottom:1rem;">Solde personnel</p>
       <div style="display:flex; align-items:center; gap:0.7rem;">
@@ -1570,6 +1589,7 @@
 <script src="js/office.js"></script>
 <script src="js/grades.js"></script>
 <script src="js/citations.js"></script>
+<script src="js/annonces.js"></script>
 <script src="js/classement.js"></script>
 <script src="js/tresorerie.js"></script>
 <script src="js/calendrier.js"></script>

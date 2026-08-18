@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 18 août 2026 — version courante du site : **v52**
+> Dernière mise à jour : 18 août 2026 — version courante du site : **v53**
 
 ---
 
@@ -271,6 +271,27 @@ avant calcul).
 - Script SQL `26-citations.sql` — table `citations` (`texte`, `auteur`
   nullable, `created_by`, horodatages), RLS lecture publique / écriture
   (insert, update, delete) réservée au patron via `public.est_patron()`.
+
+### Vie de l'entreprise (v53)
+- Fil d'annonces façon panneau d'affichage, affiché en **premier sur le
+  tableau de bord** (au-dessus de « Solde personnel »), visible par toute
+  l'équipe.
+- **Seul le patron peut publier** (bouton « + Publier une annonce », formulaire
+  *Titre* + *Message*) et **supprimer** une annonce — pas d'édition après coup,
+  volontairement : on supprime et on republie, comme un vrai panneau
+  d'affichage. Les employés n'ont accès à aucun de ces contrôles, en lecture
+  seule sur le fil.
+- Chaque entrée affiche titre, auteur (`pseudoOf`), délai relatif (`timeAgo`)
+  et le message. Limité aux **8 plus récentes** (constante `ANNONCES_MAX` dans
+  `js/annonces.js`), les plus récentes en premier.
+- Table volontairement **non pré-remplie** par le script SQL (contrairement
+  aux grades et citations, qui sont des échelles génériques) : c'est un fil de
+  communication que le patron alimente lui-même.
+- Fichier dédié `js/annonces.js` (`loadAnnonces()`, `renderAnnonces()`,
+  `setAnnonceFormOpen()`), appelé depuis `initAppData()` pour tous les rôles.
+- Script SQL `27-annonces.sql` — table `annonces` (`titre`, `contenu`,
+  `auteur_id`, `created_at`), RLS lecture par toute l'équipe / écriture
+  (insert, delete) réservée au patron via `public.est_patron()`.
 
 ### Mon profil (vue employé)
 - En-tête avec avatar (initiales ou photo importée), 4 statistiques dont les
@@ -615,6 +636,7 @@ directs de `<main>` sont des `.view`, et il n'y a plus aucun ID dupliqué.
 | `24-exclusion-membre.sql` | Droits de suppression du patron sur `profiles` et `driver_profiles` — **obligatoire** pour que l'onglet Exclure fonctionne (v50) |
 | `25-grades.sql` | Table `grades` (échelle de titres) + RLS écriture réservée au patron — **obligatoire** pour que Réglages > Grades fonctionne (v51) |
 | `26-citations.sql` | Table `citations` (citation du jour) + RLS écriture réservée au patron — **obligatoire** pour que Réglages > Citations de la route fonctionne (v52) |
+| `27-annonces.sql` | Table `annonces` (fil « Vie de l'entreprise ») + RLS écriture réservée au patron — **obligatoire** pour que le tableau de bord affiche/publie des annonces (v53) |
 
 Les versions v21 à v28 n'ont nécessité **aucun** script SQL ; la v29 nécessite
 `19-presentation-page.sql`, la v30 y ajoute `20-logo-entreprise.sql`. Les versions
@@ -625,13 +647,17 @@ SQL supplémentaire (mais dépend de celui de la v41) ; la v50 nécessite
 **`24-exclusion-membre.sql`** (dépend aussi de la fonction `est_patron()` créée
 par le script de la v41) ; la v51 nécessite **`25-grades.sql`** (dépend aussi de
 `est_patron()`) ; la v52 nécessite **`26-citations.sql`** (dépend aussi de
+`est_patron()`) ; la v53 nécessite **`27-annonces.sql`** (dépend aussi de
 `est_patron()`).
 
-Note technique (v51 et v52) : ces deux scripts ont été exécutés **directement en
+Note technique (v51 à v53) : ces trois scripts ont été exécutés **directement en
 base** (connexion Postgres via le pooler Supabase, `aws-0-eu-west-2.pooler.supabase.com`)
 plutôt que collés dans le SQL Editor — même résultat, juste un canal d'exécution
 différent le temps de cette conversation. Le mot de passe de la base a été
-régénéré par le joueur après coup, comme après toute manipulation de ce type.
+régénéré une première fois par le joueur après la v51 ; l'option de
+régénération était temporairement indisponible côté Supabase après la v52
+(probablement un délai anti-abus), donc la v53 a réutilisé le même mot de
+passe. À refaire dès que l'option est de nouveau disponible.
 
 ⚠️ **Bucket `logos` manquant.** À l'import d'un logo ou d'une icône, l'erreur
 « Bucket not found » signifie que le bucket Storage `logos` n'existe pas dans le
@@ -692,6 +718,7 @@ mais les policies d'écriture restent à passer par le script.
 | v50 | Fiche joueur : pseudo modifiable (bouton ✎ dans l'en-tête) + nouvel onglet **Exclure** (suppression complète et définitive d'un membre — toutes ses données et son compte, sauf son identifiant Supabase Authentication, non supprimable côté client) |
 | v51 | Système de **grades** : titre attribué automatiquement selon les livraisons validées cumulées, échelle 100 % éditable depuis **Réglages > Grades** (patron), seuils de départ *Période d'essai*, *Intérimaire*, *Apprenti routier*, *Routier confirmé*, *Vétéran de la route*, *Légende du convoi* — affiché sur le profil, le classement, l'équipe et la fiche joueur |
 | v52 | **Citations de la route** : citation du jour affichée sur la page de connexion et le tableau de bord, échelle 100 % éditable depuis **Réglages > Citations de la route** (patron), 8 citations de départ dont une attribuée à *Gagar* |
+| v53 | **Vie de l'entreprise** : fil d'annonces façon panneau d'affichage en tête du tableau de bord, publication et suppression réservées au patron, 8 dernières annonces affichées, lecture par toute l'équipe |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 
