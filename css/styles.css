@@ -686,6 +686,18 @@
     border: 1px solid var(--gold-dim);
     box-shadow: 0 8px 26px rgba(0,0,0,0.5);
   }
+  .login-quote {
+    margin: 1.1rem 0 0; padding-top: 1rem; border-top: var(--sep-w) solid var(--sep);
+    font-style: italic; color: var(--muted); font-size: 0.8rem; line-height: 1.6; text-align: center;
+  }
+  .login-quote span {
+    display: block; margin-top: 0.4rem; color: var(--gold); font-style: normal;
+    font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .dashboard-quote {
+    color: var(--muted); font-style: italic; font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.5;
+  }
+  .dashboard-quote span { color: var(--gold); font-style: normal; font-size: 0.76rem; }
   .company-presentation {
     padding: 2.25rem 2.5rem; max-height: calc(100vh - 5rem); overflow-y: auto;
   }

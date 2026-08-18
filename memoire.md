@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 18 août 2026 — version courante du site : **v51**
+> Dernière mise à jour : 18 août 2026 — version courante du site : **v52**
 
 ---
 
@@ -249,6 +249,28 @@ avant calcul).
   horodatages), RLS lecture publique / écriture (insert, update, delete)
   réservée au patron via `public.est_patron()` (fonction créée par le script
   `23-policies-suppression.sql`, v41).
+
+### Citations de la route (v52)
+- Une **citation du jour** est tirée d'une échelle de citations et affichée à
+  deux endroits : sous le logo de la **page de connexion** (visible même par
+  les visiteurs non connectés) et sous la salutation du **tableau de bord**.
+  La même citation reste affichée toute la journée (indexée sur le jour de
+  l'année), pour tout le monde.
+- **Échelle 100 % éditable depuis Réglages > Citations de la route** (patron
+  uniquement) : liste avec *Modifier* / *Supprimer* sur chaque ligne, formulaire
+  *Texte* + *Auteur (facultatif)* + *Ajouter* en bas de carte.
+- **8 citations de départ** insérées par le script SQL (modifiables/supprimables
+  ensuite), dont une attribuée à *Gagar* — le père fondateur évoqué dans
+  l'histoire de l'entreprise (page de connexion) — clin d'œil volontaire à ce
+  passage plutôt qu'une donnée réutilisée telle quelle.
+- Fichier dédié `js/citations.js` (`loadCitations()`, `citationDuJour()`,
+  `renderLoginQuote()`, `renderDashboardQuote()`, `renderCitationsSettings()`,
+  `refreshCitations()`). `loadCitations()` est appelée **immédiatement au
+  chargement de la page** (avant toute connexion, comme `loadSiteContenu()`
+  dans `settings.js`) pour que la citation s'affiche dès l'écran de connexion.
+- Script SQL `26-citations.sql` — table `citations` (`texte`, `auteur`
+  nullable, `created_by`, horodatages), RLS lecture publique / écriture
+  (insert, update, delete) réservée au patron via `public.est_patron()`.
 
 ### Mon profil (vue employé)
 - En-tête avec avatar (initiales ou photo importée), 4 statistiques dont les
@@ -592,6 +614,7 @@ directs de `<main>` sont des `.view`, et il n'y a plus aucun ID dupliqué.
 | `23-policies-suppression.sql` | Droits de suppression du patron — **obligatoire** pour que l'onglet Réinitialiser fonctionne (v41) |
 | `24-exclusion-membre.sql` | Droits de suppression du patron sur `profiles` et `driver_profiles` — **obligatoire** pour que l'onglet Exclure fonctionne (v50) |
 | `25-grades.sql` | Table `grades` (échelle de titres) + RLS écriture réservée au patron — **obligatoire** pour que Réglages > Grades fonctionne (v51) |
+| `26-citations.sql` | Table `citations` (citation du jour) + RLS écriture réservée au patron — **obligatoire** pour que Réglages > Citations de la route fonctionne (v52) |
 
 Les versions v21 à v28 n'ont nécessité **aucun** script SQL ; la v29 nécessite
 `19-presentation-page.sql`, la v30 y ajoute `20-logo-entreprise.sql`. Les versions
@@ -601,7 +624,14 @@ v41 nécessite **`23-policies-suppression.sql`** ; la v42 ne nécessite aucun sc
 SQL supplémentaire (mais dépend de celui de la v41) ; la v50 nécessite
 **`24-exclusion-membre.sql`** (dépend aussi de la fonction `est_patron()` créée
 par le script de la v41) ; la v51 nécessite **`25-grades.sql`** (dépend aussi de
+`est_patron()`) ; la v52 nécessite **`26-citations.sql`** (dépend aussi de
 `est_patron()`).
+
+Note technique (v51 et v52) : ces deux scripts ont été exécutés **directement en
+base** (connexion Postgres via le pooler Supabase, `aws-0-eu-west-2.pooler.supabase.com`)
+plutôt que collés dans le SQL Editor — même résultat, juste un canal d'exécution
+différent le temps de cette conversation. Le mot de passe de la base a été
+régénéré par le joueur après coup, comme après toute manipulation de ce type.
 
 ⚠️ **Bucket `logos` manquant.** À l'import d'un logo ou d'une icône, l'erreur
 « Bucket not found » signifie que le bucket Storage `logos` n'existe pas dans le
@@ -661,6 +691,7 @@ mais les policies d'écriture restent à passer par le script.
 | v49 | Liste déroulante « 1. Cargaison » (Bureau du patron > Missions) remplacée par la liste complète et réelle du jeu (309 cargaisons uniques, dédupliquées à partir de captures d'écran) au lieu de l'ancienne liste d'exemple par catégories |
 | v50 | Fiche joueur : pseudo modifiable (bouton ✎ dans l'en-tête) + nouvel onglet **Exclure** (suppression complète et définitive d'un membre — toutes ses données et son compte, sauf son identifiant Supabase Authentication, non supprimable côté client) |
 | v51 | Système de **grades** : titre attribué automatiquement selon les livraisons validées cumulées, échelle 100 % éditable depuis **Réglages > Grades** (patron), seuils de départ *Période d'essai*, *Intérimaire*, *Apprenti routier*, *Routier confirmé*, *Vétéran de la route*, *Légende du convoi* — affiché sur le profil, le classement, l'équipe et la fiche joueur |
+| v52 | **Citations de la route** : citation du jour affichée sur la page de connexion et le tableau de bord, échelle 100 % éditable depuis **Réglages > Citations de la route** (patron), 8 citations de départ dont une attribuée à *Gagar* |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 

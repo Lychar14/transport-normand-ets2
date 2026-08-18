@@ -67,11 +67,13 @@
     renderRoadsheet();
     await loadValidatedProofs();
     await loadGrades();
+    await loadCitations();
     renderDashboardStats();
     await loadMyFleet();
     await loadDistanceEntries();
     renderProfile();
     renderProfileGrade();
+    renderDashboardQuote();
     renderMyFleet();
     renderMissionsValidees();
     renderClassement();
@@ -83,6 +85,7 @@
       renderOfficeOverview();
       renderOfficeTeam();
       renderGradesSettings();
+      renderCitationsSettings();
       populateOperationMemberSelect();
     }
 

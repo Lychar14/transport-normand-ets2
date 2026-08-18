@@ -148,6 +148,7 @@
     <!-- Logo de l'entreprise -->
     <figure class="card truck-illustration" id="login-illustration">
       <img id="login-logo" src="assets/images/login-logo.jpg" alt="Logo Transport Normand" />
+      <figcaption class="login-quote" id="login-quote" style="display:none;">—</figcaption>
     </figure>
 
     </div>
@@ -211,6 +212,7 @@
   <section id="view-dashboard" class="view">
     <div class="hero-row">
       <h1 class="greeting" id="dashboard-greeting">Bonjour.</h1>
+      <p class="dashboard-quote" id="dashboard-quote" style="display:none;">—</p>
     </div>
 
     <section class="card balance-card">
@@ -639,6 +641,23 @@
         <button class="btn-gold" id="grade-add-btn" style="padding:0.6rem 1.1rem; font-size:0.82rem;">+ Ajouter</button>
       </div>
       <p id="grades-status" style="margin-top:0.8rem; font-size:0.8rem; color:var(--muted);"></p>
+    </section>
+
+    <!-- CITATIONS DE LA ROUTE : citation du jour affichée à l'écran de connexion et au tableau de bord -->
+    <section class="card" style="padding: 1.75rem 2rem; margin-bottom: 1.5rem;">
+      <p class="eyebrow" style="margin-bottom: 0.4rem;">Citations de la route</p>
+      <p style="color:var(--muted); font-size:0.85rem; line-height:1.65; margin-bottom:1.2rem;">
+        Une citation différente est tirée au sort chaque jour et affichée sous le logo de la page de connexion, ainsi que sur le tableau de bord — visible même par les visiteurs non connectés. Ajoute, modifie ou supprime des citations librement.
+      </p>
+      <div id="citations-list" style="margin-bottom:1.25rem;">
+        <p style="color:var(--muted); font-size:0.85rem;">Chargement…</p>
+      </div>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:flex-end; padding-top:1.1rem; border-top: var(--sep-w) solid var(--sep);">
+        <div class="field" style="margin-bottom:0; flex:1; min-width:260px;"><label class="eyebrow">Texte de la citation</label><input type="text" id="citation-new-texte" class="input-real" placeholder="Ex : Chaque kilomètre parcouru est une promesse tenue." /></div>
+        <div class="field" style="margin-bottom:0;"><label class="eyebrow">Auteur (facultatif)</label><input type="text" id="citation-new-auteur" class="input-real" placeholder="Ex : Devise de la maison" style="width:200px;" /></div>
+        <button class="btn-gold" id="citation-add-btn" style="padding:0.6rem 1.1rem; font-size:0.82rem;">+ Ajouter</button>
+      </div>
+      <p id="citations-status" style="margin-top:0.8rem; font-size:0.8rem; color:var(--muted);"></p>
     </section>
 
     <!-- TEXTE DE LA PAGE DE CONNEXION (déplacé ici depuis le Bureau du patron) -->
@@ -1550,6 +1569,7 @@
 <script src="js/profile.js"></script>
 <script src="js/office.js"></script>
 <script src="js/grades.js"></script>
+<script src="js/citations.js"></script>
 <script src="js/classement.js"></script>
 <script src="js/tresorerie.js"></script>
 <script src="js/calendrier.js"></script>
