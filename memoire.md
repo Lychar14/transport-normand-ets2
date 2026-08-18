@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 18 août 2026 — version courante du site : **v53**
+> Dernière mise à jour : 18 août 2026 — version courante du site : **v54**
 
 ---
 
@@ -307,6 +307,27 @@ avant calcul).
   `auteur_id`, `created_at` ; RLS lecture par toute l'équipe / insert+delete
   réservés au patron) puis `28-annonces-edition.sql` (colonne `updated_at` +
   policy `UPDATE` manquante, ajoutée après coup pour permettre la modification).
+
+### Chauffeur du mois (v54)
+- Carte mise en avant sur le **tableau de bord**, entre « Vie de l'entreprise »
+  et « Solde personnel », visible par toute l'équipe.
+- **Simple reflet du n°1 du Classement** (section précédente) : même critère
+  (km parcourus ce mois-ci), même source de données. Pas de nouvelle table, pas
+  de bouton de réinitialisation — comme le Classement, tout est recalculé à
+  chaque chargement à partir des entrées filtrées sur le mois en cours
+  (`isCurrentMonth`), donc la mise en avant **repart à zéro toute seule** au
+  changement de mois, en même temps que le Classement.
+- Affiche avatar, pseudo (+ grade), livraisons validées, km parcourus et
+  revenus déclarés du mois pour le chauffeur en tête.
+- **Masquée tant qu'aucun km n'a encore été saisi ce mois-ci**, pour ne pas
+  désigner un « gagnant » arbitraire à 0 km.
+- Techniquement : le calcul commun (`getClassementRows()`) a été extrait de
+  `renderClassement()` dans `js/classement.js` et réutilisé par la nouvelle
+  `renderChauffeurDuMois()`, appelée depuis `initAppData()` juste après
+  `renderClassement()`. Style `.card.primary` (déjà défini dans `styles.css`
+  mais inutilisé ailleurs dans l'appli) pour la distinguer sans concurrencer la
+  carte « Solde personnel », qui reste la plus lumineuse du tableau de bord.
+- Aucun script SQL requis.
 
 ### Mon profil (vue employé)
 - En-tête avec avatar (initiales ou photo importée), 4 statistiques dont les
@@ -664,7 +685,8 @@ SQL supplémentaire (mais dépend de celui de la v41) ; la v50 nécessite
 par le script de la v41) ; la v51 nécessite **`25-grades.sql`** (dépend aussi de
 `est_patron()`) ; la v52 nécessite **`26-citations.sql`** (dépend aussi de
 `est_patron()`) ; la v53 nécessite **`27-annonces.sql`** (dépend aussi de
-`est_patron()`).
+`est_patron()`) ; la v54 ne nécessite **aucun script SQL** (réutilise les
+données déjà chargées pour le Classement de la v48).
 
 Note technique (v51 à v53) : ces trois scripts ont été exécutés **directement en
 base** (connexion Postgres via le pooler Supabase, `aws-0-eu-west-2.pooler.supabase.com`)
@@ -735,6 +757,7 @@ mais les policies d'écriture restent à passer par le script.
 | v51 | Système de **grades** : titre attribué automatiquement selon les livraisons validées cumulées, échelle 100 % éditable depuis **Réglages > Grades** (patron), seuils de départ *Période d'essai*, *Intérimaire*, *Apprenti routier*, *Routier confirmé*, *Vétéran de la route*, *Légende du convoi* — affiché sur le profil, le classement, l'équipe et la fiche joueur |
 | v52 | **Citations de la route** : citation du jour affichée sur la page de connexion et le tableau de bord, échelle 100 % éditable depuis **Réglages > Citations de la route** (patron), 8 citations de départ dont une attribuée à *Gagar* |
 | v53 | **Vie de l'entreprise** : fil d'annonces façon panneau d'affichage en tête du tableau de bord, publication et suppression réservées au patron, 8 dernières annonces affichées, lecture par toute l'équipe |
+| v54 | **Chauffeur du mois** : carte mise en avant sur le tableau de bord (reflet du n°1 du Classement, km parcourus ce mois-ci), reset automatique chaque mois comme le Classement, masquée tant qu'aucun km n'a été saisi |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 

@@ -79,6 +79,7 @@
     renderMyFleet();
     renderMissionsValidees();
     renderClassement();
+    renderChauffeurDuMois();
     if (isPatron) {
       await loadDriverProfiles();
       renderDriverProfiles();

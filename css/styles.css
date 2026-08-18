@@ -266,6 +266,20 @@
   .classement-pseudo { font-weight: 600; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .classement-col { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
   .classement-col.km { color: var(--gold); font-weight: 700; }
+
+  /* ---------- Chauffeur du mois (mise en avant tableau de bord) ---------- */
+  .chauffeur-mois-body { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.25rem; }
+  .chauffeur-mois-who { display: flex; align-items: center; gap: 1rem; }
+  .chauffeur-mois-avatar {
+    width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+    background-color: var(--surface-2); background-size: cover; background-position: center;
+    border: 2px solid var(--gold); box-shadow: 0 0 18px rgba(217,170,78,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 700; color: var(--gold);
+  }
+  .chauffeur-mois-pseudo { font-size: 1.15rem; font-weight: 700; }
+  .chauffeur-mois-stats { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+  .chauffeur-mois-stats .stat-value { font-size: 1.35rem; margin-top: 0.2rem; }
   .lock-note {
     display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--gold);
     background: rgba(217,170,78,0.08); border: 1px solid rgba(217,170,78,0.25); border-radius: 10px;
