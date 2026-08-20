@@ -162,19 +162,3 @@
       btn.addEventListener('click', () => switchOfficeTab(btn.dataset.office));
     });
   }
-
-  // Pré-remplit et ouvre le formulaire "Créer une opération joueur" (ex : depuis "Rembourser les frais")
-  function prefillOperation(chauffeurId, montant, motif, typeLabel) {
-    switchOfficeTab('transactions');
-    const memberSelect = document.getElementById('op-member-select');
-    const typeSelect = document.getElementById('op-type-select');
-    const montantInput = document.getElementById('op-montant');
-    const motifInput = document.getElementById('op-motif');
-    const debitCb = document.getElementById('op-debit-joueur');
-    if (memberSelect) memberSelect.value = chauffeurId;
-    if (typeSelect && typeLabel) typeSelect.value = typeLabel;
-    if (montantInput) montantInput.value = montant;
-    if (motifInput) motifInput.value = motif;
-    if (debitCb) debitCb.checked = false;
-    setTimeout(() => document.getElementById('op-submit-btn')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-  }

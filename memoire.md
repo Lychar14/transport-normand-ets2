@@ -1,7 +1,7 @@
 # Mémoire du projet — SARL Transports Normands
 
 > Fichier de continuité à joindre au début de chaque nouvelle conversation.
-> Dernière mise à jour : 18 août 2026 — version courante du site : **v54**
+> Dernière mise à jour : 20 août 2026 — version courante du site : **v56**
 
 ---
 
@@ -211,9 +211,15 @@ avant calcul).
 - **Mensuel uniquement** (pas de vue all-time) : repart à zéro chaque mois,
   recalculé à partir de `validated_at` (livraisons/revenus) et `created_at`
   (kilomètres).
-- Trié par **km parcourus** ce mois-ci (source : `distance_entries`, saisis
-  manuellement par le patron depuis la fiche joueur — voir plus bas, pas de calcul
-  automatique par mission).
+- **Trié par nombre de livraisons validées** ce mois-ci (critère changé en v56 —
+  auparavant trié par km parcourus). Les km parcourus (source : `distance_entries`,
+  saisis manuellement par le patron depuis la fiche joueur) servent uniquement de
+  **départage** entre chauffeurs à égalité de livraisons.
+- **Rang partagé en cas d'égalité (v56)** : deux chauffeurs avec le même nombre de
+  livraisons obtiennent le même rang (et la même médaille le cas échéant), au lieu
+  d'un simple numéro de ligne qui donnait un rang différent à des chauffeurs
+  pourtant à égalité — bug remonté par le joueur après une soirée de test le
+  19-20 août 2026. Calcul dans `getClassementRows()` (`js/classement.js`).
 - Colonnes par chauffeur : rang (médaille 🥇🥈🥉 pour le top 3), avatar + pseudo,
   nombre de livraisons validées, km parcourus, revenus déclarés cumulés.
 - Ligne du joueur connecté mise en évidence (fond doré léger, mention « (toi) »).
@@ -390,7 +396,16 @@ avant calcul).
     `frais_peages` sur `preuves_livraison`, script `14-frais-livraison.sql`) ;
   - le **revenu de la mission (€)**, crédité automatiquement au compte entreprise à
     la validation par le patron.
-- Bouton **« Rembourser les frais »** en un clic depuis une preuve en attente.
+- Bouton **« Rembourser les frais »** en un clic depuis une preuve en attente :
+  crédite directement le joueur et débite le compte entreprise du même montant
+  (écritures miroir en base, comme une opération joueur classique). **Corrigé en
+  v56** : jusque-là le bouton ne faisait que pré-remplir le formulaire « Créer une
+  opération joueur » de Trésorerie et y amener le patron (fonction `prefillOperation`
+  dans `js/auth.js`, supprimée) — il fallait ensuite valider manuellement le
+  formulaire, ce que le libellé « en un clic » ne laissait pas deviner ; bug remonté
+  par le joueur, qui avait dû faire le remboursement à la main. Le clic insère
+  maintenant directement les deux lignes de transaction dans `js/office.js`
+  (`renderValidations()`), sans changer d'onglet.
 
 ### Historique feuilles de route
 *(anciennement « Missions validées », renommé en v22 ; élargi aux refus en v32)*
@@ -687,7 +702,9 @@ par le script de la v41) ; la v51 nécessite **`25-grades.sql`** (dépend aussi 
 `est_patron()`) ; la v52 nécessite **`26-citations.sql`** (dépend aussi de
 `est_patron()`) ; la v53 nécessite **`27-annonces.sql`** (dépend aussi de
 `est_patron()`) ; la v54 ne nécessite **aucun script SQL** (réutilise les
-données déjà chargées pour le Classement de la v48).
+données déjà chargées pour le Classement de la v48) ; les v55 et v56 ne
+nécessitent aucun script SQL (déplacement d'interface et changement de critère
+de tri, aucune structure de base modifiée).
 
 Note technique (v51 à v53) : ces trois scripts ont été exécutés **directement en
 base** (connexion Postgres via le pooler Supabase, `aws-0-eu-west-2.pooler.supabase.com`)
@@ -759,6 +776,8 @@ mais les policies d'écriture restent à passer par le script.
 | v52 | **Citations de la route** : citation du jour affichée sur la page de connexion et le tableau de bord, échelle 100 % éditable depuis **Réglages > Citations de la route** (patron), 8 citations de départ dont une attribuée à *Gagar* |
 | v53 | **Vie de l'entreprise** : fil d'annonces façon panneau d'affichage en tête du tableau de bord, publication et suppression réservées au patron, 8 dernières annonces affichées, lecture par toute l'équipe |
 | v54 | **Chauffeur du mois** : carte mise en avant sur le tableau de bord (reflet du n°1 du Classement, km parcourus ce mois-ci), reset automatique chaque mois comme le Classement, masquée tant qu'aucun km n'a été saisi |
+| v55 | Gestion du fil d'annonces (« Vie de l'entreprise ») déplacée du tableau de bord vers Bureau du patron > Fil d'actualités ; le tableau de bord ne garde que le bandeau défilant en lecture seule |
+| v56 | **Classement** trié par **nombre de livraisons** (au lieu des km parcourus, désormais simple départage) + **rang partagé en cas d'égalité** entre chauffeurs à égalité de livraisons ; « Chauffeur du mois » suit le même critère et se masque tant qu'aucune livraison n'a été validée ce mois-ci. **Bouton « Rembourser les frais »** corrigé : effectue réellement le remboursement en un clic au lieu de seulement pré-remplir le formulaire de Trésorerie |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 

@@ -210,10 +210,55 @@
       });
     });
 
-    // Rembourser les frais réels en un clic → pré-remplit l'opération joueur en Trésorerie
+    // Rembourser les frais réels en un clic → crédite directement le joueur et débite
+    // le compte entreprise du même montant (écritures miroir, comme une opération
+    // joueur classique de Trésorerie), sans étape manuelle supplémentaire.
     list.querySelectorAll('[data-rembourser-frais]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        prefillOperation(btn.dataset.rembourserFrais, btn.dataset.fraisMontant, `Remboursement frais réels — ${btn.dataset.fraisMission}`, 'Remboursement de frais réels');
+      btn.addEventListener('click', async () => {
+        const chauffeurId = btn.dataset.rembourserFrais;
+        const montant = Number(btn.dataset.fraisMontant) || 0;
+        if (montant <= 0) return;
+
+        const typeLabel = 'Remboursement de frais réels';
+        const motif = `Remboursement frais réels — ${btn.dataset.fraisMission}`;
+        const opRef = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
+
+        btn.disabled = true;
+        const original = btn.textContent;
+        btn.textContent = 'Remboursement...';
+
+        const { error } = await supabaseClient.from('transactions').insert([
+          {
+            libelle: motif,
+            sous_libelle: `${typeLabel} — Crédit ${pseudoOf(chauffeurId)}`,
+            montant: -montant,
+            type: 'entreprise',
+            operation_ref: opRef,
+            created_by: currentProfile.id
+          },
+          {
+            libelle: `${typeLabel} — ${motif}`,
+            sous_libelle: 'Crédit',
+            montant: montant,
+            type: 'operation',
+            chauffeur_id: chauffeurId,
+            operation_ref: opRef,
+            created_by: currentProfile.id
+          }
+        ]);
+
+        if (error) {
+          btn.disabled = false;
+          btn.textContent = original;
+          alert('Erreur lors du remboursement : ' + error.message);
+          return;
+        }
+
+        btn.textContent = 'Remboursé ✓';
+        await loadTransactions();
+        renderTransactions();
+        renderOfficeOverview();
+        renderDashboardStats();
       });
     });
 

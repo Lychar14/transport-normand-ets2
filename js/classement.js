@@ -1,18 +1,28 @@
-  // ---------- Classement des chauffeurs (mensuel, trié par km parcourus) ----------
+  // ---------- Classement des chauffeurs (mensuel, trié par nombre de livraisons) ----------
   // Calcul partagé par le Classement et la mise en avant "Chauffeur du mois" du
-  // tableau de bord (même critère : km parcourus ce mois-ci). Aucune valeur
-  // stockée : recalculé à chaque chargement à partir des entrées filtrées sur le
-  // mois en cours (isCurrentMonth), donc "remis à zéro" automatiquement au
-  // changement de mois, sans bouton ni action du patron.
+  // tableau de bord (même critère : livraisons validées ce mois-ci, km parcourus
+  // en départage). Aucune valeur stockée : recalculé à chaque chargement à partir
+  // des entrées filtrées sur le mois en cours (isCurrentMonth), donc "remis à
+  // zéro" automatiquement au changement de mois, sans bouton ni action du patron.
   function getClassementRows() {
-    return allProfiles.map(p => {
+    const rows = allProfiles.map(p => {
       const livraisonsMois = allValidatedProofs.filter(v => v.chauffeur_id === p.id && isCurrentMonth(v.validated_at));
       const km = allDistanceEntries
         .filter(e => e.player_id === p.id && isCurrentMonth(e.created_at))
         .reduce((sum, e) => sum + Number(e.km), 0);
       const revenus = livraisonsMois.reduce((sum, v) => sum + (Number(v.revenu_declare) || 0), 0);
       return { profile: p, livraisons: livraisonsMois.length, km, revenus };
-    }).sort((a, b) => b.km - a.km);
+    }).sort((a, b) => b.livraisons - a.livraisons || b.km - a.km);
+
+    // Rang partagé en cas d'égalité (même nombre de livraisons = même rang),
+    // au lieu d'un simple numéro de ligne qui donnait un rang différent à des
+    // chauffeurs pourtant à égalité.
+    let rank = 0;
+    rows.forEach((r, i) => {
+      if (i === 0 || r.livraisons !== rows[i - 1].livraisons) rank = i + 1;
+      r.rank = rank;
+    });
+    return rows;
   }
 
   function moisLabel() {
@@ -40,8 +50,8 @@
 
     const MEDALS = { 1: '🥇', 2: '🥈', 3: '🥉' };
 
-    list.innerHTML = rows.map((r, i) => {
-      const rank = i + 1;
+    list.innerHTML = rows.map((r) => {
+      const rank = r.rank;
       const isMe = r.profile.id === currentProfile.id;
       const avatarStyle = r.profile.avatar_url ? ` style="background-image:url('${r.profile.avatar_url}');"` : '';
       return `
@@ -62,11 +72,11 @@
   }
 
   // ---------- Chauffeur du mois — mise en avant sur le tableau de bord ----------
-  // Simple reflet du n°1 du Classement (même tri par km parcourus ce mois-ci) :
+  // Simple reflet du n°1 du Classement (même tri par livraisons ce mois-ci) :
   // aucune table ni action manuelle, la mise en avant change donc toute seule au
   // fil des livraisons et repart à zéro chaque mois en même temps que le
-  // Classement. Masquée tant qu'aucun km n'a encore été saisi ce mois-ci, pour
-  // ne pas désigner un "gagnant" arbitraire à 0 km.
+  // Classement. Masquée tant qu'aucune livraison n'a encore été validée ce
+  // mois-ci, pour ne pas désigner un "gagnant" arbitraire à 0 livraison.
   function renderChauffeurDuMois() {
     const card = document.getElementById('chauffeur-mois-card');
     const content = document.getElementById('chauffeur-mois-content');
@@ -75,7 +85,7 @@
     const rows = getClassementRows();
     const top = rows[0];
 
-    if (!top || top.km <= 0) {
+    if (!top || top.livraisons <= 0) {
       card.style.display = 'none';
       content.innerHTML = '';
       return;
