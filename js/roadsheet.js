@@ -158,6 +158,7 @@
       await loadValidatedProofs();
       renderMissionsValidees();
       renderRoadsheet();
+      if (typeof renderAllMissions === 'function') renderAllMissions();
       renderTransactions();
       renderOfficeOverview();
       renderDashboardStats();
@@ -262,6 +263,7 @@
         await supabaseClient.from('missions').update({ statut: newStatut }).eq('id', id);
         await loadMissions();
         renderRoadsheet();
+        if (typeof renderAllMissions === 'function') renderAllMissions();
       });
     });
   }
@@ -303,5 +305,6 @@
       document.getElementById('proof-frais-peages').value = '';
       await loadMissions();
       renderRoadsheet();
+      if (typeof renderAllMissions === 'function') renderAllMissions();
     });
   }

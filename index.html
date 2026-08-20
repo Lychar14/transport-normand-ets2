@@ -1257,6 +1257,28 @@
         <button class="btn-gold" id="mission-create-btn">Ajouter à sa feuille de route</button>
         <p class="auth-error" id="mission-create-status"></p>
       </section>
+
+      <section class="card" style="padding: 0;">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; padding: 1.5rem 1.4rem 0.7rem;">
+          <p class="eyebrow" style="margin:0;">Toutes les feuilles de route</p>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <select class="select-mock" id="am-filter-member" style="width:auto; min-width:160px;">
+              <option value="all">Tous les membres</option>
+            </select>
+            <select class="select-mock" id="am-filter-status" style="width:auto; min-width:150px;">
+              <option value="all">Tous les statuts</option>
+              <option value="proposed">Proposée</option>
+              <option value="progress">En cours</option>
+              <option value="checking">À vérifier</option>
+              <option value="done">Validée</option>
+              <option value="refused">Refusée</option>
+            </select>
+          </div>
+        </div>
+        <div id="all-missions-list">
+          <p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Chargement…</p>
+        </div>
+      </section>
     </div>
 
     <!-- TRÉSORERIE -->

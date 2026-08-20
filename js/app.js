@@ -87,6 +87,7 @@
       await renderValidations();
       renderOfficeOverview();
       renderOfficeTeam();
+      renderAllMissions();
       renderGradesSettings();
       renderCitationsSettings();
       populateOperationMemberSelect();

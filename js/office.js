@@ -90,8 +90,171 @@
       document.getElementById('mission-commentaire').value = '';
       await loadMissions();
       renderRoadsheet();
+      renderAllMissions();
     });
   }
+
+  // ---------- Bureau du patron : toutes les feuilles de route (voir/éditer/supprimer) ----------
+  // Vue d'ensemble pour le patron de toutes les missions générées, tous joueurs
+  // confondus (contrairement à roadsheet.js qui ne montre que "mes missions" ou
+  // l'historique des 5 dernières terminées). psSupprimer est défini plus bas dans
+  // ce fichier mais reste accessible ici (function déclarée = hissée dans le scope).
+  let amEditingId = null;
+
+  function populateAllMissionsFilter() {
+    const sel = document.getElementById('am-filter-member');
+    if (!sel) return;
+    const courant = sel.value || 'all';
+    sel.innerHTML = '<option value="all">Tous les membres</option>' +
+      allProfiles.map(p => `<option value="${p.id}">${escapeHtml(p.pseudo)}</option>`).join('');
+    if ([...sel.options].some(o => o.value === courant)) sel.value = courant;
+  }
+
+  function renderAllMissions() {
+    const list = document.getElementById('all-missions-list');
+    if (!list || !currentProfile || currentProfile.role !== 'patron') return;
+
+    populateAllMissionsFilter();
+    const memberFilter = document.getElementById('am-filter-member')?.value || 'all';
+    const statusFilter = document.getElementById('am-filter-status')?.value || 'all';
+
+    const filtered = allMissions
+      .filter(m => memberFilter === 'all' || m.assigned_to === memberFilter)
+      .filter(m => statusFilter === 'all' || m.statut === statusFilter)
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    if (filtered.length === 0) {
+      list.innerHTML = '<p style="padding:0 1.4rem 1.5rem; color:var(--muted); font-size:0.85rem;">Aucune feuille de route pour ces filtres.</p>';
+      return;
+    }
+
+    list.innerHTML = filtered.map(m => {
+      const editing = amEditingId === m.id;
+      const viewRow = `
+        <div class="task-row" style="${editing ? 'display:none;' : ''}">
+          <div style="flex:1; min-width:0;">
+            <div class="task-title">${escapeHtml(m.titre)} — ${escapeHtml(m.ville_depart)} → ${escapeHtml(m.ville_arrivee)}</div>
+            <div class="route-line"><span class="end"></span><span class="dash"></span><span class="end dest"></span><span class="route-cities">${escapeHtml(pseudoOf(m.assigned_to))} · ${formatDate(m.echeance)}</span></div>
+            ${m.commentaire ? `<div class="mission-comment">💬 ${escapeHtml(m.commentaire)}</div>` : ''}
+          </div>
+          <span class="status-pill ${m.statut}">${STATUS_LABEL[m.statut] || m.statut}</span>
+          <div class="task-actions">
+            <button class="btn-mini" data-am-edit="${m.id}">Modifier</button>
+            <button class="btn-mini decline" data-am-delete="${m.id}">Supprimer</button>
+          </div>
+        </div>`;
+
+      if (!editing) return viewRow;
+
+      const memberOptions = allProfiles.map(p => `<option value="${p.id}" ${p.id === m.assigned_to ? 'selected' : ''}>${escapeHtml(p.pseudo)}</option>`).join('');
+      const statusOptions = Object.entries(STATUS_LABEL).map(([k, v]) => `<option value="${k}" ${k === m.statut ? 'selected' : ''}>${v}</option>`).join('');
+
+      return viewRow + `
+        <div class="am-edit-form" data-am-id="${m.id}" style="padding:1rem 1.4rem; border-bottom: var(--sep-w) solid var(--sep); background:var(--surface-2);">
+          <div class="field"><label class="eyebrow">Cargaison</label><input type="text" class="input-real am-titre" style="width:100%;" value="${escapeHtml(m.titre)}" /></div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+            <div class="field"><label class="eyebrow">Départ</label><input type="text" class="input-real am-depart" style="width:100%;" value="${escapeHtml(m.ville_depart)}" /></div>
+            <div class="field"><label class="eyebrow">Arrivée</label><input type="text" class="input-real am-arrivee" style="width:100%;" value="${escapeHtml(m.ville_arrivee)}" /></div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+            <div class="field"><label class="eyebrow" style="display:block; margin-bottom:6px;">Membre assigné</label><select class="select-mock am-membre" style="width:100%;">${memberOptions}</select></div>
+            <div class="field"><label class="eyebrow" style="display:block; margin-bottom:6px;">Statut</label><select class="select-mock am-statut" style="width:100%;">${statusOptions}</select></div>
+          </div>
+          <div class="field"><label class="eyebrow">Échéance</label><input type="date" class="input-real am-echeance" style="max-width:180px;" value="${m.echeance || ''}" /></div>
+          <div class="field"><label class="eyebrow">Commentaire</label><textarea class="input-real am-commentaire" style="width:100%; min-height:60px; resize:vertical; font-family:inherit;">${escapeHtml(m.commentaire || '')}</textarea></div>
+          <div style="display:flex; gap:0.6rem; margin-top:0.5rem;">
+            <button class="btn-gold am-save" data-am-save="${m.id}" style="flex:1;">Enregistrer</button>
+            <button class="btn-mini" data-am-cancel="${m.id}">Annuler</button>
+          </div>
+          <p class="auth-error am-status" style="margin-top:0.5rem;"></p>
+        </div>`;
+    }).join('');
+
+    list.querySelectorAll('[data-am-edit]').forEach(btn => {
+      btn.addEventListener('click', () => { amEditingId = btn.dataset.amEdit; renderAllMissions(); });
+    });
+    list.querySelectorAll('[data-am-cancel]').forEach(btn => {
+      btn.addEventListener('click', () => { amEditingId = null; renderAllMissions(); });
+    });
+    list.querySelectorAll('[data-am-save]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.amSave;
+        const form = list.querySelector(`.am-edit-form[data-am-id="${id}"]`);
+        const titre = form.querySelector('.am-titre').value.trim();
+        const depart = form.querySelector('.am-depart').value.trim();
+        const arrivee = form.querySelector('.am-arrivee').value.trim();
+        const assigned_to = form.querySelector('.am-membre').value;
+        const statut = form.querySelector('.am-statut').value;
+        const echeance = form.querySelector('.am-echeance').value || null;
+        const commentaire = form.querySelector('.am-commentaire').value.trim() || null;
+        const statusEl = form.querySelector('.am-status');
+
+        if (!titre || !depart || !arrivee) {
+          statusEl.textContent = 'Cargaison, départ et arrivée sont obligatoires.';
+          statusEl.style.color = 'var(--burgundy)';
+          return;
+        }
+        if (depart.toLowerCase() === arrivee.toLowerCase()) {
+          statusEl.textContent = 'Le départ et l\'arrivée doivent être différents.';
+          statusEl.style.color = 'var(--burgundy)';
+          return;
+        }
+
+        btn.disabled = true; btn.textContent = 'Enregistrement...';
+        const { error } = await supabaseClient.from('missions').update({
+          titre, cargaison: titre, ville_depart: depart, ville_arrivee: arrivee,
+          assigned_to, statut, echeance, commentaire
+        }).eq('id', id);
+        btn.disabled = false; btn.textContent = 'Enregistrer';
+
+        if (error) {
+          statusEl.textContent = 'Erreur : ' + error.message;
+          statusEl.style.color = 'var(--burgundy)';
+          return;
+        }
+
+        amEditingId = null;
+        await loadMissions();
+        renderAllMissions();
+        renderRoadsheet();
+        renderMissionsValidees();
+        renderDashboardStats();
+        updateMissionCityOptions();
+      });
+    });
+    list.querySelectorAll('[data-am-delete]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.amDelete;
+        const m = allMissions.find(x => x.id === id);
+        if (!m) return;
+        const titre = `${m.titre} — ${m.ville_depart} → ${m.ville_arrivee}`;
+        if (!confirm(`Supprimer définitivement la feuille de route "${titre}" (${pseudoOf(m.assigned_to)}) ?\n\nLes preuves de livraison et le revenu déjà crédité au compte entreprise pour cette mission partent avec. Cette suppression est irréversible.`)) return;
+
+        btn.disabled = true; btn.textContent = 'Suppression...';
+        const t = await psSupprimer(supabaseClient.from('transactions').delete().eq('mission_id', id));
+        const p = t.error ? t : await psSupprimer(supabaseClient.from('preuves_livraison').delete().eq('mission_id', id));
+        const r = (t.error || p.error) ? { error: t.error || p.error } : await psSupprimer(supabaseClient.from('missions').delete().eq('id', id));
+
+        if (r.error) {
+          btn.disabled = false; btn.textContent = 'Supprimer';
+          alert('Erreur lors de la suppression : ' + r.error.message);
+          return;
+        }
+
+        await loadMissions();
+        renderAllMissions();
+        renderRoadsheet();
+        renderMissionsValidees();
+        renderDashboardStats();
+        await loadValidatedProofs();
+        renderTransactions();
+        renderOfficeOverview();
+      });
+    });
+  }
+
+  document.getElementById('am-filter-member')?.addEventListener('change', renderAllMissions);
+  document.getElementById('am-filter-status')?.addEventListener('change', renderAllMissions);
 
   // ---------- Bureau du patron : pastille globale (validations) ----------
   function updateOfficeAlertCount() {
@@ -207,6 +370,7 @@
         renderDashboardStats();
         renderProfile();
         renderMissionsValidees();
+        renderAllMissions();
       });
     });
 
@@ -308,6 +472,7 @@
         renderDashboardStats();
         renderProfile();
         renderMissionsValidees();
+        renderAllMissions();
       });
     });
   }
@@ -870,6 +1035,7 @@
       renderOfficeOverview();
       renderRoadsheet();
       renderMissionsValidees();
+      renderAllMissions();
       renderDashboardStats();
       renderDashboardMails();
       if (currentProfile.id === psCurrentPlayerId) renderProfile();
@@ -975,6 +1141,7 @@
       renderOfficeOverview();
       renderRoadsheet();
       renderMissionsValidees();
+      renderAllMissions();
       renderDashboardStats();
       renderDashboardMails();
       if (typeof populateOperationMemberSelect === 'function') populateOperationMemberSelect();
