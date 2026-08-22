@@ -418,7 +418,13 @@
       </div>
       <p class="proof-hint" style="margin-bottom:1rem;">Indique le revenu de la mission affiché sur TrucksBook — une fois la mission validée par le patron, ce montant est ajouté automatiquement au compte entreprise.</p>
 
-      <p class="eyebrow" style="margin-bottom:0.75rem;">Frais réels</p>
+      <div class="field">
+        <label class="eyebrow">Distance acceptée (km)</label>
+        <input type="number" id="proof-distance" class="input-real" placeholder="Ex : 929" min="0" step="1" />
+      </div>
+      <p class="proof-hint" style="margin-bottom:1rem;">Indique la distance acceptée affichée sur TrucksBook — une fois la mission validée par le patron, ces km sont ajoutés automatiquement à ton compteur (Classement, Chauffeur du mois).</p>
+
+      <p class="eyebrow" style="margin-bottom:0.75rem;">Frais réels (facultatif)</p>
       <div style="display:flex; gap:1rem; margin-bottom:1rem; flex-wrap:wrap;">
         <div class="field" style="flex:1; min-width:160px;">
           <label class="eyebrow">Carburant (€)</label>

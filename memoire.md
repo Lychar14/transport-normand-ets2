@@ -345,8 +345,11 @@ avant calcul).
   modifiables par l'employé lui-même.
 - Missions récentes.
 - **Trophées** à paliers réels basés sur le nombre de livraisons validées.
-- La distance parcourue a été retirée du profil : elle est désormais saisie
-  manuellement **par le patron** depuis la fiche joueur.
+- La distance parcourue a été retirée du profil. **Depuis la v57**, elle est
+  déclarée par le chauffeur lui-même à la soumission de sa preuve de livraison
+  (champ *Distance acceptée*) et créditée automatiquement à la validation — voir
+  section *Validation des livraisons*. La saisie manuelle par le patron depuis la
+  fiche joueur reste disponible en complément (correction, missions hors site).
 
 ### Feuille de route
 - Missions créées par le patron et assignées à un chauffeur.
@@ -395,7 +398,15 @@ avant calcul).
   - **Frais carburant** et **frais de péages** (colonnes `frais_carburant` /
     `frais_peages` sur `preuves_livraison`, script `14-frais-livraison.sql`) ;
   - le **revenu de la mission (€)**, crédité automatiquement au compte entreprise à
-    la validation par le patron.
+    la validation par le patron ;
+  - **depuis la v57**, la **distance acceptée (km)** (colonne `distance_declaree`
+    sur `preuves_livraison`, script `29-distance-declaree.sql`) : à la validation,
+    une entrée est ajoutée automatiquement dans `distance_entries` (même table que
+    la saisie manuelle en fiche joueur), avec `mission_id` renseigné comme
+    garde-fou anti-doublon en cas de double clic sur *Valider*. Le Classement et
+    *Chauffeur du mois* se mettent à jour dans la foulée, sans ressaisie du
+    patron. Si le champ est laissé à 0 (mission hors site, oubli), rien n'est
+    ajouté et le patron peut toujours compléter à la main depuis la fiche joueur.
 - Bouton **« Rembourser les frais »** en un clic depuis une preuve en attente :
   crédite directement le joueur et débite le compte entreprise du même montant
   (écritures miroir en base, comme une opération joueur classique). **Corrigé en
@@ -468,7 +479,9 @@ Onglets : **Vue d'ensemble**, **Validations**, **Équipe**, **Missions**, **Tré
 
 - **Équipe → fiche joueur** (bouton « Gérer » sur chaque membre), 6 onglets
   (script `18-fiche-joueur.sql`, tables `distance_entries` et `player_notes`) :
-  - *Distance* — saisie manuelle de la distance cumulée par le patron
+  - *Distance* — saisie manuelle de la distance cumulée par le patron (surtout
+    utile en correction ou pour une mission hors site depuis la v57, où la
+    distance est normalement créditée automatiquement à la validation)
   - *Notes & blâmes* — **strictement réservé au patron**
   - *Transactions*
   - *Rendez-vous*
@@ -690,6 +703,7 @@ directs de `<main>` sont des `.view`, et il n'y a plus aucun ID dupliqué.
 | `26-citations.sql` | Table `citations` (citation du jour) + RLS écriture réservée au patron — **obligatoire** pour que Réglages > Citations de la route fonctionne (v52) |
 | `27-annonces.sql` | Table `annonces` (fil « Vie de l'entreprise ») + RLS écriture réservée au patron — **obligatoire** pour que le tableau de bord affiche/publie des annonces (v53) |
 | `28-annonces-edition.sql` | Colonne `updated_at` + policy `UPDATE` sur `annonces` — **obligatoire** pour que le bouton Modifier d'une annonce fonctionne (v53) |
+| `29-distance-declaree.sql` | Colonne `distance_declaree` sur `preuves_livraison` + `mission_id` sur `distance_entries` — **obligatoire** pour que la distance acceptée déclarée par le chauffeur soit créditée automatiquement à la validation (v57) |
 
 Les versions v21 à v28 n'ont nécessité **aucun** script SQL ; la v29 nécessite
 `19-presentation-page.sql`, la v30 y ajoute `20-logo-entreprise.sql`. Les versions
@@ -704,7 +718,8 @@ par le script de la v41) ; la v51 nécessite **`25-grades.sql`** (dépend aussi 
 `est_patron()`) ; la v54 ne nécessite **aucun script SQL** (réutilise les
 données déjà chargées pour le Classement de la v48) ; les v55 et v56 ne
 nécessitent aucun script SQL (déplacement d'interface et changement de critère
-de tri, aucune structure de base modifiée).
+de tri, aucune structure de base modifiée) ; la v57 nécessite
+**`29-distance-declaree.sql`**.
 
 Note technique (v51 à v53) : ces trois scripts ont été exécutés **directement en
 base** (connexion Postgres via le pooler Supabase, `aws-0-eu-west-2.pooler.supabase.com`)
@@ -778,6 +793,7 @@ mais les policies d'écriture restent à passer par le script.
 | v54 | **Chauffeur du mois** : carte mise en avant sur le tableau de bord (reflet du n°1 du Classement, km parcourus ce mois-ci), reset automatique chaque mois comme le Classement, masquée tant qu'aucun km n'a été saisi |
 | v55 | Gestion du fil d'annonces (« Vie de l'entreprise ») déplacée du tableau de bord vers Bureau du patron > Fil d'actualités ; le tableau de bord ne garde que le bandeau défilant en lecture seule |
 | v56 | **Classement** trié par **nombre de livraisons** (au lieu des km parcourus, désormais simple départage) + **rang partagé en cas d'égalité** entre chauffeurs à égalité de livraisons ; « Chauffeur du mois » suit le même critère et se masque tant qu'aucune livraison n'a été validée ce mois-ci. **Bouton « Rembourser les frais »** corrigé : effectue réellement le remboursement en un clic au lieu de seulement pré-remplir le formulaire de Trésorerie |
+| v57 | **Distance acceptée déclarée par le chauffeur** : nouveau champ sur le formulaire de preuve de livraison (« Distance acceptée (km) »), à côté du revenu. À la validation par le patron, une entrée `distance_entries` est créée automatiquement (garde-fou anti-doublon via `distance_entries.mission_id`) — le Classement et Chauffeur du mois se mettent à jour sans que le patron ait à ressaisir quoi que ce soit en fiche joueur, qui reste disponible pour les corrections et les missions hors site. Corrige au passage un bug pré-existant de double-clic possible sur le bouton « Valider ». Nécessite `29-distance-declaree.sql` |
 
 *(Le script `21-bucket-logos.sql` accompagne la v36 si le bucket `logos` n'existe pas encore.)*
 

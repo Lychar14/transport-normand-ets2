@@ -274,11 +274,16 @@
     proofSubmitBtn.addEventListener('click', async () => {
       const missionId = document.getElementById('proof-mission-select').value;
       const lien = document.getElementById('proof-link').value.trim();
-      const revenuDeclare = parseFloat(document.getElementById('proof-revenu').value) || 0;
+      const revenuRaw = document.getElementById('proof-revenu').value;
+      const distanceRaw = document.getElementById('proof-distance').value;
+      const revenuDeclare = parseFloat(revenuRaw) || 0;
+      const distanceDeclaree = parseInt(distanceRaw, 10) || 0;
       const fraisCarburant = parseFloat(document.getElementById('proof-frais-carburant').value) || 0;
       const fraisPeages = parseFloat(document.getElementById('proof-frais-peages').value) || 0;
       if (!missionId) { setStatus('proof-submit-status', 'Choisis d\'abord la mission concernée.', true); return; }
       if (!lien) { setStatus('proof-submit-status', 'Colle le lien TrucksBook de la mission.', true); return; }
+      if (!revenuRaw || revenuDeclare <= 0) { setStatus('proof-submit-status', 'Indique le revenu de la mission.', true); return; }
+      if (!distanceRaw || distanceDeclaree <= 0) { setStatus('proof-submit-status', 'Indique la distance acceptée de la mission.', true); return; }
 
       proofSubmitBtn.disabled = true; proofSubmitBtn.textContent = 'Envoi...';
       const { error } = await supabaseClient.from('preuves_livraison').insert({
@@ -286,6 +291,7 @@
         chauffeur_id: currentProfile.id,
         lien_trucksbook: lien,
         revenu_declare: revenuDeclare,
+        distance_declaree: distanceDeclaree,
         frais_carburant: fraisCarburant,
         frais_peages: fraisPeages
       });
@@ -301,6 +307,7 @@
       setStatus('proof-submit-status', 'Preuve envoyée ! Le patron va la vérifier.', false);
       document.getElementById('proof-link').value = '';
       document.getElementById('proof-revenu').value = '';
+      document.getElementById('proof-distance').value = '';
       document.getElementById('proof-frais-carburant').value = '';
       document.getElementById('proof-frais-peages').value = '';
       await loadMissions();

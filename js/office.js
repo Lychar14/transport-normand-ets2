@@ -293,11 +293,15 @@
         ? `<a href="${p.lien_trucksbook}" target="_blank" rel="noopener" class="proof-link">Voir le lien TrucksBook ↗</a>`
         : '<span class="proof-link" style="color:var(--muted);">Pas de lien fourni</span>';
       const revenuDeclare = Number(p.revenu_declare) || 0;
+      const distanceDeclaree = Number(p.distance_declaree) || 0;
       const fraisCarburant = Number(p.frais_carburant) || 0;
       const fraisPeages = Number(p.frais_peages) || 0;
       const fraisTotal = fraisCarburant + fraisPeages;
       const revenuHtml = revenuDeclare > 0
         ? `<div style="color:var(--muted); font-size:0.78rem; margin-top:4px;">💰 Revenu déclaré : <strong style="color:var(--text);">${revenuDeclare.toFixed(2)} €</strong> (ajouté au compte entreprise à la validation)</div>`
+        : '';
+      const distanceHtml = distanceDeclaree > 0
+        ? `<div style="color:var(--muted); font-size:0.78rem; margin-top:4px;">🛣️ Distance acceptée : <strong style="color:var(--text);">${distanceDeclaree} km</strong> (ajoutée au compteur de ${pseudoOf(p.chauffeur_id)} à la validation)</div>`
         : '';
       const fraisHtml = (fraisCarburant > 0 || fraisPeages > 0)
         ? `<div style="color:var(--muted); font-size:0.78rem; margin-top:4px;">⛽ Carburant : ${fraisCarburant.toFixed(2)} € · 🛣️ Péages : ${fraisPeages.toFixed(2)} € · <strong style="color:var(--text);">Total : ${fraisTotal.toFixed(2)} €</strong></div>`
@@ -310,13 +314,14 @@
             <div style="color:var(--muted); font-size:0.78rem; margin-top:2px;">Soumis par ${pseudoOf(p.chauffeur_id)} · ${timeAgo(p.submitted_at)}</div>
             ${lienHtml}
             ${revenuHtml}
+            ${distanceHtml}
             ${fraisHtml}
             ${mission && mission.commentaire ? `<div class="mission-comment">💬 ${escapeHtml(mission.commentaire)}</div>` : ''}
             ${fraisTotal > 0 ? `<button class="btn-mini" data-rembourser-frais="${p.chauffeur_id}" data-frais-montant="${fraisTotal.toFixed(2)}" data-frais-mission="${titre.replace(/"/g, '&quot;')}" style="margin-top:0.5rem;">Rembourser les frais (${fraisTotal.toFixed(2)} €)</button>` : ''}
           </div>
           <div class="proof-controls">
             <div class="alert-actions">
-              <button class="btn-mini accept" data-proof-action="valider" data-proof-id="${p.id}" data-mission-id="${p.mission_id}" data-revenu="${revenuDeclare}" data-titre="${titre.replace(/"/g, '&quot;')}" data-chauffeur-id="${p.chauffeur_id}">Valider</button>
+              <button class="btn-mini accept" data-proof-action="valider" data-proof-id="${p.id}" data-mission-id="${p.mission_id}" data-revenu="${revenuDeclare}" data-distance="${distanceDeclaree}" data-titre="${titre.replace(/"/g, '&quot;')}" data-chauffeur-id="${p.chauffeur_id}">Valider</button>
               <button class="btn-mini decline" data-proof-action="refuser">Refuser</button>
             </div>
             <div class="refuse-reason-box" style="display:none; width:100%; margin-top:0.75rem;">
@@ -333,9 +338,12 @@
     // Valider directement
     list.querySelectorAll('[data-proof-action="valider"]').forEach(btn => {
       btn.addEventListener('click', async () => {
+        if (btn.disabled) return;
+        btn.disabled = true;
         const proofId = btn.dataset.proofId;
         const missionId = btn.dataset.missionId;
         const revenu = Number(btn.dataset.revenu) || 0;
+        const distance = Number(btn.dataset.distance) || 0;
         const titre = btn.dataset.titre || '';
         const chauffeurId = btn.dataset.chauffeurId;
         btn.closest('.validation-row').style.opacity = '0.5';
@@ -361,6 +369,21 @@
           await loadTransactions();
           renderTransactions();
           renderOfficeOverview();
+        }
+
+        // Distance acceptée déclarée par le chauffeur → ajoutée automatiquement à son
+        // compteur de km (garde-fou anti-doublon : une seule entrée par mission)
+        if (distance > 0 && !allDistanceEntries.some(e => e.mission_id === missionId)) {
+          await supabaseClient.from('distance_entries').insert({
+            player_id: chauffeurId,
+            km: distance,
+            note: `Mission validée — ${titre}`,
+            added_by: currentProfile.id,
+            mission_id: missionId
+          });
+          await loadDistanceEntries();
+          if (typeof renderClassement === 'function') renderClassement();
+          if (typeof renderChauffeurDuMois === 'function') renderChauffeurDuMois();
         }
 
         await loadMissions();
